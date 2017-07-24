@@ -1,0 +1,5 @@
+{
+  "env": {
+    "BABEL_ENV": "production"
+  }
+}
