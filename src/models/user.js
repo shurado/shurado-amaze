@@ -5,13 +5,14 @@ module.exports = function(sequelize, DataTypes) {
     nickname: DataTypes.STRING,
     website: DataTypes.STRING,
     introduction: DataTypes.TEXT,
-    avatar: DataTypes.HSTORE
-  }, {
-    classMethods: {
-      associate: function(models) {
-        console.log()
-      }
-    }
+    avatar_url: DataTypes.HSTORE
   });
+
+  user.associate = function(models) {
+    user.hasMany(models.feed);
+  }
+  
+
+
   return user;
 };

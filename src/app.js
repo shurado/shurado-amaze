@@ -3,6 +3,9 @@ import path from 'path';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import routes from './routes';
+import models from './models';
+
+models.user.find().then((user) => console.log(user.getFeeds()))
 
 const app = express();
 app.disable('x-powered-by');

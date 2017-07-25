@@ -3,12 +3,10 @@ module.exports = function(sequelize, DataTypes) {
   var feed = sequelize.define('feed', {
     caption: DataTypes.TEXT,
     image_url: DataTypes.HSTORE
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
-  });
+  })
+
+  feed.associate = function(models) {
+    feed.belongsTo(models.user, { foreignKey: 'user_id' })
+  }
   return feed;
 };
