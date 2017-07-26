@@ -9,5 +9,11 @@ module.exports = function(sequelize, DataTypes) {
     feed.belongsTo(models.user, { foreignKey: 'user_id' })
     feed.belongsToMany(models.spot, { through: 'spots_feeds', foreignKey: 'feed_id' })
   }
+
+  feed.prototype.edit = function({ caption }) {
+    this.caption = caption;
+    return this.save();
+  }
+
   return feed;
 };
