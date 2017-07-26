@@ -11,8 +11,7 @@ module.exports = function(sequelize, DataTypes) {
 
   user.associate = function(models) {
     user.hasMany(models.feed, { foreignKey: 'user_id' });
-    user.hasMany(models.feed, { foreignKey: 'user_id' });
-
+    user.hasMany(models.comment, { foreignKey: 'user_id' });
   }
   
 
