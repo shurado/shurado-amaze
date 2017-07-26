@@ -7,6 +7,7 @@ module.exports = function(sequelize, DataTypes) {
 
   feed.associate = function(models) {
     feed.belongsTo(models.user, { foreignKey: 'user_id' })
+    feed.belongsToMany(models.spot, { through: 'spots_feeds', foreignKey: 'feed_id' })
   }
   return feed;
 };

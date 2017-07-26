@@ -3,12 +3,11 @@ module.exports = function(sequelize, DataTypes) {
   var spot = sequelize.define('spot', {
     location: DataTypes.GEOMETRY,
     name: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
   });
+
+  spot.associate = function(models) {
+    spot.belongsToMany(models.feed, { through: 'spots_feeds', foreignKey: 'spot_id' });
+  }
+
   return spot;
 };

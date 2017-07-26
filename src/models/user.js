@@ -5,11 +5,14 @@ module.exports = function(sequelize, DataTypes) {
     nickname: DataTypes.STRING,
     website: DataTypes.STRING,
     introduction: DataTypes.TEXT,
-    avatar_url: DataTypes.HSTORE
+    avatar_url: DataTypes.HSTORE,
+    social_account: DataTypes.HSTORE
   });
 
   user.associate = function(models) {
-    user.hasMany(models.feed);
+    user.hasMany(models.feed, { foreignKey: 'user_id' });
+    user.hasMany(models.feed, { foreignKey: 'user_id' });
+
   }
   
 

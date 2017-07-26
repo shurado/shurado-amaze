@@ -2,13 +2,15 @@ import express from 'express';
 import path from 'path';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
+import passport from 'passport';
+
 import routes from './routes';
 import models from './models';
 
-models.user.find().then((user) => console.log(user.getFeeds()))
+
 
 const app = express();
-app.disable('x-powered-by');
+app.disable('x-powered-by'); /* hide powerby to prevent secure issue. */
 
 /* View engine setup */
 app.set('views', path.join(__dirname, '/views'));
@@ -17,8 +19,14 @@ app.set('view engine', 'ejs');
 app.use(logger('dev', {
   skip: () => app.get('env') === 'test'
 }));
+
+/* Middlewares */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
@@ -36,6 +44,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   res
     .status(err.status || 500)
     .render('error', {
+      error: err,
       message: err.message
     });
 });

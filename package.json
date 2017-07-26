@@ -18,14 +18,20 @@
   },
   "dependencies": {
     "body-parser": "^1.17.2",
+    "dotenv": "^4.0.0",
     "ejs": "^2.5.6",
     "express": "^4.15.3",
+    "express-session": "^1.15.4",
     "graphql": "^0.10.5",
     "morgan": "^1.8.2",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google": "^0.3.0",
     "pg": "^7.0.2",
     "pg-hstore": "^2.3.2",
     "postgraphql": "^3.3.0",
     "prop-types": "^15.5.10",
+    "rambda": "^0.7.5",
     "ramda": "^0.24.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -36,7 +42,8 @@
     "redux-observable": "^0.14.1",
     "rxjs": "^5.4.2",
     "sequelize": "^4.4.2",
-    "sequelize-cli": "^2.7.0"
+    "sequelize-cli": "^2.7.0",
+    "session": "^0.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",
