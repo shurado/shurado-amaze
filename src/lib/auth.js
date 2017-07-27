@@ -2,6 +2,7 @@ import { user as User }  from '../models/';
 import passport from 'passport';
 import { Strategy } from 'passport-facebook';
 import { pathOr } from 'ramda';
+import moment from 'moment';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -22,21 +23,36 @@ export function init(app) {
     clientID: process.env.FACEBOOK_APPID,
     clientSecret: process.env.FACEBOOK_TOKEN,
     callbackURL: '/auth/facebook/callback',
-    profileFields: ['id', 'displayName', 'photos', 'email']
+    profileFields: ['id', 'displayName', 'photos', 'email', 'birthday', 'gender']
   }, (accessToken, refreshToken, profile, done) => {
-    User.findOrCreate({
-        where: { 
-          social_account: { facebook: profile.id }
-        },
-        defaults: { 
-          nickname: profile.displayName,
-          avatar_url: {
-            facebook: profile.photos[0].value
-          }
+      User.find({
+        where: { social_account: { facebook: profile.id } }
+      })
+      .then(user => {
+        /**
+         * if user did exist, return that user.
+         * if user doesn't exist, create user by `profile.id`
+         * 
+         * make sure there is no chance to create two identical user.
+         */
+        if (user) {
+          done(null, user);
+        } else {
+          User.create({
+            nickname: profile.displayName,
+            gender: profile.gender,
+            social_account: {
+              facebook: profile.id,
+            },
+            avatar_url: {
+              facebook: profile.photos[0].value
+            }
+          }).then((user) => done(null, user));
         }
-    }).then((users) => {
-      done(null, users[0]);
-    });
+      })
+      .catch(error => {
+        done(error, false);
+      })
   }));
 
 }
@@ -53,7 +69,10 @@ export function registerRoutes(app) {
 
     if(authUserId) {
       User.findById(authUserId).then(user => {
-        res.cookie('jwt_token', user.tokenForUser(process.env.SECRET_KEY));
+        res.cookie('jwt_token', user.tokenForUser(process.env.SECRET_KEY), {
+          expires: moment().add(2, 'months').toDate()
+        });
+        
         res.redirect(303, req.param.redirect || '/');
       })
     }

@@ -6,7 +6,7 @@
   "scripts": {
     "prestart": "npm run -s build:server",
     "start": "npm run dev:server",
-    "dev:server": "BABEL_ENV=production nodemon ./src/index.js --exec \"node -r babel-register\"",
+    "dev:server": "DEBUG=express:* BABEL_ENV=production nodemon ./src/index.js --exec \"node -r babel-register\"",
     "dev:client": "nodemon --watch webpack.config.js --watch webpack.parts.js --exec \"webpack-dev-server --env.target development\"",
     "clean": "rm -rf ./dist",
     "build:webpack": "NODE_ENV=production ./node_modules/.bin/webpack -p --config webpack.config.prod.js",
@@ -29,6 +29,7 @@
     "graphql-relay": "^0.5.2",
     "graphql-sequelize": "^5.4.0",
     "jwt-simple": "^0.5.1",
+    "moment": "^2.18.1",
     "morgan": "^1.8.2",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",

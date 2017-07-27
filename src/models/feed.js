@@ -15,5 +15,8 @@ module.exports = function(sequelize, DataTypes) {
     return this.save();
   }
 
+  feed.prototype.serializeFields = ['caption', 'image_url', 'user'];
+
+
   return feed;
 };
