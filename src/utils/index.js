@@ -10,6 +10,10 @@ export const serialize = (fields, model) => {
   
 }
 
+export const pickDataValues = (model) => {
+  return pickAll(['dataValues'])(model).dataValues;
+}
+
 export const getReqAccept = (req) => {
   return req.accepts(['application/json', 'html']);
 }

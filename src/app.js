@@ -9,6 +9,7 @@ import graphqlHTTP from 'express-graphql';
 
 import routes from './routes';
 import schema from './models/schemas';
+import * as auth from './lib/auth';
 
 
 const app = express();
@@ -39,6 +40,37 @@ app.use('/graphql', graphqlHTTP({
   schema,
   graphiql: true
 }))
+
+
+auth.init(app);
+auth.registerRoutes(app);
+
+// Catch 404 and forward to error handler
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+  
+  switch(req.accepts(['application/json', 'html'])) {
+    case 'application/json':
+      return res.status(err.status || 500).json({
+        error: err,
+        message: err.message
+      });
+    case 'html':
+      return res
+        .status(err.status || 500)
+        .render('error', {
+          error: err,
+          message: err.message
+        });
+  }
+  
+});
+
 
 
 export default app;
