@@ -10,7 +10,7 @@ import ability from '../middlewares/ability';
 
 import { feed as Feed, user as User } from '../models';
 import { serialize, pickDataValues, nullResponse } from '../utils';
-import { return404, return400 } from '../utils/responseHelper';
+import { return404, return400, return401 } from '../utils/responseHelper';
 
 import { feedUploader, avatarUploader } from '../services/uploader';
 
@@ -104,7 +104,35 @@ route.post('/feeds', passport.authenticate('jwt', { session: false }), (req, res
     })
 });
 
-route.post('/feeds/:id/upload', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+route.post('/feeds/:id/comments', jwtAuthenticate, (req, res, next) => {
+  if (!req.user) {
+    return return401(res);
+  }
+
+  const id = req.user.id;
+
+  Feed.findById(req.params.id)
+    .then(feed => {
+      const { text, comment_type } = req.body;
+      if (feed) {
+        feed.addCommentToFeed({
+          text,
+          user_id: id,
+          comment_type
+        }).then(comment => {
+          res.json({
+            comment: serialize(comment.serializeFields, comment),
+            author: pick(['username', 'nickname', 'avatar_url'], req.user)
+          })
+        })
+      } else {
+        return return404(res, 'Feed not Found!');
+      }
+    })
+
+});
+
+route.post('/feeds/:id/upload', jwtAuthenticate, (req, res, next) => {
   if(!req.is('multipart/form-data')) {
     return return400(res, '上傳格式錯誤， `Content-Type` 必須為 `multipart/form-data`');
   }
@@ -134,7 +162,6 @@ route.post('/feeds/:id/upload', passport.authenticate('jwt', { session: false })
     .catch(err => {
       return return400(res, err.message);
     })
-    
 });
 
 

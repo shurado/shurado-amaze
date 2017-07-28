@@ -27,6 +27,7 @@ module.exports = function(sequelize, DataTypes) {
 
   feed.associate = function(models) {
     feed.belongsTo(models.user, { foreignKey: 'user_id' })
+    feed.hasMany(models.comment, { foreignKey: 'feed_id'} );
     feed.belongsToMany(models.spot, { through: 'spots_feeds', foreignKey: 'feed_id',  timestamps: false })
   }
 
@@ -72,7 +73,18 @@ module.exports = function(sequelize, DataTypes) {
           resolve(results);
         })
     })
-    
+  }
+
+  feed.prototype.addCommentToFeed = function({ text, comment_type, user_id }) {
+    return this.createComment({
+      text,
+      comment_type,
+      user_id
+    });
+  }
+
+  feed.prototype.getActiveComments = function() {
+    return Promise.resolve(this.getComments({ include: 'user', scope: 'active' }).then(comments => comments.map(pickDataValues)));
   }
 
   feed.prototype.serializeFields = ['caption', 'image_url', 'user'];
