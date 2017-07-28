@@ -72,6 +72,8 @@ module.exports = function(sequelize, DataTypes) {
   user.associate = function(models) {
     user.hasMany(models.feed, { foreignKey: 'user_id' });
     user.hasMany(models.comment, { foreignKey: 'user_id' });
+    user.belongsToMany(models.user, { as: 'UserFollowers', through: 'followers', foreignKey: 'user_id' })
+
   }
   
   user.prototype.tokenForUser = function(secret) {

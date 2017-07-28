@@ -10,6 +10,10 @@ import ability from '../middlewares/ability';
 
 import { feed as Feed, user as User } from '../models';
 import { serialize, pickDataValues, nullResponse } from '../utils';
+import { return404, return400 } from '../utils/responseHelper';
+
+import { feedUploader, avatarUploader } from '../services/uploader';
+
 
 
 const route = new Router();
@@ -81,6 +85,7 @@ route.get('/feeds/:id', (req, res, next) => {
     });
 });
 
+/* [TODO] add spot */
 route.post('/feeds', passport.authenticate('jwt', { session: false }), (req, res) => {
   const allowedParams = ['caption', 'image_url'];
   
@@ -97,6 +102,39 @@ route.post('/feeds', passport.authenticate('jwt', { session: false }), (req, res
 
       res.status(400).json({ error: message });
     })
+});
+
+route.post('/feeds/:id/upload', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+  if(!req.is('multipart/form-data')) {
+    return return400(res, '上傳格式錯誤， `Content-Type` 必須為 `multipart/form-data`');
+  }
+
+  Feed.findById(req.params.id)
+    .then(feed => {
+      if (feed) {
+        req.feed = feed;
+        return next();
+      }
+
+      return return404(res, `此貼文 ID 不存在！ feed id \`${req.params.id}\``);
+    })
+}, feedUploader.single('photo'), (req, res) => {
+  if (!req.file) {
+    return return400(res, `必須上傳一個檔案，且大小在 1GB 以下`);
+  }
+
+  req.feed.image_url = Object.assign({}, req.feed.image_url, { normal: req.file.location });
+  req.feed
+    .save()
+    .then(feed => {
+      return res.json({
+        feed: serialize(feed.serializeFields, feed)
+      });
+    })
+    .catch(err => {
+      return return400(res, err.message);
+    })
+    
 });
 
 

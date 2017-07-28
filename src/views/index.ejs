@@ -3,8 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 </head>
 <body>
   <%- html %>
+  <form method="POST" action="/feeds/18/upload" enctype="multipart/form-data">
+    <input type="file" name="photo" />
+    <input type="submit" />
+  </form>
+
+  <script>
+    document.querySelector('input[type="submit"]').addEventListener('click', function(e) {
+      e.preventDefault();
+      const file = document.querySelector('input[type="file"]');
+      fetch('/upload', {
+        method: 'POST',
+        body: file 
+      }).then(console.log)
+      console.dir(file);
+    })
+  </script>
+</form>
 </body>
 </html>

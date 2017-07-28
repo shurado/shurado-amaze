@@ -15,6 +15,22 @@ export const serialize = (fields, model) => {
   
 }
 
+export const convertByteSize = (byte) => {
+  const KB = 1024;
+  const MB = 1024 * 1024;
+  const GB = 1024 * 1024 * 1024;
+
+  if (byte > 0 && byte < MB) {
+    return Math.floor(byte / KB).toString() + 'KB';
+  } else if (byte > KB && byte < GB) {
+    return Math.floor(byte / MB).toString() + 'MB';
+  } else {
+    return Math.floor(byte / GB).toString() + 'GB';
+  }
+
+  return 0;
+}
+
 export const pickDataValues = (model) => {
   if (model) {
     const data = pickAll(['dataValues'])(model);
