@@ -1,17 +1,37 @@
-import { pick, pickAll } from 'ramda';
+import { pick, pickAll, pathOr, isNil } from 'ramda';
+
+
 
 export const serialize = (fields, model) => {
+  if (!model) {
+    return null;
+  }
+
   if (Array.isArray(fields)) {
     return pick(fields, model);
-
   } else {
-    return new TypeError('`fields` should be an array');
+    return new TypeError('`serialize fields` should be an array');
   }
   
 }
 
 export const pickDataValues = (model) => {
-  return pickAll(['dataValues'])(model).dataValues;
+  if (model) {
+    const data = pickAll(['dataValues'])(model);
+    return pathOr(null, ['dataValues'])(data);
+  } 
+
+  return null;
+}
+
+export const nullResponse = (res) => (nullable) => {
+  if(process.env.NODE_ENV === 'development') {
+    console.log('passing null value, return 404 by default.');
+  }
+
+  if (isNil(nullable)) {
+    res.status(400).json();
+  }
 }
 
 export const getReqAccept = (req) => {

@@ -69,11 +69,20 @@ export function registerRoutes(app) {
 
     if(authUserId) {
       User.findById(authUserId).then(user => {
-        res.cookie('jwt_token', user.tokenForUser(process.env.SECRET_KEY), {
+        const jwt_token = user.tokenForUser(process.env.SECRET_KEY);
+        res.cookie('jwt_token', jwt_token, {
           expires: moment().add(2, 'months').toDate()
         });
+
+        if (req.accepts('json')) {
+          res.json({
+            jwt_token
+          })
+        } else {
+          res.redirect(303, req.param.redirect || '/');  
+        }
         
-        res.redirect(303, req.param.redirect || '/');
+        
       })
     }
   })
