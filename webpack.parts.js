@@ -17,9 +17,12 @@ module.exports = {
         {
           test: /\.js$/,
           loader: 'babel-loader?cacheDirectory',
+          options: {
+            presets: env === 'development' ? ['react', 'es2015', 'react-hmre'] : ['react', 'es2015']
+          },
           include: path.join(__dirname, 'client'),
           exclude: /node_modules/
-        },
+        },        
       ]
     }
   }),
@@ -44,9 +47,15 @@ module.exports = {
           test: /\.(sass|scss)$/,
           use: [
             'style-loader?sourceMap=true',
-            'css-loader?sourceMap=true',
+            'css-loader?sourceMap=true&localIdentName=[name]-[local]__[hash:base64:5]',
             'postcss-loader?sourceMap=true',
-            'sass-loader?sourceMap=true'
+            'sass-loader?sourceMap=true',
+            {
+              loader: 'sass-resources-loader',
+              options: {
+                resources: path.resolve(__dirname, 'client', 'styles', 'resource.scss')
+              }
+            }
           ]
         }
       ]
@@ -60,9 +69,13 @@ module.exports = {
           use: ExtractTextPlugin.extract({
             fallback: 'style-loader',
             use: [
-              'css-loader',
+              'css-loader?sourceMap=true&localIdentName=[hash:base64:5]',
               'postcss-loader',
-              'sass-loader'
+              'sass-loader',
+              {
+                loader: 'sass-resources-loader',
+                options: { resource: '' }
+              }
             ]
           })
         },

@@ -15,6 +15,7 @@ const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 
 const configureStore = (initialState = {}) => {
   const store = createStoreWithMiddleware(rootReducers, initialState);
+  
   if (module.hot) {
     module.hot.accept('../reducers/index.js', () => {
       const nextRootReducer = require('../reducers/index.js');

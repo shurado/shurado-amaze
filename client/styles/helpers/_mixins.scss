@@ -1,0 +1,58 @@
+@mixin clearfix {
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+    zoom: 1;
+
+    clear: both;
+  }
+}
+
+@mixin ie($version:0) {
+  @if ($version == 0) {
+    @at-root [class^="ie"] & {
+      @content;
+    }
+  } @else {
+    @at-root .ie#{$version} & {
+      @content;
+    }
+  }
+}
+
+@mixin chrome($version:0) {
+  @if ($version == 0) {
+    @at-root [class^="chrome"] & {
+      @content;
+    }
+  } @else {
+    @at-root .chrome#{$version} & {
+      @content;
+    }
+  }
+}
+
+@mixin firefox($version:0) {
+  @if ($version == 0) {
+    @at-root [class^="firefox"] & {
+      @content;
+    }
+  } @else {
+    @at-root .firefox#{$version} & {
+      @content;
+    }
+  }
+}
+
+@mixin safari($version:0) {
+  @if ($version == 0) {
+    @at-root [class^="safari"] & {
+      @content;
+    }
+  } @else {
+    @at-root .safari#{$version} & {
+      @content;
+    }
+  }
+}

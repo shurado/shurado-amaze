@@ -1,0 +1,12 @@
+:global(.container) {
+  width: 70%;
+  max-width: 1080px;
+
+  margin: 0 auto;
+  
+  @include for-tablet() {
+    width: 80%;
+  }
+
+  @include for-mobile { width: 100%; }
+}

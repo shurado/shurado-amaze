@@ -9,18 +9,18 @@ const parts                       = require('./webpack.parts');
 
 /* you can seperate entry to another file. */
 const entry = {
-  app: './client/index.js'
+  app: './client/index.js',
 };
 
 const commonConfig = (env) => ({
   context: __dirname,
   devtool: env === 'development' ? 'cheap-module-eval-source-map' : 'cheap-source-map',
   resolve: {
-    modules: ['node_modules', './client'],
-    extensions: ['.js'],
+    modules: ['node_modules', path.resolve(__dirname, 'client'), path.resolve(__dirname, 'client', 'styles')],
+    extensions: ['.js', '.scss'],
     alias: {
-
-    },
+      util: path.resolve(__dirname, 'client', 'utils'),
+    }
   },
   entry: entry,
   output: {
@@ -41,7 +41,7 @@ module.exports = ({ target }) => {
       return merge([
         commonConfig(target),
         parts.loadStylesheet(target),
-        // parts.devServer(target),
+        parts.devServer(target),
         parts.loadJavascript(target),
         parts.setVariable('process.env.NODE_ENV', 'development'),
         { 
@@ -60,7 +60,7 @@ module.exports = ({ target }) => {
           plugins: [
             new webpack.optimize.UglifyJsPlugin(),
             new webpack.optimize.CommonsChunkPlugin({
-              name: 'vender'
+              name: ['vender']
             }),
             new webpack.NoEmitOnErrorsPlugin(),
             new webpack.HashedModuleIdsPlugin(),

@@ -26,33 +26,33 @@ app.use(logger('dev', {
 /* Middlewares */
 
 if (process.env.NODE_ENV === 'development') {
-  const webpack = require('webpack');
-  const webpackConfig = require('../webpack.config.js')({ target: 'development' });
-  const entries = webpackConfig.entry;
+  // const webpack = require('webpack');
+  // const webpackConfig = require('../webpack.config.js')({ target: 'development' });
+  // const entries = webpackConfig.entry;
 
-  const devClient = 'webpack-hot-middleware/client?path=http://' + 'localhost' + ':8080/__webpack_hmr&reload=true';
+  // const devClient = 'webpack-hot-middleware/client?http://' + 'localhost' + ':8080';
   
   
-  let injectedHMREntries = {};
-  Object
-    .keys(entries)
-    .forEach(key => {
-      injectedHMREntries[key] = flatten([devClient, entries[key]])
-    });
+  // let injectedHMREntries = {};
+  // Object
+  //   .keys(entries)
+  //   .forEach(key => {
+  //     injectedHMREntries[key] = flatten(['react-hot-loader/patch', devClient, entries[key]])
+  //   });
 
-  webpackConfig.entry = injectedHMREntries;
+  // webpackConfig.entry = injectedHMREntries;
 
-  const compiler = webpack(webpackConfig);
+  // const compiler = webpack(webpackConfig);
   
-  app.use(require('webpack-dev-middleware')(compiler, {
-    quiet: true,
-    noInfo: true,
-    publicPath: webpackConfig.output.publicPath
-  }));
+  // app.use(require('webpack-dev-middleware')(compiler, {
+  //   quiet: true,
+  //   noInfo: true,
+  //   publicPath: webpackConfig.output.publicPath
+  // }));
 
-  app.use(require('webpack-hot-middleware')(compiler, {
-    log: () => {}
-  }));
+  // app.use(require('webpack-hot-middleware')(compiler, {
+  //   log: () => {}
+  // }));
 }
 
 app.use(bodyParser.json());

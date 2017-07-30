@@ -1,0 +1,15 @@
+$main: #0a2928;
+$border-gray: #bbb;
+
+$colors: (
+  main: #209995,
+  help: #ff6544,
+  navbar: #0a2928,
+  word: #333,
+  grayLight: #f8f8f8,
+  border: #979797
+);
+
+@function c($key) {
+  @return map-get($colors, $key);
+}

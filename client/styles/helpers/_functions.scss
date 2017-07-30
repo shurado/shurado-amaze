@@ -1,0 +1,38 @@
+$font-size-base: 14px !default;
+
+/// Remove the unit of a length
+/// @param {Number} $number - Number to remove unit from
+/// @return {Number} - Unitless number
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+
+@function px2rem($px, $base-font-size: $font-size-base) {
+   @return (strip-unit($px) / strip-unit($base-font-size)) * 1rem;
+}
+
+@function px2em($px, $base-font-size: $font-size-base) {
+    @return (strip-unit($px) / strip-unit($base-font-size)) * 1em;
+}
+
+@mixin block($block_name) {
+  @at-root .#{$block_name} { @content; }
+}
+
+@mixin element($element_name, $prefix: true) {
+  @if($prefix) {
+    @at-root &__#{$element_name} { @content; }
+  } @else {
+    @at-root &_#{$element_name} { @content; }
+  }
+}
+
+
+@function spacing($n: 1) {
+  @return $spacing-basic * $n;
+}

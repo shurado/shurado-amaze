@@ -1,0 +1,9 @@
+$layers: (
+  'base',
+  'navbar',
+  'notice-bar'
+);
+
+@function z($layer) {
+  @return index($layers, $layer);
+}

@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import Header from './Header';
+
 class Root extends React.Component {
   
   constructor(props) {
@@ -10,7 +12,8 @@ class Root extends React.Component {
   render() {
     return (
       <div>
-        <p>hello, world</p>
+        s
+        <Header />
       </div>
     );
   }
