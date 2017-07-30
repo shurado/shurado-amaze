@@ -1,5 +1,5 @@
 'use strict';
-const { pickDataValues } = require('../utils');
+const { pickDataValues, serialize } = require('../utils');
 
 module.exports = function(sequelize, DataTypes) {
   var feed = sequelize.define('feed', {
@@ -54,7 +54,7 @@ module.exports = function(sequelize, DataTypes) {
     return new Promise(resolve => {
       sequelize.query(`
           INSERT INTO "spots" ("id", "location", "name") VALUES
-            (DEFAULT, '(${x}, ${y})'::point, ${name}) RETURNING *;
+            (DEFAULT, '(${x}, ${y})'::point, '${name}') RETURNING *;
         `).spread((results) => {
           sequelize.query(`
             INSERT INTO "spots_feeds" ("feed_id", "spot_id") VALUES (${this.id}, ${results[0].id});
@@ -84,7 +84,14 @@ module.exports = function(sequelize, DataTypes) {
   }
 
   feed.prototype.getActiveComments = function() {
-    return Promise.resolve(this.getComments({ include: 'user', scope: 'active' }).then(comments => comments.map(pickDataValues)));
+    return this
+      .getComments({ 
+        include: ['user'],
+        scope: 'active',
+        order: [['createdAt', 'DESC']] 
+      })
+      .then(comments => comments.map(comment => serialize(comment.serializeFields, comment)))
+
   }
 
   feed.prototype.serializeFields = ['caption', 'image_url', 'user'];

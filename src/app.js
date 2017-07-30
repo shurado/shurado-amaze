@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import graphqlHTTP from 'express-graphql';
 
-
+import { map, flatten } from 'ramda';
 import routes from './routes';
 import schema from './models/schemas';
 import * as auth from './lib/auth';
@@ -24,6 +24,37 @@ app.use(logger('dev', {
 }));
 
 /* Middlewares */
+
+if (process.env.NODE_ENV === 'development') {
+  const webpack = require('webpack');
+  const webpackConfig = require('../webpack.config.js')({ target: 'development' });
+  const entries = webpackConfig.entry;
+
+  const devClient = 'webpack-hot-middleware/client?path=http://' + 'localhost' + ':8080/__webpack_hmr&reload=true';
+  
+  
+  let injectedHMREntries = {};
+  Object
+    .keys(entries)
+    .forEach(key => {
+      injectedHMREntries[key] = flatten([devClient, entries[key]])
+    });
+
+  webpackConfig.entry = injectedHMREntries;
+
+  const compiler = webpack(webpackConfig);
+  
+  app.use(require('webpack-dev-middleware')(compiler, {
+    quiet: true,
+    noInfo: true,
+    publicPath: webpackConfig.output.publicPath
+  }));
+
+  app.use(require('webpack-hot-middleware')(compiler, {
+    log: () => {}
+  }));
+}
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -31,7 +62,6 @@ app.use(require('express-session')({ secret: 'mysecret', resave: true, saveUnini
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
 app.use('/', routes);

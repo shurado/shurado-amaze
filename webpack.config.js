@@ -14,7 +14,7 @@ const entry = {
 
 const commonConfig = (env) => ({
   context: __dirname,
-  devtool: env.target === 'development' ? 'cheap-module-eval-source-map' : 'cheap-source-map',
+  devtool: env === 'development' ? 'cheap-module-eval-source-map' : 'cheap-source-map',
   resolve: {
     modules: ['node_modules', './client'],
     extensions: ['.js'],
@@ -25,7 +25,7 @@ const commonConfig = (env) => ({
   entry: entry,
   output: {
     path: path.join(__dirname, 'bundle'),
-    filename: env.target === 'development' ? '[name].bundle.js' : '[name].[chunkhash].js',
+    filename: env === 'development' ? '[name].bundle.js' : '[name].[chunkhash].js',
     publicPath: '/bundle/'
   }
 });
@@ -41,11 +41,12 @@ module.exports = ({ target }) => {
       return merge([
         commonConfig(target),
         parts.loadStylesheet(target),
-        parts.devServer(target),
+        // parts.devServer(target),
         parts.loadJavascript(target),
         parts.setVariable('process.env.NODE_ENV', 'development'),
         { 
           plugins: [
+            new webpack.HotModuleReplacementPlugin(),
             new webpack.NamedModulesPlugin(),
             new webpack.LoaderOptionsPlugin({ debug: true })
           ]

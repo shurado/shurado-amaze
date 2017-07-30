@@ -6,13 +6,14 @@
   "scripts": {
     "prestart": "npm run -s build:server",
     "start": "npm run dev:server",
-    "dev:server": "DEBUG=express:* BABEL_ENV=production nodemon ./src/index.js --exec \"node -r babel-register\"",
+    "dev:server": "DEBUG=express:router BABEL_ENV=production NODE_ENV=development nodemon ./src/index.js --exec \"node -r babel-register\"",
     "dev:client": "nodemon --watch webpack.config.js --watch webpack.parts.js --exec \"webpack-dev-server --env.target development\"",
     "clean": "rm -rf ./dist",
     "build:webpack": "NODE_ENV=production ./node_modules/.bin/webpack -p --config webpack.config.prod.js",
     "build:server": "npm run clean && mkdir -p dist && babel --no-babelrc src -s -D -d dist --presets=react,es2015",
     "lint:js": "eslint ./client/**/*.js",
     "test": "jest --watch ./src",
+    "testfile": "jest",
     "prod:server": "node dist/index.js",
     "prepush": "npm-run-all lint:*"
   },

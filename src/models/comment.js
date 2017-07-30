@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
     comment.belongsTo(models.feed, { foreignKey: 'feed_id' });
   }
 
-  comment.prototype.serializeFields = ['text', 'comment_type', 'createdAt', 'updatedAt'];
+  comment.prototype.serializeFields = ['text', 'comment_type', 'createdAt', 'updatedAt', 'user'];
 
   return comment;
 };

@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       validate: {
         notEmpty: {
-          msg: 'nickname 不可為空白'
+          msg: '暱稱不可為空白'
         },
       }
     },
@@ -24,10 +24,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       validate: {
         isUrl: {
-          msg: 'website 必須為正確 URL (以 http:// 或 https:// 開頭)'
+          msg: '網站連結必須為正確 URL (以 http:// 或 https:// 開頭)'
         },
         notEmpty: {
-          msg: 'website 不可為空白',
+          msg: '網站連結不可為空白',
         }
       }
     },
@@ -35,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       validate: {
         notEmpty: {
-          msg: 'introduction 不可為空白'
+          msg: '自我介紹不可為空白'
         }
       }
     },
@@ -56,6 +56,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     email: {
       type: DataTypes.STRING,
+      unique: true,
       validate: {
         notEmpty: {
           msg: 'email 不可為空白'

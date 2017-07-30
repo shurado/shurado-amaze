@@ -1,6 +1,10 @@
 import { pick, pickAll, pathOr, isNil } from 'ramda';
 
 
+export const toHumanReadable = (message, reg) => {
+  
+  return message.replace(/(Validation error:)+/g, '').replace(/\n/g, '').split(',');
+}
 
 export const serialize = (fields, model) => {
   if (!model) {
@@ -31,6 +35,14 @@ export const convertByteSize = (byte) => {
   return 0;
 }
 
+/**
+ * use for pick data value from Sequlize Object.
+ * Sequlize object has complex structure.
+ * to fetch its dataValues, you can use this function.
+ * 
+ * @param  [Sequelize Model] model
+ * @return {object || null}
+ */
 export const pickDataValues = (model) => {
   if (model) {
     const data = pickAll(['dataValues'])(model);
