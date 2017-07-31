@@ -25,6 +25,8 @@ module.exports = function(sequelize, DataTypes) {
     }
   })
 
+  feed.FEEDS_LIMIT = 15;
+
   feed.associate = function(models) {
     feed.belongsTo(models.user, { foreignKey: 'user_id' })
     feed.hasMany(models.comment, { foreignKey: 'feed_id'} );
@@ -45,6 +47,23 @@ module.exports = function(sequelize, DataTypes) {
     return feed.findOne({ where: {
       image_url: { $contains: image_url }
     } }).then(feed => feed.dataValues);
+  }
+
+  feed.prototype.getNextPageFeeds = function(nextPageFeed) {
+    return feed.findAll({
+      include: [{
+        model: sequelize.models.comment,
+        where: { status: { $not: 'deleted' } },
+        limit: 20,
+        order: [['createdAt', 'DESC']],
+      }],
+      where: {
+        createdAt: { $gt: nextPageFeed.createdAt },
+        id: { $gt: nextPageFeed.id }
+      },
+      limit: feed.FEEDS_LIMIT,
+      order: [['createdAt', 'DESC']]
+    })
   }
 
   feed.prototype.addFeedSpot = function({ name, x, y }) {

@@ -23,6 +23,20 @@ describe('test facebook login', () => {
   })
 })
 
+describe('Get next page feed', function() {
+  // beforeAll(() => {
+  //   var comments = [];
+  //   for (var i = 0; i < 10; i++) {
+  //     var comment = db.comment.build({
+  //       text: '你的建議很棒' + i,
+  //       user_id: ''
+  //     })
+  //   }
+
+  //   return db.feed.
+  // })
+});
+
 
 describe('test feed functionality', () => {
   beforeAll(() => {
