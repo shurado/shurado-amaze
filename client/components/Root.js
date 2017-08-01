@@ -12,11 +12,10 @@ import UserProfilePage from '../pages/UserProfilePage';
 
 import * as userActions from '../stores/User/modules';
 
-import "index.scss";
+import 'index.scss';
 
 
 class Root extends React.Component {
-  
   constructor(props) {
     super(props);
   }
@@ -27,14 +26,14 @@ class Root extends React.Component {
     this.props.initUserInfo({
       jwt_token: Cookies.get('jwt_token'),
       userId: Cookies.get('uid'),
-      isLoggedIn: Cookies.get('jwt_token') ? true : false,
+      isLoggedIn: !!Cookies.get('jwt_token'),
     });
   }
 
   getChildContext() {
     return {
       jwtToken: Cookies.get('jwt_token') || '',
-      isLoggedIn: Cookies.get('jwt_token') ? true : false,
+      isLoggedIn: !!Cookies.get('jwt_token'),
       userId: Cookies.get('uid')
     }
   }
@@ -61,18 +60,14 @@ Root.childContextTypes = {
   ])
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user
-  }  
-}
+const mapStateToProps = state => ({
+  user: state.user
+})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    initUserInfo: bindActionCreators(userActions.initUserInfo, dispatch),
-    fetchProfileRequest: bindActionCreators(userActions.fetchProfileRequest, dispatch),
-    signoutRequest: bindActionCreators(userActions.signoutRequest, dispatch),
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  initUserInfo: bindActionCreators(userActions.initUserInfo, dispatch),
+  fetchProfileRequest: bindActionCreators(userActions.fetchProfileRequest, dispatch),
+  signoutRequest: bindActionCreators(userActions.signoutRequest, dispatch),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root);

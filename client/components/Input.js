@@ -3,31 +3,31 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 function debounce(func, wait, immediate = false) {
-  var timeout;
-  return function() {
-    var context = this, args = arguments;
-    var later = function() {
+  let timeout;
+  return function () {
+    let context = this, 
+      args = arguments;
+    const later = function () {
       timeout = null;
       if (!immediate) func.apply(context, args);
     };
-    var callNow = immediate && !timeout;
+    const callNow = immediate && !timeout;
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
     if (callNow) func.apply(context, args);
   };
-};
+}
 
 const INPUT_TYPES = [
-  'text'    , 'password', 'hidden',
-  'checkbox',   'button', 'email' ,
-  'file'    ,    'image', 'search',
-  'tel'     ,     'time', 'url'   ,
+  'text', 'password', 'hidden',
+  'checkbox',   'button', 'email',
+  'file',    'image', 'search',
+  'tel',     'time', 'url',
   'week'
 ]
 
 
 export default class Input extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -63,7 +63,7 @@ export default class Input extends React.Component {
         <label
           className="input-label"
           htmlFor={id}
-          dangerouslySetInnerHTML={{'__html': this.props.labelText}}
+          dangerouslySetInnerHTML={{__html: this.props.labelText}}
         ></label>
         <input
           defaultValue={defaultValue || value}
@@ -108,7 +108,7 @@ Input.defaultProps = {
   type: 'text',
   size: 'default',
   required: false,
-  defaultValue: "",
+  defaultValue: '',
   value: '',
   hidden: false,
   classNames: '',

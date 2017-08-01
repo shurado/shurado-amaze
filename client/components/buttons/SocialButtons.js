@@ -4,17 +4,14 @@ import { defaultProps } from 'recompose';
 
 import styles from 'components/Buttons.scss';
 
-const SocialButtons = ({ type, onClick, href }) => {
-
-  return (
-    <a 
-      href={href}
-      className={styles["social-btn"] + ' ' + styles["fb"]}
-    >
+const SocialButtons = ({ type, onClick, href }) => (
+  <a 
+    href={href}
+    className={styles['social-btn'] + ' ' + styles.fb}
+  >
       使用 { type } 帳號登入
-    </a>
-  );
-}
+  </a>
+)
 
 export default defaultProps({
   type: 'facebook'

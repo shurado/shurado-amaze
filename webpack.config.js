@@ -22,7 +22,7 @@ const commonConfig = (env) => ({
       path.resolve(__dirname, 'client', 'styles'),
       path.resolve(__dirname, 'client', 'constants')
     ],
-    extensions: ['.js', '.scss'],
+    extensions: ['.js', '.scss', '.jsx'],
     alias: {
       util: path.resolve(__dirname, 'client', 'utils'),
     }
@@ -51,8 +51,8 @@ module.exports = ({ target }) => {
         parts.setVariable('process.env.NODE_ENV', 'development'),
         { 
           plugins: [
-            // new webpack.HotModuleReplacementPlugin(),
             new webpack.NamedModulesPlugin(),
+            new FriendlyErrorsWebpackPlugin(),
             new webpack.LoaderOptionsPlugin({ debug: true })
           ]
         }

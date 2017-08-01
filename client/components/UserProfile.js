@@ -9,9 +9,7 @@ import Image from './Image';
 import Input from './Input';
 
 const UserProfile = ({ editProfile, profile, userId, isLoggedIn }) => {
-  const bindEditProfile = (field) => (e) => {
-    return editProfile({ id: userId, [field]: e.target.value });
-  };
+  const bindEditProfile = field => e => editProfile({ id: userId, [field]: e.target.value });
 
   return (
     <div styleName="profile">

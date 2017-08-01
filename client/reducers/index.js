@@ -1,5 +1,5 @@
 
-export default function(state, action) {
+export default function (state, action) {
   return {
     todos: ['todo']
   }

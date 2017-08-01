@@ -7,8 +7,6 @@ import SocialButtons from '../buttons/SocialButtons';
 
 
 class SignInForm extends React.Component {
-  
-
   constructor(props) {
     super(props);
   }

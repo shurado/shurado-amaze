@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions';
-import * as api from './endpoints';
 import { Observable } from 'rxjs'; /* [TODO] remove rxjs to use rx-dom */
-import { DOM } from 'rx-dom';
+
+import * as api from './endpoints';
 
 export const FETCH_PROFILE_REQUEST   = 'user/FETCH_PROFILE_REQUEST';
 export const FETCH_PROFILE_CANCELLED = 'user/FETCH_PROFILE_CANCELLED';
@@ -26,7 +26,7 @@ const initialState = {
 }
 
 export default function user(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
     case INIT_USER_INFO:
       return {
         ...state,
@@ -68,50 +68,37 @@ export const fetchProfileRequest = createAction(FETCH_PROFILE_REQUEST);
 export const editProfile         = createAction(EDIT_PROFILE);
 export const signoutRequest      = createAction(SIGNOUT_REQUEST);
 
-export const signoutEpic = (action$) => {
-  return action$
-    .ofType(SIGNOUT_REQUEST)
-    .mergeMap((action) => 
-      Observable.fromPromise(api.signout())
-        .map(res => ({
-          type: SIGNOUT_SUCCESS,
-          res,
-        }))
-        .takeUntil(action$.ofType())
-    );
+export const signoutEpic = action$ => action$
+  .ofType(SIGNOUT_REQUEST)
+  .mergeMap(() => 
+    Observable.fromPromise(api.signout())
+      .map(res => ({
+        type: SIGNOUT_SUCCESS,
+        res,
+      }))
+      .takeUntil(action$.ofType())
+  )
 
-}
+export const getProfileEpic = action$ => action$
+  .ofType(FETCH_PROFILE_REQUEST)
+  .mergeMap(action => Observable.fromPromise(api.fetchProfileById(action.payload)))
+  .map(profile => ({
+    type: FETCH_PROFILE_SUCCESS,
+    ...profile
+  }))
 
-export const getProfileEpic = (action$) => {
-  return action$
-    .ofType(FETCH_PROFILE_REQUEST)
-    .mergeMap(action => Observable.fromPromise(api.fetchProfileById(action.payload)))
-    .map(profile => ({
-      type: FETCH_PROFILE_SUCCESS,
-      ...profile
+export const editProfileEpic = action$ => action$
+  .ofType(EDIT_PROFILE)
+  .mergeMap(action => Observable.fromPromise(api.editProfile(action.payload.id, action.payload))
+    .map((res) => {
+      if (res.errors) { throw Error(res.errors); }
+      return res;
     }))
-
-
-}
-
-export const editProfileEpic = (action$) => {
-  return action$
-    .ofType(EDIT_PROFILE)
-    .mergeMap(action => {
-      return Observable.fromPromise(api.editProfile(action.payload.id, action.payload))
-        .map(res => {
-          if (res.errors) { throw Error(res.errors); }
-          return res;
-        })
-
-    })
-    .map(profile => ({
-      type: EDIT_PROFILE_SUCCESS,
-      ...profile
-    }))
-    .catch(error => Observable.of({
-      type: EDIT_PROFILE_ERROR,
-      error
-    }))
-
-}
+  .map(profile => ({
+    type: EDIT_PROFILE_SUCCESS,
+    ...profile
+  }))
+  .catch(error => Observable.of({
+    type: EDIT_PROFILE_ERROR,
+    error
+  }))

@@ -7,7 +7,6 @@ import Profile from '../components/UserProfile';
 import { fetchProfileRequest, editProfile } from '../stores/User/modules';
 
 class UserProfilePage extends React.Component {
-
   constructor(props) {
     super(props);
   }
@@ -17,26 +16,22 @@ class UserProfilePage extends React.Component {
 
     return (user && !user.isFetching)
       ? <Profile
-          userId={match.params.id}
-          profile={user.profile}
-          isLoggedIn={user.isLoggedIn}
-          editProfile={this.props.editProfile}
-        />
+        userId={match.params.id}
+        profile={user.profile}
+        isLoggedIn={user.isLoggedIn}
+        editProfile={this.props.editProfile}
+      />
       : <span>Loading...</span>
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user
-  }
-}
+const mapStateToProps = state => ({
+  user: state.user
+})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchProfileRequest: bindActionCreators(fetchProfileRequest, dispatch),
-    editProfile: bindActionCreators(editProfile, dispatch)
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  fetchProfileRequest: bindActionCreators(fetchProfileRequest, dispatch),
+  editProfile: bindActionCreators(editProfile, dispatch)
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfilePage);

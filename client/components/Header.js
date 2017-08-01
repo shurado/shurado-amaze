@@ -16,7 +16,7 @@ class Header extends React.Component {
   }
 
   renderUserAction() {
-    const bindSignout = () => (e) => this.props.signoutRequest();
+    const bindSignout = () => e => this.props.signoutRequest();
     return (
       <div styleName="user-action">
         <span>通知</span>
