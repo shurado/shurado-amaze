@@ -20,7 +20,9 @@ class Root extends React.Component {
   }
 
   componentWillMount() {
+    /* [FIXME] 盡量簡化初始化邏輯，是否統一使用 action 來獲取 Cookie? */
     const userId = Cookies.get('uid');
+
     this.props.fetchProfileRequest(userId);
     this.props.initUserInfo({
       jwt_token: Cookies.get('jwt_token'),
@@ -42,7 +44,6 @@ class Root extends React.Component {
       <div>
         <Header signoutRequest={this.props.signoutRequest} />
         <div className="offset-top">
-          <Route exact path="/" component={LandingPage} />
           <Route path="/timeline" component={TimelineFeedPage} />
           <Route path="/user/login" component={SignInForm} />
           <Route path="/user/:id/profile" component={UserProfilePage} />

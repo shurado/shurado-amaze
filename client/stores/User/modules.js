@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { Observable } from 'rxjs'; /* [TODO] remove rxjs to use rx-dom */
 
+import { checkAjaxResponse } from '../api';
 import * as api from './endpoints';
 
 export const FETCH_PROFILE_REQUEST   = 'user/FETCH_PROFILE_REQUEST';
@@ -89,16 +90,17 @@ export const getProfileEpic = action$ => action$
 
 export const editProfileEpic = action$ => action$
   .ofType(EDIT_PROFILE)
-  .mergeMap(action => Observable.fromPromise(api.editProfile(action.payload.id, action.payload))
-    .map((res) => {
-      if (res.errors) { throw Error(res.errors); }
-      return res;
-    }))
-  .map(profile => ({
-    type: EDIT_PROFILE_SUCCESS,
-    ...profile
-  }))
-  .catch(error => Observable.of({
-    type: EDIT_PROFILE_ERROR,
-    error
-  }))
+  .flatMap(action => {
+    return api.editProfile(action.payload.id, action.payload)
+      .map(checkAjaxResponse)
+      .map(({ profile }) => ({
+        type: EDIT_PROFILE_SUCCESS,
+        profile,
+      }))
+      .catch(({ xhr }) => Observable.of({
+        type: EDIT_PROFILE_ERROR,
+        errors: xhr.response.errors
+      }))
+  })
+
+  

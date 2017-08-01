@@ -1,4 +1,4 @@
-## React redux generator
+## Shurado Amaze
 
 方便建立 redux application。
 
@@ -36,6 +36,15 @@
   - redux
   - redux-logger
 - ramda
+
+## TODOs
+
+- [] 因為後端串接的關係，暫時還是用 REST API 來實作，之後逐漸改成 graphql, apollo 的形式
+  - sequlize-graphql
+  - postgraphql
+
+- [] 實作使用者動態分頁處理
+- [] 實作當使用者追蹤其他人時，動態發佈會傳送通知的功能
 
 
 ## License

@@ -19,6 +19,10 @@ const queryType = new GraphQLObjectType({
   name: 'QueryType',
   description: 'The root query type',
   fields: {
+    feeds: {
+      type: new GraphQLList(feedType),
+      resolve: () => Feed.findAll({ limit: Feed.FEEDS_LIMIT, include: ['user'] })
+    },
     feed: {
       type: feedType,
       args: {

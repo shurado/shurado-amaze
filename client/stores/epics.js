@@ -10,5 +10,4 @@ export default combineEpics(
   getProfileEpic,
   editProfileEpic,
   signoutEpic,
-  
 )

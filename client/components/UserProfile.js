@@ -11,7 +11,6 @@ import Input from './Input';
 
 const UserProfile = ({ editProfile, profile, userId }) => {
   const bindEditProfile = (field) => (e) => {
-    console.log(e);
     editProfile({ id: userId, [field]: e.target.value })
   }
     

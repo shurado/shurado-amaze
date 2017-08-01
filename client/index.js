@@ -1,20 +1,25 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
+import {
+  ApolloClient,
+  ApolloProvider 
+} from 'react-apollo';
 
 import configureStore from './stores/configureStore'
 import Root from './components/Root';
 
 // console.log(browserHistory);
 
+const client = new ApolloClient('/graphql');
+
 const store = configureStore();
 
 render(
-  <Provider store={store}>
+  <ApolloProvider client={client} store={store}>
     <BrowserRouter>
       <Route path="/" component={Root} />     
     </BrowserRouter>
-  </Provider>,
+  </ApolloProvider>,
   document.querySelector('#app')
 );

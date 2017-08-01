@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import { ajax } from 'rxjs/observable/dom/ajax';
 import { checkResponse } from '../api';
 
 /* [TODO] return Observable using rx-dom */
@@ -9,13 +10,12 @@ export const fetchProfileById = userId => fetch(`/api/user/${userId}/profile`, {
 })
   .then(checkResponse)
 
-export const editProfile = (userId, inputFields) => fetch(`/api/user/${userId}/profile`, {
+/* [TODO] replace with ajax version! */
+export const editProfile = (userId, inputFields) => ajax({
+  url: `/api/user/${userId}/profile`,
   method: 'POST',
-  credentials: 'include',
-  body: JSON.stringify(inputFields),
-  headers: { 'Content-Type': 'application/json' }
-})
-  .then(checkResponse)
+  body: { ...inputFields }
+});
 
 export const signout = () => fetch('/api/user/sign_out', {
   method: 'POST',
