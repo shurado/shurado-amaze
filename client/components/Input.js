@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-function debounce(func, wait, immediate = false) {
+function debounce(func, wait, immediate = false, ...args) {
   let timeout;
-  return function () {
-    let context = this, 
-      args = arguments;
-    const later = function () {
+  return () => {
+    const context = this;
+
+    const later = function later() {
       timeout = null;
       if (!immediate) func.apply(context, args);
     };
@@ -56,7 +56,7 @@ export default class Input extends React.Component {
   }
 
   render() {
-    const { defaultValue, value, minLength, maxLength, size, type, placeholder, width, name, id, style, classNames, errorMessage, hasError, hidden, required } = this.props
+    const { defaultValue, value, minLength, maxLength, size, type, placeholder, width, name, id, style, classNames, errorMessage, hasError, hidden, required } = this.props // eslint-disable-line max-len,no-unused-vars
     
     return (
       <div className="input-container">
@@ -112,5 +112,5 @@ Input.defaultProps = {
   value: '',
   hidden: false,
   classNames: '',
-  onChange: function () {}
+  onChange: function () {} // eslint-disable-line func-names
 }

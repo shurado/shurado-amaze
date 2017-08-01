@@ -2,18 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { Route, Link } from 'react-router-dom'; 
-
-import Header from './Header';
+import { Route } from 'react-router-dom'; 
 import Cookies from 'js-cookie';
-import SignInForm from './form/SignInForm.js'
 
+import 'index.scss';
+import Header from './Header';
+import SignInForm from './form/SignInForm';
 import UserProfilePage from '../pages/UserProfilePage';
 
 import * as userActions from '../stores/User/modules';
-
-import 'index.scss';
-
 
 class Root extends React.Component {
   constructor(props) {

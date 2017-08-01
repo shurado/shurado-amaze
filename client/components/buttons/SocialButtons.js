@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { defaultProps } from 'recompose';
 
 import styles from 'components/Buttons.scss';

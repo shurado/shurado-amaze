@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { isEmpty } from 'ramda';
 
 import Profile from '../components/UserProfile';
 import { fetchProfileRequest, editProfile } from '../stores/User/modules';

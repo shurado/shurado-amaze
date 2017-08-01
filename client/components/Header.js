@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CSSModules from 'react-css-modules';
-import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 
-import Image from './Image';
-import routes from 'constants/routes/';
+import routes from 'constants/routes'; // eslint-disable-line import/extensions
 import styles from 'components/Header.scss';
+import Image from './Image';
 
 
 class Header extends React.Component {
@@ -16,7 +14,7 @@ class Header extends React.Component {
   }
 
   renderUserAction() {
-    const bindSignout = () => e => this.props.signoutRequest();
+    const bindSignout = () => () => this.props.signoutRequest();
     return (
       <div styleName="user-action">
         <span>通知</span>

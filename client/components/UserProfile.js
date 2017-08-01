@@ -1,14 +1,14 @@
 import React from 'react';
 
 import CSSModules from 'react-css-modules';
-import { branch, renderComponent, toClass } from 'recompose';
-import { Redirect, Link } from 'react-router-dom';
+import { branch, renderComponent } from 'recompose';
+import { Redirect } from 'react-router-dom';
 
 import styles from 'components/Profile.scss';
 import Image from './Image';
 import Input from './Input';
 
-const UserProfile = ({ editProfile, profile, userId, isLoggedIn }) => {
+const UserProfile = ({ editProfile, profile, userId }) => {
   const bindEditProfile = field => e => editProfile({ id: userId, [field]: e.target.value });
 
   return (
