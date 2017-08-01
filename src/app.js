@@ -53,8 +53,14 @@ if (process.env.NODE_ENV === 'development') {
   // app.use(require('webpack-hot-middleware')(compiler, {
   //   log: () => {}
   // }));
+  app.use((res, req, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+
+    next();
+  })
 }
 
+app.use(express.static('public'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -79,6 +85,9 @@ auth.registerRoutes(app);
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
+  if (err.status === 404) {
+    return res.render('index');
+  }
   next(err);
 });
 
@@ -101,6 +110,9 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   
 });
 
-
+app.get('*', (req, res) => {
+  console.log('*');
+  return res.render('index');
+})
 
 export default app;

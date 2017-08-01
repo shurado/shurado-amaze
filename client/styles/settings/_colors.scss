@@ -6,8 +6,11 @@ $colors: (
   help: #ff6544,
   navbar: #0a2928,
   word: #333,
-  grayLight: #f8f8f8,
-  border: #979797
+  gray: #eaeaea,
+  grayLight: #fafafa,
+  border: #979797,
+  facebook: #314d91,
+  google: #d73d32
 );
 
 @function c($key) {

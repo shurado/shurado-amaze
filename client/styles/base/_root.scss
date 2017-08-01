@@ -3,7 +3,7 @@ html, body {
   font-size: calc(14px + ((100vw - 320px) / 1600) * 6);
   font-family: map-get($fonts, normal);
 
-  background-color: #fafafa;
+  background-color: c(gray);
   color: c(word);
 }
 
@@ -11,7 +11,8 @@ html, body {
   box-sizing: border-box;
 }
 
-img, iframe {
+img,
+iframe {
   max-width: 100%;
 }
 
@@ -22,25 +23,33 @@ img {
   font-size: 14px;
   line-height: 2;
   text-align: center;
-  
-  &:before {
+
+  &::before {
     display: block;
     margin-bottom: 10px;
     content: "抱歉，這張圖片目前已移除或無法使用";
   }
-  
-  &:after {
+
+  &::after {
     position: absolute;
     z-index: 20;
     top: 5px;
     left: 0;
     width: 100%;
     text-align: center;
-    top: 50%;
+
     display: block;
     padding: 10px 5px;
     background-color: #bbb;
     border: 2px dotted #444;
     content: "url" "(" attr(src) ")";
   }
+}
+
+:global(.offset-top) {
+  padding-top: $navbarHeight;
+}
+
+a {
+  text-decoration: none;
 }

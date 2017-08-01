@@ -16,7 +16,12 @@ const commonConfig = (env) => ({
   context: __dirname,
   devtool: env === 'development' ? 'cheap-module-eval-source-map' : 'cheap-source-map',
   resolve: {
-    modules: ['node_modules', path.resolve(__dirname, 'client'), path.resolve(__dirname, 'client', 'styles')],
+    modules: [
+      'node_modules', 
+      path.resolve(__dirname, 'client'),
+      path.resolve(__dirname, 'client', 'styles'),
+      path.resolve(__dirname, 'client', 'constants')
+    ],
     extensions: ['.js', '.scss'],
     alias: {
       util: path.resolve(__dirname, 'client', 'utils'),
@@ -46,7 +51,7 @@ module.exports = ({ target }) => {
         parts.setVariable('process.env.NODE_ENV', 'development'),
         { 
           plugins: [
-            new webpack.HotModuleReplacementPlugin(),
+            // new webpack.HotModuleReplacementPlugin(),
             new webpack.NamedModulesPlugin(),
             new webpack.LoaderOptionsPlugin({ debug: true })
           ]

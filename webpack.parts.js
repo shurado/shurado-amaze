@@ -28,14 +28,17 @@ module.exports = {
   }),
   devServer: (env) => ({
     output: {
-      publicPath: 'http://localhost:8080' + '/bundle',
+      publicPath: 'http://localhost:5000' + '/bundle',
       filename: 'dev.js'
     },
     devServer: {
       historyApiFallback: true,
       hot: true,
       stats: 'errors-only',
-      port: 8080,
+      port: 5000,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
       host: '127.0.0.1'
     },
     plugins: [new webpack.HotModuleReplacementPlugin({ mutiStep: true })]
@@ -47,7 +50,7 @@ module.exports = {
           test: /\.(sass|scss)$/,
           use: [
             'style-loader?sourceMap=true',
-            'css-loader?sourceMap=true&localIdentName=[name]-[local]__[hash:base64:5]',
+            'css-loader?sourceMap=true&modules&localIdentName=[name]-[local]__[hash:base64:5]',
             'postcss-loader?sourceMap=true',
             'sass-loader?sourceMap=true',
             {

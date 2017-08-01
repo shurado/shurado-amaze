@@ -74,15 +74,11 @@ export function registerRoutes(app) {
           expires: moment().add(2, 'months').toDate()
         });
 
-        if (req.accepts('json')) {
-          res.json({
-            jwt_token
-          })
-        } else {
-          res.redirect(303, req.param.redirect || '/');  
-        }
-        
-        
+        res.cookie('uid', user.id ,{
+          expires: moment().add(2, 'months').toDate()
+        })
+
+        res.redirect(303, req.param.redirect || '/');
       })
     }
   })

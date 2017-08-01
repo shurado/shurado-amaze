@@ -1,7 +1,4 @@
 import { Router } from 'express';
-import React from 'react';
-import Hello from '../../client/components/Hello';
-import ReactDOMServer from 'react-dom/server';
 import { ifElse, isNil, pick } from 'ramda';
 import passport from 'passport';
 
@@ -20,7 +17,7 @@ import userController from '../controllers/user_controller';
 const route = new Router();
 
 route.get('/', (req, res) => {
-  res.render('index', { html: ReactDOMServer.renderToString(<Hello />) ,title: 'Hello World' })
+  res.render('index', { html: 123 })
 });
 
 const jwtAuthenticate = passport.authenticate('jwt', { session: false });
@@ -37,8 +34,8 @@ route.get('/profile', jwtAuthenticate,
 });
 
 
-route.use('/feeds', feedController)
-route.use('/user', userController)
+route.use('/api/feeds', feedController)
+route.use('/api/user', userController)
 
 
 export default route;

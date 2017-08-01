@@ -5,6 +5,16 @@ import { user as User } from '../models';
 import { pathOr } from 'ramda'
 dotenv.config();
 
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id)
+    .then((user) => done(null, user))
+    .catch((err) => done(err, false));
+});
+
 const fromCookie = function(req) {
   return pathOr(null, ['cookies', 'jwt_token'])(req);
 }

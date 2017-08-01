@@ -1,0 +1,40 @@
+%button-base {
+  display: inline-block;
+
+  // font-weight: bold;
+  text-align: center;
+  border: 0;
+
+  cursor: pointer;
+}
+
+.social-btn {
+  @extend %button-base;
+  width: 100%;
+  
+  padding: 0.3em 1em;
+  display: block;
+  color: #fff;
+  
+  border-radius: 3px;
+
+  @include responsive-font-size(normal);
+
+  &:not(:first-child) {
+    margin-top: 15px;
+  }
+
+  a {
+    display: block;
+    color: inherit;
+  }
+
+  &.fb {
+    background-color: #fff;
+    background-color: c(facebook);
+  }
+
+  &.google {
+    background-color: c(google)
+  }
+}

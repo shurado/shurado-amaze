@@ -1,11 +1,14 @@
 .Header {
   display: flex;
+  z-index: z(navbar);
   justify-content: space-around;
+  align-items: center;
 
   position: fixed;
   width: 100%;
-
-  padding: 10px map-get($globalPadding, desktop);
+  
+  min-height: 50px;
+  padding: 8px map-get($globalPadding, desktop);
 
   & > * {
     flex: 1;
@@ -17,6 +20,6 @@
     margin: 0 8px;
   }
 
-  background-color: c(grayLighter);
+  background-color: c(grayLight);
   border-bottom: 1px solid c(border);
 }
