@@ -21,7 +21,9 @@ class Root extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    const userId = Cookies.get('uid');
+    this.props.fetchProfileRequest(userId);
     this.props.initUserInfo({
       jwt_token: Cookies.get('jwt_token'),
       userId: Cookies.get('uid'),
@@ -68,6 +70,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     initUserInfo: bindActionCreators(userActions.initUserInfo, dispatch),
+    fetchProfileRequest: bindActionCreators(userActions.fetchProfileRequest, dispatch),
     signoutRequest: bindActionCreators(userActions.signoutRequest, dispatch),
   }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 
 import CSSModules from 'react-css-modules';
 import { branch, renderComponent, toClass } from 'recompose';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import styles from 'components/Profile.scss';
 import Image from './Image';

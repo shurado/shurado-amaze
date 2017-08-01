@@ -38,7 +38,6 @@ route
       message: 'not yet implement.'
     })
   })
-
 route
   .route('/:id/profile')
   .get((req, res) => {

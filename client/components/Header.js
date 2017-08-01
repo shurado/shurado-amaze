@@ -34,10 +34,12 @@ class Header extends React.Component {
         </div>
 
         <div className="logo">
-          <Image
-            src="/images/logo-icon.png"
-            size="40x40"
-          />
+          <Link to="/">
+            <Image
+              src="/images/logo-icon.png"
+              size="40x40"
+            />
+          </Link>
         </div>
         
       </nav>

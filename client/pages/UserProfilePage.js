@@ -12,14 +12,10 @@ class UserProfilePage extends React.Component {
     super(props);
   }
 
-  componentWillMount() {
-    this.props.fetchProfileRequest(this.props.match.params.id);
-  }
-
   render() {
     const { user, match } = this.props;
 
-    return (user && !user.isFetching && !isEmpty(user.profile))
+    return (user && !user.isFetching)
       ? <Profile
           userId={match.params.id}
           profile={user.profile}

@@ -33,6 +33,12 @@ route.get('/profile', jwtAuthenticate,
   })
 });
 
+route.get('/user/login', jwtAuthenticate, (req, res) => {
+  if (req.user) {
+    return res.redirect(301, '/');
+  }
+});
+
 
 route.use('/api/feeds', feedController)
 route.use('/api/user', userController)

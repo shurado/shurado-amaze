@@ -57,10 +57,7 @@ export default function user(state = initialState, action) {
         profile: action.profile,
       }
     case SIGNOUT_SUCCESS:
-      return {
-        ...state,
-        isLoggedIn: false
-      }
+      return initialState;
   }
 
   return state;

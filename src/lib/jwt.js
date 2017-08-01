@@ -26,7 +26,7 @@ const jwtOptions = {
 
 /* payload from JWT */
 const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
-  User.findById(payload.sub)
+  return User.findById(payload.sub)
     .then(user => done(null, user))
     .catch(err => done(err, false));
 })
