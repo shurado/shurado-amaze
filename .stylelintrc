@@ -4,6 +4,7 @@
     "stylelint-config-css-modules"
   ],
   "rules": {
+    "at-rule-no-unknown": null,
     "declaration-empty-line-before": null,
     "indentation": 2,
     "declaration-block-trailing-semicolon": null,

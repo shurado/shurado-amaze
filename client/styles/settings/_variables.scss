@@ -4,4 +4,12 @@ $navbarHeight: 50px;
 $globalPadding: (
   mobile: 8px,
   desktop: 25px
-); 
+);
+
+$inputTypes: (
+  'text', 'password', 'hidden',
+  'checkbox',   'button', 'email',
+  'file',    'image', 'search',
+  'tel',     'time', 'url',
+  'week'
+);

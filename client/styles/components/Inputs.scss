@@ -1,0 +1,33 @@
+.input-container {
+  margin: 10px 0;
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="url"] {
+    position: relative;
+    display: block;
+
+    width: 100%;
+
+    padding: 0 8px;
+    
+    color: c(word);
+    line-height: f(normal) * 2;
+    
+    border: c(gray) solid 2px;
+    background-color: white;
+
+    resize: none;
+    outline: none;
+
+    &:invalid:focus {
+      border: 1px solid #fe6565;
+      outline: 1px solid #fe6565;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px c(gray);
+    }
+  }
+}

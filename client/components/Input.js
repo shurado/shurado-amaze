@@ -1,16 +1,21 @@
+import styles from 'components/Inputs.scss';
+
 import React from 'react';
+import CSSModules from 'react-css-modules';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-function debounce(func, wait, immediate = false, ...args) {
+function debounce(func, wait, immediate = false) {
   let timeout;
-  return () => {
+  return function debounced() {
     const context = this;
+    const args = arguments; // eslint-disable-line prefer-rest-params
 
     const later = function later() {
       timeout = null;
       if (!immediate) func.apply(context, args);
     };
+    
     const callNow = immediate && !timeout;
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
@@ -27,7 +32,7 @@ const INPUT_TYPES = [
 ]
 
 
-export default class Input extends React.Component {
+class Input extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,6 +53,7 @@ export default class Input extends React.Component {
 
   _onChange(e) {
     e.persist();
+
     const value = e.target.value;
 
     this.setState({ value: value });
@@ -59,7 +65,7 @@ export default class Input extends React.Component {
     const { defaultValue, value, minLength, maxLength, size, type, placeholder, width, name, id, style, classNames, errorMessage, hasError, hidden, required } = this.props // eslint-disable-line max-len,no-unused-vars
     
     return (
-      <div className="input-container">
+      <div styleName="input-container">
         <label
           className="input-label"
           htmlFor={id}
@@ -114,3 +120,5 @@ Input.defaultProps = {
   classNames: '',
   onChange: function () {} // eslint-disable-line func-names
 }
+
+export default CSSModules(Input, styles);

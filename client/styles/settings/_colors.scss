@@ -10,7 +10,9 @@ $colors: (
   grayLight: #fafafa,
   border: #979797,
   facebook: #314d91,
-  google: #d73d32
+  google: #d73d32,
+  warn: #fe6565,
+  
 );
 
 @function c($key) {

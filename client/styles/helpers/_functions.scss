@@ -37,6 +37,6 @@ $font-size-base: 14px !default;
   @return $spacing-basic * $n;
 }
 
-@mixin space($num: 1) {
+@function space($num: 1) {
   @return $spacing-basic * $num;
 }

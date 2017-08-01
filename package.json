@@ -15,8 +15,7 @@
     "lint:style": "stylelint ./client/styles/**/*.scss",
     "test": "jest --watch ./src",
     "testfile": "jest",
-    "prod:server": "node dist/index.js",
-    "prepush": "npm-run-all lint:*"
+    "prod:server": "node dist/index.js"
   },
   "dependencies": {
     "aws-sdk": "^2.90.0",
