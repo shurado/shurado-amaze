@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { graphql, gql } from 'react-apollo';
 
-function mapStateToProps(state) {
-  return {
+import UserSidebarInfo from '../components/UserSidebarInfo';
 
-  };
-}
 
 export class TimelineFeedPage extends React.Component {
 
@@ -14,14 +12,27 @@ export class TimelineFeedPage extends React.Component {
     super(props);
   }
 
+
   render() {
+    const { loading, feeds } = this.props.data;
     return (
-      <div></div>
+      <div className="container">
+        <div className="user-info-container">
+          <UserSidebarInfo {...this.props.user.profile} />
+        </div>
+
+      </div>
     );
   }
 }
 
-export default graphql(gql`
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+export default compose(graphql(gql`
   query TimelineFeedsQuery {
     feeds {
       caption
@@ -31,7 +42,14 @@ export default graphql(gql`
       author {
         nickname
         username
+        website
+        avatar_url {
+          google
+          facebook
+        }
       }
     }
   }
-`)(TimelineFeedPage);
+`),
+ connect(mapStateToProps)
+)(TimelineFeedPage);

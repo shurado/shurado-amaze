@@ -7,6 +7,14 @@ import {
   GraphQLBoolean
 } from 'graphql';
 
+const avatarType = new GraphQLObjectType({
+  name: 'avatarType',
+  fields: {
+    facebook: { type: GraphQLString },
+    google: { type: GraphQLString },
+  }
+})
+
 const userType = new GraphQLObjectType({
   name: 'userType',
   fields: {
@@ -19,7 +27,10 @@ const userType = new GraphQLObjectType({
     username: {
       type: GraphQLString
     },
-    image_url: {
+    avatar_url: {
+      type: avatarType
+    },
+    website: {
       type: GraphQLString
     }
   }
