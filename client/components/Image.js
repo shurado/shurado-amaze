@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 
 const Image = ({ src, size, style, className, alt }) => {
   const [width, height] = size.split('x');
-
+  if (!src) {
+    return null;
+  }
   return (
     <img 
       src={src}
@@ -18,7 +20,6 @@ const Image = ({ src, size, style, className, alt }) => {
 
 const enhance = compose(
   setPropTypes({
-    src: PropTypes.string.isRequired,
     size: PropTypes.string,
     style: PropTypes.object,
     className: PropTypes.string,

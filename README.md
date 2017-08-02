@@ -45,12 +45,14 @@
 
 - [] 實作使用者動態分頁處理
 - [] 實作當使用者追蹤其他人時，動態發佈會傳送通知的功能
+- 使用 apollo 取代部分 redux 邏輯
 
 ## CHANGELOG
 
 ### 2017-8-2
 
 - 更新至 React16-beta
+- 部分 Component 套用 react-apollo 以及 graphql
 
 
 ## License

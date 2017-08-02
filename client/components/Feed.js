@@ -8,12 +8,12 @@ export default class Feed extends React.PureComponent {
   constructor(props) {
     super(props);
   }
-
+  
   render() {
     const { 
       caption, image_url, 
       author, createdAt, updateAt 
-    } = this.props
+    } = this.props.feed;
 
     return (
       <div>
@@ -23,7 +23,7 @@ export default class Feed extends React.PureComponent {
         <div>
           <p>{caption}</p>
           <Image 
-            src={image_url} 
+            src={image_url.normal || image_url.hd } 
             alt={caption}
           />
         </div>

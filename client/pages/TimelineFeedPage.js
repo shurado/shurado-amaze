@@ -1,16 +1,28 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { graphql, gql } from 'react-apollo';
 import Cookie from 'js-cookie';
 
 import UserSidebarInfo from '../components/UserSidebarInfo';
-
+import Feed from '../components/Feed';
 
 export class TimelineFeedPage extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  renderFeeds() {
+    const { feeds } = this.props.data;
+
+    return feeds.map(feed => 
+      <Feed 
+        key={feed.id}
+        feed={feed}
+      />
+    );
   }
 
   render() {
@@ -22,8 +34,8 @@ export class TimelineFeedPage extends React.Component {
             ? 'loading' 
             : <UserSidebarInfo isLoading={this.props.data.isLoading} {...this.props.user.profile} {...this.props.data.info} /> }
         </div>
-        <div className="timlinefeeds">
-
+        <div className="timelinefeeds container sidebar-offset">
+          { loading ? 'loading...' :  this.renderFeeds() }
         </div>
       </div>
     );
@@ -43,6 +55,7 @@ const timelineFeedQuery = gql`
       suggestion_count
     }
     feeds {
+      id
       caption
       createdAt
       updatedAt

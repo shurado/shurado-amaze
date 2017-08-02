@@ -53,3 +53,8 @@ img {
 a {
   text-decoration: none;
 }
+
+
+:global(.sidebar-offset) {
+  padding-left: $userSidebarWidth;
+}
