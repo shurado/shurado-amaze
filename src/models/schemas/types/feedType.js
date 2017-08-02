@@ -40,6 +40,12 @@ export const feedType = new GraphQLObjectType({
       resolve: (feed) => new Promise(resolve => {
         resolve(feed.user);
       })
+    },
+    createdAt: {
+      type: GraphQLString,
+    },
+    updatedAt: {
+      type: GraphQLString,
     }
   }
 });

@@ -2,9 +2,7 @@ import {
   GraphQLID,
   GraphQLObjectType,
   GraphQLString,
-  GraphQLInt,
   GraphQLNonNull,
-  GraphQLBoolean
 } from 'graphql';
 
 const avatarType = new GraphQLObjectType({

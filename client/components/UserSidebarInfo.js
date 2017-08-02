@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CSSModules from 'react-css-modules';
 
-import { pure, compose, setPropTypes } from 'recompose';
+import { branch, pure, compose, setPropTypes } from 'recompose';
 
 import styles from 'components/UserSidebarInfo.scss';
 import Image from './Image';
 
-const UserSidebarInfo = ({ avatar_url, nickname, username, website, suggestions, feeds, rank }) => {
+const UserSidebarInfo = ({ isLoading, avatar_url, nickname, username, website, suggestion_count, feed_count, rank }) => {
   return (
     <div styleName="container">
       <div styleName="avatar">
@@ -17,11 +17,12 @@ const UserSidebarInfo = ({ avatar_url, nickname, username, website, suggestions,
       <div styleName="user-summary">
         <div styleName="user-summary__item" className="feeds">
           <dt>日記/動態</dt>
-          <dd>{feeds}</dd>
+          { isLoading ? 'is loading...' : <dd>{feed_count}</dd> }
+          
         </div>
         <div styleName="user-summary__item" className="suggestions">
           <dt>提出建議</dt>
-          <dd>{suggestions}</dd>
+          <dd>{isLoading ? 'is loading...' : suggestion_count}</dd>
         </div>
         <div styleName="user-summary__item" className="rank">
           <dt>排名</dt>

@@ -1,6 +1,6 @@
 .container {
   position: absolute;
-  top: 15%;
+  top: 100px;
   width: 300px;
   padding: space(3) space(8);
   border: 1px solid c(border);
@@ -17,8 +17,9 @@
   img {
     width: 80px;
     height: 80px;
-    border-radius: 50px;  
+    border-radius: 50px;
   }
+
   .username {
     font-weight: bold;
     color: c(wordDeep);
@@ -28,15 +29,18 @@
 }
 
 .user-summary {
-  display: block;  
+  display: block;
+
   @include element(item) {
-    dd, dt {
+    dd,
+    dt {
       margin: space(2) 0;
       &:last-child { margin-bottom: 0; }
     }
 
     dt {
       color: c(word);
+      
       @include responsive-font-size(small);
     }
 

@@ -6,19 +6,34 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLList,
+  GraphQLNonNull,
   GraphQLBoolean
 } from 'graphql';
-import { resolver } from 'graphql-sequelize';
 
-import { feedType, feedById } from './types/feedType';
+import { feedType } from './types/feedType';
+import InfoType from './types/InfoType';
+
 import createFeed from './mutations/createFeed';
 
-import { feed as Feed, user as User } from '../../models/';
+import { feed as Feed, user as User, comment as Comment } from '../../models/';
 
 const queryType = new GraphQLObjectType({
   name: 'QueryType',
   description: 'The root query type',
   fields: {
+    info: {
+      type: InfoType,
+      args: {
+        userId: { type: new GraphQLNonNull(GraphQLID) } 
+      },
+      resolve: (_, args) => {
+        console.log(args);
+        return Promise.all([
+          Feed.findAndCountAll({ where: { user_id: args.userId }, attributes: ['id'] }),
+          Comment.findAndCountAll({ where: { user_id: args.userId }, attributes: ['id'] })
+        ])
+      }
+    },
     feeds: {
       type: new GraphQLList(feedType),
       resolve: () => Feed.findAll({ limit: Feed.FEEDS_LIMIT, include: ['user'] })
