@@ -35,7 +35,7 @@ route.get('/profile', jwtAuthenticate,
     })
   });
 
-route.get('/user/login', jwtAuthenticate, (req, res) => res.redirect(301, '/'));
+// route.get('/user/login', jwtAuthenticate, (req, res) => res.redirect(301, '/'));
 
 route.post('/api/parse', jwtAuthenticate, (req, res) => {
   

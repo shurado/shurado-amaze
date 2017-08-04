@@ -44,6 +44,7 @@ class Root extends React.Component {
       <div>
         <Header signoutRequest={this.props.signoutRequest} />
         <div className="offset-top">
+          <Route exact path="/" component={TimelineFeedPage} />
           <Route path="/timeline" component={TimelineFeedPage} />
           <Route path="/user/login" component={SignInForm} />
           <Route path="/user/:id/profile" component={UserProfilePage} />

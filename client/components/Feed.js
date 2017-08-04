@@ -5,7 +5,11 @@ import CSSModules from 'react-css-modules';
 import { humanReadableTimeDiff, simpleFormat, detectURL } from 'utils';
 import { compose } from 'ramda';
 
+
 import Image from './Image';
+import FeedComment from './FeedComment';
+
+const INIT_COMMENT_COUNT = 3;
 
 const formatText = compose(
   detectURL,
@@ -22,27 +26,55 @@ class Feed extends React.PureComponent {
 
   }
 
+  hasComment() {
+    const { comments } = this.props.feed;
+    return comments.length !== 0;
+  }
+
+  renderInitComments() {
+    const { comments } = this.props.feed;
+
+    return comments.map((comment, key) => <FeedComment key={key} {...comment} />);
+  }
+
   render() {
     const { 
-      caption, image_url, 
+      caption, image_url, comment_count,
       author, createdAt, updateAt
     } = this.props.feed;
 
     return (
       <div styleName="feed">
-        <div styleName="feed-info">
-          <Image shape="circle" src={author.avatar_url && author.avatar_url.facebook } />
-          <span styleName="author-name">{author.nickname || author.username }</span>
-          <time>{humanReadableTimeDiff(new Date(createdAt))}</time>
+        <div styleName="feed-container">
+          <div styleName="feed-info">
+            <Image shape="circle" src={author.avatar_url && author.avatar_url.facebook } />
+            <span styleName="author-name">{author.nickname || author.username }</span>
+            <time>{humanReadableTimeDiff(new Date(createdAt))}</time>
+          </div>
+          
+          <div>
+            <p dangerouslySetInnerHTML={{__html: formatText(caption)}}></p>
+            <Image 
+              src={image_url.normal || image_url.hd }
+              alt={caption}
+            />
+          </div>
         </div>
-        
+
         <div>
-          <p dangerouslySetInnerHTML={{__html: formatText(caption)}}></p>
-          <Image 
-            src={image_url.normal || image_url.hd }
-            alt={caption}
-          />
+          { comment_count === 0 
+            ? <span>{comment_count} 則留言</span>
+            : <span onClick={this.unfoldComments}>{comment_count} 則留言</span>
+          }
+
         </div>
+
+        { this.hasComment() 
+          ? <div styleName="comments"> 
+            { this.renderInitComments() }
+            { comment_count > INIT_COMMENT_COUNT ? <span>查看更多留言...</span> : '' }
+          </div> 
+          : '' }
       </div>
     );
   }

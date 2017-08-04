@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import { compose, bindActionCreators } from 'redux';
 import { graphql, gql } from 'react-apollo';
 import Cookie from 'js-cookie';
@@ -30,8 +31,13 @@ export class TimelineFeedPage extends React.Component {
   }
 
   render() {
-    const { loading, feeds, info } = this.props.data;
-    const { profile } = this.props.user;
+    const { loading, info } = this.props.data;
+    const { profile, isLoggedIn } = this.props.user;
+
+    if (!isLoggedIn) {
+      return (<Redirect to="/user/login" />);
+    }
+
     return (
       <div className="container">
         <div className="user-info-container">
@@ -81,10 +87,19 @@ const timelineFeedQuery = gql`
         createdAt
         updatedAt
         comment_count
+        commenter_ids
         comments {
           ... on commentType {
             text
             user_id
+            user {
+              nickname
+              username
+              avatar_url {
+                facebook
+                google
+              }
+            }
             createdAt
           }
         }

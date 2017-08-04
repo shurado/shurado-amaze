@@ -9,23 +9,13 @@ function findURLEntity(contentBlock, callback, contentState) {
     start = matchArr.index;
     callback(start, start + matchArr[0] + length)
   }
-
-  contentBlock.findEntityRanges(
-    (character) => {
-      const entityKey = character.getEntity();
-      return (
-        entityKey !== null &&
-        contentState.getEntity(entityKey).getType() === 'URL'
-      );
-    },
-    callback
-  );
 }
 
 const decorator = new CompositeDecorator([
   {
     strategy: findURLEntity,
-    
+
   },
-  linkDecorator
 ])
+
+export default decorator;

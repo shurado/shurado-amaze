@@ -28,7 +28,7 @@ const INPUT_TYPES = [
   'checkbox',   'button', 'email',
   'file',    'image', 'search',
   'tel',     'time', 'url',
-  'week'
+  'week', 'select'
 ]
 
 

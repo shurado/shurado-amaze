@@ -33,7 +33,10 @@ const UserProfile = ({ editProfile, profile, userId }) => {
         <Input type="url"  id="website" labelText="個人網站" onChange={bindEditProfile('website')}      />
         <Input type="text" id="introduction" labelText="個人簡介" onChange={bindEditProfile('introduction')} />
         <Input type="email" id="email" labelText="電子郵件" onChange={bindEditProfile('email')}        />
-        <Input type="text"  id="gender" labelText="性別"     />
+        <select>
+          <option value="female">女</option>
+          <option value="male">男</option>
+        </select>
       </div>
     </div>
   );
