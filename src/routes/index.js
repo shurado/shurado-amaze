@@ -13,6 +13,8 @@ import { avatarUploader } from '../services/uploader';
 import feedController from '../controllers/feed_controller';
 import userController from '../controllers/user_controller';
 
+import WebParser from '../services/WebParser';
+
 
 const route = new Router();
 
@@ -23,19 +25,29 @@ route.get('/', (req, res) => {
 const jwtAuthenticate = passport.authenticate('jwt', { session: false });
 
 route.get('/profile', jwtAuthenticate,
-(req, res, next) => {
-  if (req.user === null) {
-    next('user doesn\'t exist or you have no ability to read it.');
-  }
+  (req, res, next) => {
+    if (req.user === null) {
+      next('user doesn\'t exist or you have no ability to read it.');
+    }
 
-  return res.json({
-    user: serialize(req.user.serializeFields)(req.user)
-  })
-});
+    return res.json({
+      user: serialize(req.user.serializeFields)(req.user)
+    })
+  });
 
-route.get('/user/login', jwtAuthenticate, (req, res) => {
-  if (req.user) {
-    return res.redirect(301, '/');
+route.get('/user/login', jwtAuthenticate, (req, res) => res.redirect(301, '/'));
+
+route.post('/api/parse', jwtAuthenticate, (req, res) => {
+  
+  if (req.body.url) {
+    WebParser.parseWeb(req.body.url)
+      .then(({ response }) => res.json(response))
+      .catch(error => {
+        res.status(400);
+        res.json(error.message);
+      })  
+  } else {
+    res.status(400).json({ message: 'missing fields `url`' })  
   }
 });
 

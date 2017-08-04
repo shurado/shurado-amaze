@@ -1,0 +1,32 @@
+.feed {
+  padding: space(3) space(8);
+  background-color: #fff;
+  border: 1px solid c(border);
+
+  &:not(:last-child) {
+    margin-bottom: space(4);
+  }
+}
+
+.feed-info {
+  .author-name {
+    vertical-align: top;
+    font-weight: bold;
+    text-decoration: underline;
+
+    margin-left: space(2);
+  }
+
+  time {
+    float: right;
+    color: c(wordGray);
+    text-align: right;
+    @include responsive-font-size(small);
+  }
+}
+
+
+.user-info {
+  background-color: #fff;
+  padding: space(3);
+}

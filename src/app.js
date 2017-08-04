@@ -111,7 +111,11 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 });
 
 app.get('*', (req, res) => {
-  console.log('*');
+  if (req.accepts(['application/json'])) {
+    res.status(404);
+    res.text('Not Found');
+  }
+
   return res.render('index');
 })
 

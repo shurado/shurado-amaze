@@ -19,6 +19,7 @@ class Header extends React.Component {
       <div styleName="user-action">
         <span>通知</span>
         <Link to={routes.getUserProfile(this.context.userId)}>個人檔案</Link>
+        <Link to={routes.TIMELINE}>動態牆</Link>
         <span onClick={bindSignout()}>登出</span>
       </div>
     )

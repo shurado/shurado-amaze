@@ -1,0 +1,16 @@
+:global(.DraftEditor-root) {
+  background-color: #fff;
+  min-height: 350px;
+
+  padding: space(3);
+
+  margin-bottom: space(6);
+
+  :global(.DraftEditor-editorContainer) {
+    min-height: 350px;
+  }
+
+  :global(.public-DraftEditor-content) {
+    height: 100%;
+  }
+}

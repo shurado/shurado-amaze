@@ -11,6 +11,7 @@ import {
 } from 'graphql';
 
 import { feedType } from './types/feedType';
+import userType from './types/userType';
 import InfoType from './types/InfoType';
 
 import createFeed from './mutations/createFeed';
@@ -21,13 +22,20 @@ const queryType = new GraphQLObjectType({
   name: 'QueryType',
   description: 'The root query type',
   fields: {
+    user: {
+      type: userType,
+      args: {
+        userId: {
+          type: new GraphQLNonNull(GraphQLID)
+        }
+      }
+    },
     info: {
       type: InfoType,
       args: {
         userId: { type: new GraphQLNonNull(GraphQLID) } 
       },
       resolve: (_, args) => {
-        console.log(args);
         return Promise.all([
           Feed.findAndCountAll({ where: { user_id: args.userId }, attributes: ['id'] }),
           Comment.findAndCountAll({ where: { user_id: args.userId }, attributes: ['id'] })
@@ -36,7 +44,10 @@ const queryType = new GraphQLObjectType({
     },
     feeds: {
       type: new GraphQLList(feedType),
-      resolve: () => Feed.findAll({ limit: Feed.FEEDS_LIMIT, include: ['user'] })
+      args: {
+        offset: { type: GraphQLInt },
+      },
+      resolve: (_, args) => Feed.findAll({ limit: Feed.FEEDS_LIMIT, include: ['user'], offset: args.offset, order: [['createdAt', 'DESC']] })
     },
     feed: {
       type: feedType,

@@ -3,11 +3,24 @@ import {
   GraphQLObjectType,
   GraphQLString,
   GraphQLInt,
+  GraphQLList,
   GraphQLNonNull,
-  GraphQLBoolean
 } from 'graphql';
 
 import userType from './userType';
+import { comment as Comment } from '../../../models';
+import { pick } from 'ramda';
+
+const uniq = (array) => {
+  return array.reduce((acc, curr) => {
+    if (acc.indexOf(curr) === -1) {
+      acc.push(curr);
+    }
+
+    return acc;
+  }, [])
+}
+
 
 const imageType = new GraphQLObjectType({
   name: 'imageType',
@@ -18,6 +31,26 @@ const imageType = new GraphQLObjectType({
     },
     normal: {
       type: GraphQLString
+    }
+  }
+})
+
+const commentType = new GraphQLObjectType({
+  name: 'commentType',
+  description: 'comment of a feed',
+  fields: {
+    user_id: {
+      type: GraphQLID
+    },
+    text: {
+      type: GraphQLString
+    },
+    createdAt: {
+      type: GraphQLString
+    },
+    user: {
+      type: userType,
+      resolve: (comment) => comment.getUser()
     }
   }
 })
@@ -34,6 +67,33 @@ export const feedType = new GraphQLObjectType({
     },
     image_url: {
       type: imageType
+    },
+    comment_count: {
+      type: GraphQLInt,
+      resolve: (feed) => {
+        return new Promise(resolve => {
+          Comment
+            .count({ attributes: ['user_id'], group: ['user_id'], where: { feed_id: feed.id } })
+            .then(result => resolve((result[0] && result[0].count) || 0))
+        })
+      }
+    },
+    commenter_ids: {
+      type: new GraphQLList(GraphQLInt),
+      resolve: (feed) => Promise.resolve(
+        feed
+          .getComments({ attributes: ['user_id'] })
+          .then(comments => comments.map(comment => comment.user_id))
+          .then(uniq)
+      )
+    },
+    comments: {
+      type: new GraphQLList(commentType),
+      args: {
+        offset: { type: GraphQLInt },
+        limit: { type: GraphQLInt }
+      },
+      resolve: (feed, args) => Promise.resolve(feed.getComments({ limit: args.limit || 3, offset: args.offset || 0 }))
     },
     author: {
       type: userType,

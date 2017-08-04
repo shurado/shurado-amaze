@@ -2,13 +2,20 @@ import React from 'react';
 import { setPropTypes, defaultProps, compose } from 'recompose';
 import PropTypes from 'prop-types';
 
-const Image = ({ src, size, style, className, alt }) => {
+const styles = {
+  circle: {
+    borderRadius: '50%'
+  }
+}
+
+const Image = ({ src, size, style, className, alt, shape }) => {
   const [width, height] = size.split('x');
   if (!src) {
     return null;
   }
   return (
-    <img 
+    <img
+      style={shape && shape === 'circle' ? styles.circle : {}}
       src={src}
       width={width}
       height={height}
@@ -26,7 +33,8 @@ const enhance = compose(
     alt: PropTypes.string
   }),
   defaultProps({
-    size: ''
+    size: '',
+    shape: {}
   })
 )
 

@@ -94,3 +94,13 @@ export const render404 = (req, res) => {
 export const render500 = (res) => {
 
 }
+
+export const uniq = (array) => {
+  return array.reduce((acc, curr) => {
+    if (acc.indexOf(curr) === -1) {
+      acc.push(curr);
+    }
+
+    return acc;
+  }, [])
+}

@@ -52,6 +52,12 @@ img {
 
 a {
   text-decoration: none;
+  color: c(link);
+
+  &:hover {
+    text-decoration: underline;
+    color: lighten(c(link), 10%);
+  }
 }
 
 
