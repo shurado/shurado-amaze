@@ -77,7 +77,9 @@ module.exports = {
               'sass-loader',
               {
                 loader: 'sass-resources-loader',
-                options: { resource: '' }
+                options: {
+                  resources: path.resolve(__dirname, 'client', 'styles', 'resource.scss')
+                }
               }
             ]
           })
@@ -86,7 +88,7 @@ module.exports = {
           test: /\.css$/,
           loader: ExtractTextPlugin.extract({
             fallback: 'style-loader',
-            use: 'css-loader'
+            use: 'css-loader?sourceMap=true&localIdentName=[hash:base64:5]'
           })
         }
       ],

@@ -29,7 +29,7 @@ const commonConfig = (env) => ({
   },
   entry: entry,
   output: {
-    path: path.join(__dirname, 'bundle'),
+    path: path.join(__dirname, 'public'),
     filename: env === 'development' ? '[name].bundle.js' : '[name].[chunkhash].js',
     publicPath: '/bundle/'
   }
@@ -57,19 +57,20 @@ module.exports = ({ target }) => {
           ]
         }
       ]);
+
     case 'production':
-      entry.vender = ['react', 'react-dom'];
+      entry.vender = ['react', 'react-dom', 'react-router-dom', 'redux'];
       return merge([
         commonConfig(target),
         { 
           plugins: [
             new webpack.optimize.UglifyJsPlugin(),
+            new webpack.optimize.ModuleConcatenationPlugin(),
             new webpack.optimize.CommonsChunkPlugin({
               name: ['vender']
             }),
             new webpack.NoEmitOnErrorsPlugin(),
             new webpack.HashedModuleIdsPlugin(),
-
             new WebpackChunkHash(),
             new ChunkManifestPlugin({
               filename: 'chunk-manifest.json',
