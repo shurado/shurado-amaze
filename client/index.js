@@ -9,11 +9,8 @@ import {
 import configureStore from './stores/configureStore'
 import Root from './components/Root';
 
-// console.log(browserHistory);
 
-const client = new ApolloClient('/graphql');
-
-const store = configureStore();
+const [store, client] = configureStore();
 
 render(
   <ApolloProvider client={client} store={store}>

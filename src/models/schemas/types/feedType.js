@@ -42,6 +42,9 @@ const commentType = new GraphQLObjectType({
     user_id: {
       type: GraphQLID
     },
+    feed_id: {
+      type: GraphQLID
+    },
     text: {
       type: GraphQLString
     },

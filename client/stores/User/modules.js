@@ -4,6 +4,7 @@ import { Observable } from 'rxjs'; /* [TODO] remove rxjs to use rx-dom */
 import { checkAjaxResponse } from '../api';
 import * as api from './endpoints';
 
+export const FETCH_PROFILE_PENDING   = 'user/FETCH_PROFILE_PENDING';
 export const FETCH_PROFILE_REQUEST   = 'user/FETCH_PROFILE_REQUEST';
 export const FETCH_PROFILE_CANCELLED = 'user/FETCH_PROFILE_CANCELLED';
 export const FETCH_PROFILE_SUCCESS   = 'user/FETCH_PROFILE_SUCCESS';
@@ -23,7 +24,12 @@ const initialState = {
   jwtToken: '', 
   userId: '',
   isLoggedIn: false,
-  profile: {}
+  profile: {
+    avatar_url: {
+      facebook: '',
+      google:''
+    }
+  }
 }
 
 export default function user(state = initialState, action) {

@@ -41,8 +41,8 @@ export class TimelineFeedPage extends React.Component {
     return (
       <div className="container">
         <div className="user-info-container">
-          { this.props.user.isFetching 
-            ? 'loading' 
+          { this.props.user.isFetching
+            ? 'loading'
             : <UserSidebarInfo isLoading={this.props.data.isLoading} {...profile} {...info} /> }
         </div>
         <div className="timelinefeeds container sidebar-offset">
