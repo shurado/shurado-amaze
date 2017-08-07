@@ -4,7 +4,7 @@ import { humanReadableTimeDiff, simpleFormat, detectURL } from 'utils';
 import React from 'react';
 import PropTypes from 'prop-types';
 import CSSModules from 'react-css-modules';
-import { graphql, gql } from 'react-apollo';
+import { graphql, gql, withApollo } from 'react-apollo';
 import { compose, pathOr } from 'ramda';
 
 
