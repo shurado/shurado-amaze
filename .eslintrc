@@ -70,6 +70,7 @@
     "func-name": 0,
     "import/no-named-as-default": 0,
     "class-methods-use-this": 0,
-    "arrow-body-style": 0
+    "arrow-body-style": 0,
+    "no-shadow": 0
   }
 }

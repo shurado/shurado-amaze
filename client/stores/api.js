@@ -1,5 +1,6 @@
-import { ResponseError } from '../errors';
 import { pathOr } from 'ramda';
+import { ResponseError } from '../errors';
+import { Observable } from 'rxjs';
 
 const CODE_SHOULD_THROW = [400, 401, 500]; // eslint-disable-line no-unused-vars
 
@@ -22,4 +23,23 @@ export const checkAjaxResponse = (ajaxResponse) => {
   }
 
   return ajaxResponse.response;
+}
+
+export const handleAjaxError = (actionType) => (ajaxError) => {
+  // [TODO] make sure it's AjaxError
+  const { message, request, status, xhr } = ajaxError;
+  const unhandledMessage = `
+Unexpected ${ajaxError.constructor.name}, please check your server response!
+status: \`${status}\`
+URL: \`${request.url}\`
+message: \`${message}\`
+  `;
+
+  return Observable.of({
+    type: actionType,
+    payload: xhr.response.error 
+      || xhr.response.errors
+      || xhr.response.message
+      || unhandledMessage
+  })
 }

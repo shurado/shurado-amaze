@@ -1,9 +1,11 @@
 import styles from 'components/Feed.scss';
+import { humanReadableTimeDiff, simpleFormat, detectURL } from 'utils';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import CSSModules from 'react-css-modules';
-import { humanReadableTimeDiff, simpleFormat, detectURL } from 'utils';
-import { compose } from 'ramda';
+import { graphql, gql } from 'react-apollo';
+import { compose, pathOr } from 'ramda';
 
 
 import Image from './Image';

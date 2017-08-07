@@ -9,7 +9,6 @@ import {
 
 import userType from './userType';
 import { comment as Comment } from '../../../models';
-import { pick } from 'ramda';
 
 const uniq = (array) => {
   return array.reduce((acc, curr) => {

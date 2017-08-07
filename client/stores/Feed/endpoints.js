@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import { ajax } from 'rxjs/observable/dom/ajax';
 
 export const fetchTimelineFeeds = () => fetch('/api/feeds', {
   method: 'GET',
@@ -10,11 +11,20 @@ export const fetchFeedById = id => fetch(`/feeds/${id}`, {
   credentials: 'include'
 })
 
-export const fetchFeedCommentsById = id => fetch(`/feeds/${id}/comments`, {
+export const fetchFeedCommentsById = id => fetch(`/api/feeds/${id}/comments`, {
   method: 'GET'
 })
 
-export const addCommentToFeed = id => fetch(`/feeds/${id}/comments`, {
+export const addCommentToFeed = id => fetch(`/api/feeds/${id}/comments`, {
   method: 'POST',
   credentials: 'include'
 })
+
+export const addNewFeed = (body) => {
+  return ajax({
+    url: '/api/feeds',
+    method: 'POST',
+    credentials: 'include',
+    body
+  })
+}

@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { compose, bindActionCreators } from 'redux';
 import { graphql, gql } from 'react-apollo';
-import Cookie from 'js-cookie';
 
 import UserSidebarInfo from '../components/UserSidebarInfo';
 import Feed from '../components/Feed';
-import CreateFeedEditor from '../components/editors/CreateFeedEditor';
-import Image from '../components/Image';
+import CreateFeedContainer from '../containers/CreateFeedContainer';
 
 import { fetchURLRequest } from '../stores/Services/modules';
+import { createFeedRequest } from '../stores/Feed/modules';
 
 export class TimelineFeedPage extends React.Component {
 
@@ -19,11 +18,23 @@ export class TimelineFeedPage extends React.Component {
     super(props);
   }
 
+  onLoadMoreFeeds() {
+
+  }
+
+  componentDidMount() {
+
+  }
+
+  componentWillUnmount() {
+    
+  }
+
   renderFeeds() {
     const { feeds } = this.props.data;
 
     return feeds.map(feed => 
-      <Feed 
+      <Feed
         key={feed.id}
         feed={feed}
       />
@@ -46,15 +57,9 @@ export class TimelineFeedPage extends React.Component {
             : <UserSidebarInfo isLoading={this.props.data.isLoading} {...profile} {...info} /> }
         </div>
         <div className="timelinefeeds container sidebar-offset">
-          <CreateFeedEditor>
-            <div>
-              <Image 
-                src={profile.avatar_url && profile.avatar_url.facebook}
-                shape="circle"
-              />
-              <span style={{verticalAlign: 'top', marginLeft: '10px'}}>{profile.nickname}</span>
-            </div>
-          </CreateFeedEditor>
+          <CreateFeedContainer
+            createFeedRequest={this.props.createFeedRequest}
+          />
           { loading ? 'loading...' :  this.renderFeeds() }
         </div>
       </div>
@@ -65,14 +70,55 @@ export class TimelineFeedPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    feed: state.feed,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchURLRequest: bindActionCreators(fetchURLRequest, dispatch)
+    fetchURLRequest: bindActionCreators(fetchURLRequest, dispatch),
+    createFeedRequest: bindActionCreators(createFeedRequest, dispatch),
   }
 }
+
+const FEED_FRAGMENT = gql`
+  fragment TimelineFeed on feedType {
+    id
+    caption
+    createdAt
+    updatedAt
+    comment_count
+    image_url {
+      normal
+    }
+    author {
+      nickname
+      username
+      website
+      avatar_url {
+        google
+        facebook
+      }
+    }
+    commenter_ids
+    comments {
+      ... on commentType {
+        text
+        user_id
+        user {
+          nickname
+          username
+          avatar_url {
+            facebook
+            google
+          }
+        }
+        createdAt
+      }
+    }
+  }
+`
+
 
 const timelineFeedQuery = gql`
   query TimelineFeedsQuery($userId: ID!) {
@@ -81,47 +127,42 @@ const timelineFeedQuery = gql`
       suggestion_count
     }
     feeds {
-      ... on feedType {
-        id
-        caption
-        createdAt
-        updatedAt
-        comment_count
-        commenter_ids
-        comments {
-          ... on commentType {
-            text
-            user_id
-            user {
-              nickname
-              username
-              avatar_url {
-                facebook
-                google
-              }
-            }
-            createdAt
-          }
-        }
-        image_url {
-          normal
-        }
-        author {
-          nickname
-          username
-          website
-          avatar_url {
-            google
-            facebook
-          }
-        }  
-      }
+      ...TimelineFeed
     }
   }
+  ${FEED_FRAGMENT}
 `;
+
 export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
   graphql(timelineFeedQuery, {
-    options: (props) => ({ variables: { userId: Cookie.get('uid') } })
+    options: (props) => ({ 
+      variables: { userId: props.user.userId },
+      // pollInterval: 20000
+    }),
+    props: ({ data }) => {
+      return {
+        data,
+        loadMoreFeeds(offset, limit = 20) {
+          return data.fetchMore({
+            query: gql`
+              query Feeds($offset: Int!) {
+                feeds(offset: $offset) {
+                  ...TimelineFeed
+                }
+              }
+              ${FEED_FRAGMENT}
+            `,
+            variables: {
+              offset: data.feeds.length
+            },
+            updateQuery: (previousResult, { fetchMoreResult }) => ({
+              ...previousResult,
+              feeds: [...previousResult.feeds, ...fetchMoreResult.feeds]
+            })
+          })
+        }
+      }   
+    }
   }),
-  connect(mapStateToProps, mapDispatchToProps)
 )(TimelineFeedPage);

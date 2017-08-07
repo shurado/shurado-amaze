@@ -36,6 +36,12 @@ export default class CreateFeedEditor extends React.PureComponent {
     
   }
 
+  textToHTML() {
+    const contentState = this.state.editorState.getCurrentContent();
+    return stateToHTML(contentState);
+  }
+
+
   render() {
     const { editorState } = this.state;
     return (
@@ -47,7 +53,6 @@ export default class CreateFeedEditor extends React.PureComponent {
           handleKeyCommand={this.handleKeyCommand}
           onChange={this.onChange}
           placeholder="用日文發表你的動態、想法、學習心得......"
-          
           spellCheck={true}
         />
       </div>
