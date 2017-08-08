@@ -1,9 +1,10 @@
 import styles from 'components/Feed.scss';
-import { humanReadableTimeDiff, simpleFormat, detectURL } from 'utils';
+import { humanReadableTimeDiff, simpleFormat, detectURL, truncate } from 'utils';
 
 import React from 'react';
 import PropTypes from 'prop-types';
 import CSSModules from 'react-css-modules';
+import cx from 'classnames';
 import { graphql, gql, withApollo } from 'react-apollo';
 import { compose, pathOr } from 'ramda';
 
@@ -22,10 +23,21 @@ class Feed extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      fold: false
+    }
+
+    this.unfoldFeed = this.unfoldFeed.bind(this);
   }
   
-  unfoldComments() {
+  unfoldFeed() {
+    this.setState({ fold: false });
+  }
 
+  componentDidMount() {
+    if (this.props.feed.caption.length > 300) {
+      this.setState({ fold: true });
+    }
   }
 
   hasComment() {
@@ -54,8 +66,9 @@ class Feed extends React.Component {
             <time>{humanReadableTimeDiff(new Date(createdAt))}</time>
           </div>
           
-          <div>
+          <div className={cx(styles['feed-entry'], this.state.fold ? styles['fold'] : '')}>
             <p dangerouslySetInnerHTML={{__html: formatText(caption)}}></p>
+            <span onClick={this.unfoldFeed}>{this.state.fold ? '繼續閱讀...' : ''}</span>
             <Image 
               src={image_url && (image_url.normal || image_url.hd) }
               alt={caption}

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { compose, bindActionCreators } from 'redux';
+import { Observable } from 'rxjs';
 import { graphql, gql } from 'react-apollo';
 
 import UserSidebarInfo from '../components/UserSidebarInfo';
@@ -18,12 +19,23 @@ export class TimelineFeedPage extends React.Component {
     super(props);
   }
 
-  onLoadMoreFeeds() {
+  componentDidMount() {
+    const scroll$ = Observable.fromEvent(window, 'scroll');
+    const onLoadMoreFeeds = this.onLoadMoreFeeds.bind(this);
+    const innerHeight = window.innerHeight;
 
+    scroll$
+      .debounceTime(300)
+      .skip(1)
+      .map(e => ({
+        distance: this.container.scrollHeight - window.pageYOffset
+      }))
+      .filter(({ distance }) => distance < innerHeight + 1000)
+      .subscribe(onLoadMoreFeeds);
   }
 
-  componentDidMount() {
-
+  onLoadMoreFeeds() {
+    this.props.loadMoreFeeds();
   }
 
   componentWillUnmount() {
@@ -50,7 +62,7 @@ export class TimelineFeedPage extends React.Component {
     }
 
     return (
-      <div className="container">
+      <div className="container" ref={node => this.container = node}>
         <div className="user-info-container">
           { this.props.user.isFetching
             ? 'loading'
@@ -61,7 +73,10 @@ export class TimelineFeedPage extends React.Component {
             loadLastestFeed={this.props.loadLastestFeed}
             createFeedRequest={this.props.createFeedRequest}
           />
-          { loading ? 'loading...' :  this.renderFeeds() }
+          { loading
+            ? this.props.data.feeds
+              ? this.renderFeeds() : 'loading...'
+            : this.renderFeeds() }
         </div>
       </div>
     );
@@ -154,15 +169,19 @@ export default compose(
               ${FEED_FRAGMENT}
             `,
             variables: {
-              id: feedId
+              id: feedId,
             },
             updateQuery: (previousResult, { fetchMoreResult }) => ({
               ...previousResult,
+              info: {
+                ...previousResult.info,
+                feed_count: previousResult.info.feed_count + 1
+              },
               feeds: [fetchMoreResult.feed, ...previousResult.feeds]
             })
           });
         },
-        loadMoreFeeds(offset, limit = 20) {
+        loadMoreFeeds() {
           return data.fetchMore({
             query: gql`
               query Feeds($offset: Int!) {

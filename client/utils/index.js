@@ -39,3 +39,20 @@ export const detectURLOnce = (str) => {
   const match = str.match(URL_REG_ONCE);
   return match && match[0];
 }
+
+
+export const truncate = (length, omitter = '...') => (str) => {
+  if (str.length < length) {
+    return str;
+  }
+
+  let truncated = '';
+  while (length > 0) {
+    truncated += str.slice(0, 1);
+    
+    length--;
+    str = str.slice(1, str.length);
+  }
+
+  return truncated + omitter;
+}

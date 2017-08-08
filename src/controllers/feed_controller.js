@@ -56,17 +56,33 @@ route
   })
   .post(jwtAuthenticate, uploader.single('image'), (req, res, next) => {
     const allowedParams = ['caption', 'image_url'];
-    console.log(req.file);
-    const progress = upload(v1(), req.file.buffer, req.file.mimetype);
-    progress.on('progress', console.log)
-    progress.on('complete', (data) => {
+
+    if (req.file) {
+      const progress = upload('feeds/' + v1(), req.file.buffer, req.file.mimetype);
+
+      progress.on('complete', (data) => {
+        req.user
+          .createFeed(pick(allowedParams)({
+            ...req.body,
+            image_url: {
+              normal: data.Location
+            }
+          }))
+          .then(pickDataValues)
+          .then(values => {
+            res.json({ feed: values })
+          })
+          .catch(error => {
+            const message = error.message
+              .replace("null value in column \"caption\" violates not-null constraint", '貼文內容不可為空白')
+              .replace(/Validation error: /g, '');
+
+            res.status(400).json({ error: message });
+          })
+      })
+    } else {
       req.user
-        .createFeed(pick(allowedParams)({
-          ...req.body,
-          image_url: {
-            normal: data.Location
-          } 
-        }))
+        .createFeed(pick(allowedParams)(req.body))
         .then(pickDataValues)
         .then(values => {
           res.json({ feed: values })
@@ -77,8 +93,8 @@ route
             .replace(/Validation error: /g, '');
 
           res.status(400).json({ error: message });
-        })  
-    })
+        })
+    }
   });
 
 route

@@ -5,18 +5,7 @@ import { bindActionCreators } from 'redux';
 import { fetchLastestFeed } from '../stores/Feed/modules';
 import CreateFeedEditor from '../components/editors/CreateFeedEditor';
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchNewFeed: bindActionCreators(fetchLastestFeed, dispatch),
-})
-
-const mapStateToProps = (state) => ({
-  feed: state.feed,
-
-});
-
 class CreateFeedContainer extends React.Component {
-  
-
   constructor(props) {
     super(props);
     
@@ -33,6 +22,7 @@ class CreateFeedContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.feed.success) {
       this.props.fetchNewFeed();
+      this.editor.clearAll();
       this.setState({
         disabled: false,
         formData: new FormData(),
@@ -52,14 +42,19 @@ class CreateFeedContainer extends React.Component {
   handleFeedSubmit(e) {
     const { createFeedRequest } = this.props;
     const { formData } = this.state;
-    formData.append('caption', this.editor.textToHTML());
+    if (formData.has('caption')) {
+      formData.set('caption', this.editor.textToHTML())
+    } else {
+      formData.append('caption', this.editor.textToHTML());
+    }
+    
     createFeedRequest(formData);
   }
 
   handleUploadFile() {
     const file = this.input.files[0];
     const { formData } = this.state;
-    formData.append(this.input.getAttribute('name') || file, file);
+    formData.set(this.input.getAttribute('name') || file, file);
 
     this.setState({ formData: formData });
   }
@@ -71,10 +66,9 @@ class CreateFeedContainer extends React.Component {
   render() {
     
     return (
-      <div>
+      <div style={{marginBottom: '20px'}}>
         <CreateFeedEditor
           ref={(component) => this.editor = component}
-          
         />
         <div className="disabled">
           <span onClick={this.uploadFile}>
@@ -93,6 +87,14 @@ class CreateFeedContainer extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  fetchNewFeed: bindActionCreators(fetchLastestFeed, dispatch),
+})
+
+const mapStateToProps = (state) => ({
+  feed: state.feed,
+});
 
 CreateFeedContainer.propTypes = {
   createFeedRequest: PropTypes.func.isRequired,

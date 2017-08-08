@@ -24,6 +24,19 @@
   margin-bottom: space(4);
 }
 
+.feed-entry {
+  img {
+    max-width: 100%;
+  }
+
+  &.fold {
+    p {
+      height: 350px;
+      overflow-y: hidden;  
+    }
+  }
+}
+
 .feed-info {
   .author-name {
     vertical-align: top;
@@ -35,9 +48,11 @@
 
   time {
     float: right;
+
     color: c(wordGray);
     text-align: right;
-    @include responsive-font-size(small);
+
+    @include responsive-font-size(x-small);
   }
 }
 
