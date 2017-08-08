@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchLastestFeed } from '../stores/Feed/modules';
 import CreateFeedEditor from '../components/editors/CreateFeedEditor';
+import GooglePlaceAutoComplete from '../components/GooglePlaceAutoComplete';
 
 class CreateFeedContainer extends React.Component {
   constructor(props) {
@@ -71,6 +72,7 @@ class CreateFeedContainer extends React.Component {
           ref={(component) => this.editor = component}
         />
         <div className="disabled">
+          <GooglePlaceAutoComplete />
           <span onClick={this.uploadFile}>
             上傳
             <input ref={node => this.input = node} 
