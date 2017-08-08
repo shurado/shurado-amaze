@@ -6,8 +6,10 @@ export const CREATE_FEED_REQUEST = 'feed/CREATE_FEED_REQUEST';
 export const CREATE_FEED_SUCCESS = 'feed/CREATE_FEED_SUCCESS';
 export const CREATE_FEED_FAIL    = 'feed/CREATE_FEED_FAIL';
 export const CLEAR_INPUT         = 'feed/CLEAR_INPUT';
+export const FETCH_LASTEST_FEED  = 'feed/FETCH_LASTEST_FEED';
 
 const initialState = {
+  feedId: '',
   isCreating: false,
   caption: '',
   title: '',
@@ -28,10 +30,19 @@ export default function feed(state = initialState, action) {
     case CREATE_FEED_SUCCESS:
       return {
         ...initialState,
-        success: true 
+        feedId: action.feed.id,
+        success: true,
+
       }
     case CLEAR_INPUT:
       return initialState
+
+    case FETCH_LASTEST_FEED:
+      // fetch lastest feed.
+      return {
+        ...state,
+        success: false
+      }
     case CREATE_FEED_FAIL:
       return {
         ...initialState,
@@ -43,6 +54,7 @@ export default function feed(state = initialState, action) {
 }
 
 export const createFeedRequest = createAction(CREATE_FEED_REQUEST);
+export const fetchLastestFeed  = createAction(FETCH_LASTEST_FEED);
 
 export const createFeedEpic = action$ => {
   return action$.ofType(CREATE_FEED_REQUEST)

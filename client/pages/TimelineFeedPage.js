@@ -58,6 +58,7 @@ export class TimelineFeedPage extends React.Component {
         </div>
         <div className="timelinefeeds container sidebar-offset">
           <CreateFeedContainer
+            loadLastestFeed={this.props.loadLastestFeed}
             createFeedRequest={this.props.createFeedRequest}
           />
           { loading ? 'loading...' :  this.renderFeeds() }
@@ -138,11 +139,29 @@ export default compose(
   graphql(timelineFeedQuery, {
     options: (props) => ({ 
       variables: { userId: props.user.userId },
-      // pollInterval: 20000
     }),
     props: ({ data }) => {
       return {
         data,
+        loadLastestFeed(feedId) {
+          return data.fetchMore({
+            query: gql`
+              query feed($id: ID!) {
+                feed(id: $id) {
+                  ...TimelineFeed
+                }
+              }
+              ${FEED_FRAGMENT}
+            `,
+            variables: {
+              id: feedId
+            },
+            updateQuery: (previousResult, { fetchMoreResult }) => ({
+              ...previousResult,
+              feeds: [fetchMoreResult.feed, ...previousResult.feeds]
+            })
+          });
+        },
         loadMoreFeeds(offset, limit = 20) {
           return data.fetchMore({
             query: gql`

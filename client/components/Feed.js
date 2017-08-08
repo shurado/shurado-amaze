@@ -18,7 +18,7 @@ const formatText = compose(
   simpleFormat,
 );
 
-class Feed extends React.PureComponent {
+class Feed extends React.Component {
 
   constructor(props) {
     super(props);
@@ -57,7 +57,7 @@ class Feed extends React.PureComponent {
           <div>
             <p dangerouslySetInnerHTML={{__html: formatText(caption)}}></p>
             <Image 
-              src={image_url.normal || image_url.hd }
+              src={image_url && (image_url.normal || image_url.hd) }
               alt={caption}
             />
           </div>

@@ -21,7 +21,7 @@ export default class CreateFeedEditor extends React.PureComponent {
 
     this.state = { 
       editorState: props.rawValue 
-        ? EditorState.createWithContent(convertToContent(props.rawValue), decorator) 
+        ? EditorState.createWithContent(convertToContent(props.rawValue)) 
         : EditorState.createEmpty() 
     };
 
@@ -34,6 +34,10 @@ export default class CreateFeedEditor extends React.PureComponent {
 
   parseFeedURL() {
     
+  }
+
+  clearAll() {
+    this.setState({ editorState: EditorState.createEmpty() });
   }
 
   textToHTML() {

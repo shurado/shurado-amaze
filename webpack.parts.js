@@ -9,7 +9,9 @@ module.exports = {
     const env = {};
     env[key] = JSON.stringify(value);
 
-    plugins: [new webpack.DefinePlugin(env)]
+    return {
+      plugins: [new webpack.DefinePlugin(env)] 
+    }
   },
   loadJavascript: (env) => ({
     module: {

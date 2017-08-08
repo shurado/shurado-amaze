@@ -20,7 +20,8 @@ const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 const configureStore = (initialState = {}) => {
   const store = createStoreWithMiddleware(
     combineReducers({...rootReducers, apollo: client.reducer()}),
-    initialState
+    initialState,
+    (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : function(){}
   );
   
   

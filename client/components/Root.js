@@ -13,6 +13,11 @@ import UserProfilePage from '../pages/UserProfilePage';
 import TimelineFeedPage from '../pages/TimelineFeedPage';
 
 import * as userActions from '../stores/User/modules';
+import { gql } from 'react-apollo';
+
+if (process.env.NODE_ENV !== 'production') {
+  window.gql = gql;
+}
 
 class Root extends React.Component {
   constructor(props) {
