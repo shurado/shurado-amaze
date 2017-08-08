@@ -43,9 +43,9 @@ class CreateFeedContainer extends React.Component {
     const { createFeedRequest } = this.props;
     const { formData } = this.state;
     if (formData.has('caption')) {
-      formData.set('caption', this.editor.textToHTML())
+      formData.set('caption', this.editor.getPlainText())
     } else {
-      formData.append('caption', this.editor.textToHTML());
+      formData.append('caption', this.editor.getPlainText());
     }
     
     createFeedRequest(formData);

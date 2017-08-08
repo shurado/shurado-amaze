@@ -35,11 +35,10 @@ export class TimelineFeedPage extends React.Component {
   }
 
   onLoadMoreFeeds() {
-    this.props.loadMoreFeeds();
-  }
-
-  componentWillUnmount() {
-    
+    if (!this.props.isLast && !this.props.data.loading) {
+      this.props.loadMoreFeeds();
+    }
+    return false;
   }
 
   renderFeeds() {
@@ -54,7 +53,7 @@ export class TimelineFeedPage extends React.Component {
   }
 
   render() {
-    const { loading, info } = this.props.data;
+    const { loading, info, feeds } = this.props.data;
     const { profile, isLoggedIn } = this.props.user;
 
     if (!isLoggedIn) {
@@ -73,10 +72,14 @@ export class TimelineFeedPage extends React.Component {
             loadLastestFeed={this.props.loadLastestFeed}
             createFeedRequest={this.props.createFeedRequest}
           />
-          { loading
-            ? this.props.data.feeds
-              ? this.renderFeeds() : 'loading...'
-            : this.renderFeeds() }
+          { loading 
+            ? feeds
+              ? this.renderFeeds()
+              : 'Load More'
+            : this.renderFeeds()
+          }
+
+          { loading && feeds ? 'Load More' : null}
         </div>
       </div>
     );
@@ -154,6 +157,7 @@ export default compose(
   graphql(timelineFeedQuery, {
     options: (props) => ({ 
       variables: { userId: props.user.userId },
+      notifyOnNetworkStatusChange: true,
     }),
     props: ({ data }) => {
       return {

@@ -26,36 +26,9 @@ app.use(logger('dev', {
 /* Middlewares */
 
 if (process.env.NODE_ENV === 'development') {
-  // const webpack = require('webpack');
-  // const webpackConfig = require('../webpack.config.js')({ target: 'development' });
-  // const entries = webpackConfig.entry;
-
-  // const devClient = 'webpack-hot-middleware/client?http://' + 'localhost' + ':8080';
   
-  
-  // let injectedHMREntries = {};
-  // Object
-  //   .keys(entries)
-  //   .forEach(key => {
-  //     injectedHMREntries[key] = flatten(['react-hot-loader/patch', devClient, entries[key]])
-  //   });
-
-  // webpackConfig.entry = injectedHMREntries;
-
-  // const compiler = webpack(webpackConfig);
-  
-  // app.use(require('webpack-dev-middleware')(compiler, {
-  //   quiet: true,
-  //   noInfo: true,
-  //   publicPath: webpackConfig.output.publicPath
-  // }));
-
-  // app.use(require('webpack-hot-middleware')(compiler, {
-  //   log: () => {}
-  // }));
   app.use((res, req, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-
     next();
   })
 }
@@ -92,7 +65,8 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  
+  console.warn(err.stack);
+  console.log(err.message);
   switch(req.accepts(['application/json', 'html'])) {
     case 'application/json':
       return res.status(err.status || 500).json({

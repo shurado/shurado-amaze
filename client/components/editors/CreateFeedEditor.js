@@ -4,6 +4,7 @@ import { Editor, EditorState, RichUtils, ContentState, convertFromHTML } from 'd
 import { stateToHTML } from 'draft-js-export-html';
 import styles from 'components/Editor.scss';
 import { detectURLOnce } from 'utils';
+import { getPlainText } from 'utils/draftUtils';
 
 function convertToContent(rawValue) {
   const blocksFromHTML = convertFromHTML(rawValue);
@@ -40,8 +41,14 @@ export default class CreateFeedEditor extends React.PureComponent {
     this.setState({ editorState: EditorState.createEmpty() });
   }
 
+  getPlainText() {
+    const plainText = getPlainText(this.state.editorState);
+    return plainText === '' ? null : plainText;
+  }
+
   textToHTML() {
     const contentState = this.state.editorState.getCurrentContent();
+
     return stateToHTML(contentState);
   }
 

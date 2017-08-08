@@ -57,6 +57,7 @@ route
   .post(jwtAuthenticate, uploader.single('image'), (req, res, next) => {
     const allowedParams = ['caption', 'image_url'];
 
+    /* [TODO] handle req.file undefined. simplify logic. */
     if (req.file) {
       const progress = upload('feeds/' + v1(), req.file.buffer, req.file.mimetype);
 
