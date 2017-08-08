@@ -19,18 +19,31 @@ class CreateFeedContainer extends React.Component {
 
   constructor(props) {
     super(props);
+    
+    this.state = {
+      disabled: false,
+      formData: new FormData(),
+    }
+
+    this.uploadFile = this.uploadFile.bind(this);
     this.handleFeedSubmit = this.handleFeedSubmit.bind(this);
+    this.handleUploadFile = this.handleUploadFile.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.feed.success) {
       this.props.fetchNewFeed();
+      this.setState({
+        disabled: false,
+        formData: new FormData(),
+      })
     }
   }
 
   componentDidUpdate(prevProps) {
     const { feed } = this.props;
     const { feedId } = prevProps.feed;
+
     if (prevProps.feed.success && !feed.success) {
       this.props.loadLastestFeed(feedId);
     }
@@ -38,22 +51,44 @@ class CreateFeedContainer extends React.Component {
 
   handleFeedSubmit(e) {
     const { createFeedRequest } = this.props;
-    createFeedRequest({
-      caption: this.editor.textToHTML()
-    });
+    const { formData } = this.state;
+    formData.append('caption', this.editor.textToHTML());
+    createFeedRequest(formData);
+  }
+
+  handleUploadFile() {
+    const file = this.input.files[0];
+    const { formData } = this.state;
+    formData.append(this.input.getAttribute('name') || file, file);
+
+    this.setState({ formData: formData });
+  }
+
+  uploadFile(e) {
+    this.input.click();
   }
 
   render() {
-    // [TODO] setup image upload logic, setup add spot logic.
+    
     return (
       <div>
         <CreateFeedEditor
           ref={(component) => this.editor = component}
           
         />
-        <span>上傳圖片</span>
-        <span>標註地點</span>
-        <button onClick={this.handleFeedSubmit}>發佈</button>
+        <div className="disabled">
+          <span onClick={this.uploadFile}>
+            上傳
+            <input ref={node => this.input = node} 
+              type="file" 
+              name="image"
+              onChange={this.handleUploadFile}
+              hidden={true} 
+            />
+          </span>
+          <span>標註地點</span>
+          <button onClick={this.handleFeedSubmit}>發佈</button>
+        </div>
       </div>
     );
   }

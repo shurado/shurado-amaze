@@ -1,19 +1,17 @@
 import { Router } from 'express';
-import { ifElse, isNil, pick } from 'ramda';
 import passport from 'passport';
+import multer from 'multer';
+import v1 from 'uuid/v1';
 
 import jwtLogin from '../lib/jwt';
 
-import { feed as Feed, user as User } from '../models';
-import { serialize, pickDataValues, nullResponse, toHumanReadable } from '../utils';
-import { return404, return400, return401 } from '../utils/responseHelper';
-
-import { avatarUploader } from '../services/uploader';
+import { serialize } from '../utils';
+import WebParser from '../services/WebParser';
+import S3Uploader from '../services/S3Uploader';
+import BufferStream from '../services/S3Uploader/BufferStream';
 
 import feedController from '../controllers/feed_controller';
 import userController from '../controllers/user_controller';
-
-import WebParser from '../services/WebParser';
 
 
 const route = new Router();
@@ -23,6 +21,25 @@ route.get('/', (req, res) => {
 });
 
 const jwtAuthenticate = passport.authenticate('jwt', { session: false });
+
+const uploader = multer();
+
+route.post('/upload', uploader.single('avatar'), (req, res, next) => {
+  const bufferStream = new BufferStream(req.file.buffer);
+  const uploader     = new S3Uploader({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    bucket: process.env.S3_BUCKET,
+    region: 'us-west-2'
+  });
+
+  uploader.upload([{
+    key: v1() + '.jpg',
+    body: bufferStream
+  }]);
+
+  res.json({});
+})
 
 route.get('/profile', jwtAuthenticate,
   (req, res, next) => {
@@ -51,6 +68,9 @@ route.post('/api/parse', jwtAuthenticate, (req, res) => {
   }
 });
 
+route.get('/test', (req, res) => {
+  res.render('test');
+})
 
 route.use('/api/feeds', feedController)
 route.use('/api/user', userController)

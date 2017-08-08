@@ -1,16 +1,18 @@
 import passport from 'passport';
-
+import v1 from 'uuid/v1';
+import multer from 'multer';
+import { pick } from 'ramda';
+import { Router } from 'express';
 
 import { serialize, pickDataValues, nullResponse, toHumanReadable } from '../utils';
 import { return404, return400, return401 } from '../utils/responseHelper';
-
 import { feed as Feed } from '../models';
 import { feedUploader } from '../services/uploader';
-import { pick } from 'ramda';
-import { Router } from 'express';
 import jwtLogin from '../lib/jwt';
+import upload from '../middlewares/upload';
 
 
+const uploader = multer();
 const jwtAuthenticate = passport.authenticate('jwt', { session: false });
 
 const route = new Router();
@@ -52,22 +54,31 @@ route
         });
       })
   })
-  .post(jwtAuthenticate, (req, res) => {
+  .post(jwtAuthenticate, uploader.single('image'), (req, res, next) => {
     const allowedParams = ['caption', 'image_url'];
-    
-    req.user
-      .createFeed(pick(allowedParams)(req.body))
-      .then(pickDataValues)
-      .then(values => {
-        res.json({ feed: values })
-      })
-      .catch(error => {
-        const message = error.message
-          .replace("null value in column \"caption\" violates not-null constraint", '貼文內容不可為空白')
-          .replace(/Validation error: /g, '');
+    console.log(req.file);
+    const progress = upload(v1(), req.file.buffer, req.file.mimetype);
+    progress.on('progress', console.log)
+    progress.on('complete', (data) => {
+      req.user
+        .createFeed(pick(allowedParams)({
+          ...req.body,
+          image_url: {
+            normal: data.Location
+          } 
+        }))
+        .then(pickDataValues)
+        .then(values => {
+          res.json({ feed: values })
+        })
+        .catch(error => {
+          const message = error.message
+            .replace("null value in column \"caption\" violates not-null constraint", '貼文內容不可為空白')
+            .replace(/Validation error: /g, '');
 
-        res.status(400).json({ error: message });
-      })
+          res.status(400).json({ error: message });
+        })  
+    })
   });
 
 route
@@ -93,33 +104,31 @@ route
       .then()
   })
   .post(jwtAuthenticate, (req, res, next) => {
-  if (!req.user) {
-    return return401(res);
-  }
+    if (!req.user) {
+      return return401(res);
+    }
 
-  const id = req.user.id;
+    const id = req.user.id;
 
-  Feed.findById(req.params.id)
-    .then(feed => {
-      const { text, comment_type } = req.body;
-      if (feed) {
-        feed.addCommentToFeed({
-          text,
-          user_id: id,
-          comment_type
-        }).then(comment => {
-          res.json({
-            comment: serialize(comment.serializeFields, comment),
-            author: pick(['username', 'nickname', 'avatar_url'], req.user)
+    Feed.findById(req.params.id)
+      .then(feed => {
+        const { text, comment_type } = req.body;
+        if (feed) {
+          feed.addCommentToFeed({
+            text,
+            user_id: id,
+            comment_type
+          }).then(comment => {
+            res.json({
+              comment: serialize(comment.serializeFields, comment),
+              author: pick(['username', 'nickname', 'avatar_url'], req.user)
+            })
           })
-        })
-      } else {
-        return next('Feed not Found!');
-      }
-    })
-
+        } else {
+          return next('Feed not Found!');
+        }
+      })
 });
-
 
 
 export default route;

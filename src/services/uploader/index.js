@@ -10,7 +10,7 @@ AWS.config.update({
   secretAccessKey: process.env.AWS_SECRET_KEY,
 });
 
-/* 1. 使用者上傳圖片時，根據使用者 id md5 建立資料夾
+/* 1. 使用者上傳圖片時，根據使用者 id 建立資料夾
  * 2. 分為 feed 跟 avatar 
  * 3. handle progress
  * feed_timestamp

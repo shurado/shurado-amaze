@@ -59,7 +59,7 @@ export const fetchLastestFeed  = createAction(FETCH_LASTEST_FEED);
 export const createFeedEpic = action$ => {
   return action$.ofType(CREATE_FEED_REQUEST)
     .switchMap(action => {
-      return API.addNewFeed({...action.payload})
+      return API.addNewFeed(action.payload)
         .map(checkAjaxResponse)
         .map(({ feed }) => ({ type: CREATE_FEED_SUCCESS, feed }))
         .catch(handleAjaxError(CREATE_FEED_FAIL))
