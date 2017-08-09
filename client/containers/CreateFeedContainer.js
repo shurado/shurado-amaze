@@ -18,6 +18,7 @@ class CreateFeedContainer extends React.Component {
     this.uploadFile = this.uploadFile.bind(this);
     this.handleFeedSubmit = this.handleFeedSubmit.bind(this);
     this.handleUploadFile = this.handleUploadFile.bind(this);
+    this.addSpotToFeed    = this.addSpotToFeed.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,6 +39,16 @@ class CreateFeedContainer extends React.Component {
     if (prevProps.feed.success && !feed.success) {
       this.props.loadLastestFeed(feedId);
     }
+  }
+
+  addSpotToFeed(placeInfo) {
+    const { formData } = this.state;
+
+    formData.set('name', placeInfo.name);
+    formData.set('x', placeInfo.geometry.location.lat());
+    formData.set('y', placeInfo.geometry.location.lng());
+
+    this.setState({ formData });
   }
 
   handleFeedSubmit(e) {
@@ -65,14 +76,16 @@ class CreateFeedContainer extends React.Component {
   }
 
   render() {
-    
+
     return (
       <div style={{marginBottom: '20px'}}>
         <CreateFeedEditor
           ref={(component) => this.editor = component}
         />
         <div className="disabled">
-          <GooglePlaceAutoComplete />
+          <GooglePlaceAutoComplete
+            onPlaceChanged={this.addSpotToFeed}
+          />
           <span onClick={this.uploadFile}>
             上傳
             <input ref={node => this.input = node} 

@@ -69,11 +69,13 @@ module.exports = function(sequelize, DataTypes) {
   feed.prototype.addFeedSpot = function({ name, x, y }) {
     const id = this.id;
     const self = this;
-
+    
+    // [TODO] 如果 spot 已經存在資料庫中，直接 return 
     return new Promise(resolve => {
       sequelize.query(`
           INSERT INTO "spots" ("id", "location", "name") VALUES
-            (DEFAULT, '(${x}, ${y})'::point, '${name}') RETURNING *;
+            (DEFAULT, '(${x}, ${y})'::point, '${name}')
+          RETURNING *;
         `).spread((results) => {
           sequelize.query(`
             INSERT INTO "spots_feeds" ("feed_id", "spot_id") VALUES (${this.id}, ${results[0].id});

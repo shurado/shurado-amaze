@@ -1,0 +1,11 @@
+.place-input {
+  width: 100%;
+
+  input {
+    color: c(wordLight);
+    padding: space(1) space(2);
+    width: 100%;
+    outline: none;
+    @include responsive-font-size(small);
+  }
+}

@@ -69,6 +69,10 @@ route
               normal: data.Location
             }
           }))
+          .then(feed => {
+            feed.addFeedSpot({...req.body})
+            return feed;
+          })
           .then(pickDataValues)
           .then(values => {
             res.json({ feed: values })
@@ -84,6 +88,11 @@ route
     } else {
       req.user
         .createFeed(pick(allowedParams)(req.body))
+        .then(feed => {
+          console.log(req.body);
+          feed.addFeedSpot({...req.body})
+          return feed;
+        })
         .then(pickDataValues)
         .then(values => {
           res.json({ feed: values })
