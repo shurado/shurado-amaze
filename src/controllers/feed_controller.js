@@ -70,8 +70,7 @@ route
             }
           }))
           .then(feed => {
-            feed.addFeedSpot({...req.body})
-            return feed;
+            return feed.addFeedSpot({...req.body});
           })
           .then(pickDataValues)
           .then(values => {
@@ -89,9 +88,7 @@ route
       req.user
         .createFeed(pick(allowedParams)(req.body))
         .then(feed => {
-          console.log(req.body);
-          feed.addFeedSpot({...req.body})
-          return feed;
+          return feed.addFeedSpot({...req.body})
         })
         .then(pickDataValues)
         .then(values => {
