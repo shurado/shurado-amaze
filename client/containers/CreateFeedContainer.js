@@ -76,7 +76,6 @@ class CreateFeedContainer extends React.Component {
   }
 
   render() {
-
     return (
       <div style={{marginBottom: '20px'}}>
         <CreateFeedEditor

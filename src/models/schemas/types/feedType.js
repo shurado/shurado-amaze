@@ -7,6 +7,7 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 
+import SpotType from './SpotType';
 import userType from './userType';
 import { comment as Comment } from '../../../models';
 
@@ -95,13 +96,20 @@ export const feedType = new GraphQLObjectType({
         offset: { type: GraphQLInt },
         limit: { type: GraphQLInt }
       },
-      resolve: (feed, args) => Promise.resolve(feed.getComments({ limit: args.limit || 3, offset: args.offset || 0 }))
+      resolve: (feed, args) => Promise.resolve(
+        feed.getComments({
+          limit: args.limit || 3,
+          offset: args.offset || 0
+        })
+      )
+    },
+    spot: {
+      type: SpotType,
+      resolve: (feed) => feed.getSpots().then(spots => spots[0])
     },
     author: {
       type: userType,
-      resolve: (feed) => new Promise(resolve => {
-        resolve(feed.user);
-      })
+      resolve: (feed) => Promise.resolve(feed.user)
     },
     createdAt: {
       type: GraphQLString,

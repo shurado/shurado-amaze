@@ -11,6 +11,7 @@ import { compose, pathOr } from 'ramda';
 
 import Image from './Image';
 import FeedComment from './FeedComment';
+import GoogleStaticMap from './google-map/GoogleStaticMap';
 
 const INIT_COMMENT_COUNT = 3;
 
@@ -51,10 +52,19 @@ class Feed extends React.Component {
     return comments.map((comment, key) => <FeedComment key={key} {...comment} />);
   }
 
+  renderSpot() {
+    const { spot } = this.props.feed;
+    if (spot) {
+      return <span>在 {this.props.feed.spot.name}</span>
+    }
+
+    return null;
+  }
+
   render() {
     const { 
       caption, image_url, comment_count,
-      author, createdAt, updateAt
+      author, createdAt, spot
     } = this.props.feed;
 
     return (
@@ -62,8 +72,16 @@ class Feed extends React.Component {
         <div styleName="feed-container">
           <div styleName="feed-info">
             <Image shape="circle" src={author.avatar_url && author.avatar_url.facebook } />
+            { this.renderSpot() }
             <span styleName="author-name">{author.nickname || author.username }</span>
             <time>{humanReadableTimeDiff(new Date(createdAt))}</time>
+            { spot 
+              ? <GoogleStaticMap 
+                markers={`${spot.location.lat},${spot.location.lng}`}
+                center={`${spot.location.lat},${spot.location.lng}`} />
+              : ''
+            }
+            
           </div>
           
           <div className={cx(styles['feed-entry'], this.state.fold ? styles['fold'] : '')}>

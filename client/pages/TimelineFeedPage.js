@@ -110,6 +110,13 @@ const FEED_FRAGMENT = gql`
     image_url {
       normal
     }
+    spot {
+      name
+      location {
+        lat
+        lng
+      }
+    }
     author {
       nickname
       username

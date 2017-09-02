@@ -6,7 +6,6 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import graphqlHTTP from 'express-graphql';
 
-import { map, flatten } from 'ramda';
 import routes from './routes';
 import schema from './models/schemas';
 import * as auth from './lib/auth';
@@ -26,7 +25,6 @@ app.use(logger('dev', {
 /* Middlewares */
 
 if (process.env.NODE_ENV === 'development') {
-  
   app.use((res, req, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
@@ -64,10 +62,11 @@ app.use((req, res, next) => {
   next(err);
 });
 
-app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  console.warn(err.stack);
-  console.log(err.message);
-  switch(req.accepts(['application/json', 'html'])) {
+app.use((err, req, res, next) => {
+  console.warn(err.stack); // eslint-disable-line no-console
+  console.log(err.message); // eslint-disable-line no-console
+
+  switch (req.accepts(['application/json', 'html'])) {
     case 'application/json':
       return res.status(err.status || 500).json({
         error: err,
@@ -82,8 +81,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
           name: err.name,
           message: err.message
         });
-  }
-  
+  } 
 });
 
 app.get('*', (req, res) => {

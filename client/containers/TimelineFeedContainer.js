@@ -25,5 +25,4 @@ export class TimelineFeedContainer extends React.Component {
 
 export default connect(
   mapStateToProps,
-// Implement map dispatch to props
 )(TimelineFeedContainer)

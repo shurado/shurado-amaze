@@ -43,7 +43,7 @@ export default class CreateFeedEditor extends React.PureComponent {
 
   getPlainText() {
     const plainText = getPlainText(this.state.editorState);
-    return plainText === '' ? null : plainText;
+    return plainText === '<p></p>' ? '' : plainText;
   }
 
   textToHTML() {

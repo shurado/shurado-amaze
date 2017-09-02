@@ -76,7 +76,6 @@ export const createFeedEpic = action$ => {
           Observable.timer(DEFAULT_TIMEOUT).mapTo({
             type: CREATE_FEED_TIMEOUT
           })
-
         )
         .catch(handleAjaxError(CREATE_FEED_FAIL))
     })
