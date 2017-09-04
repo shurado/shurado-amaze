@@ -9,6 +9,9 @@ import {
 import configureStore from './stores/configureStore'
 import Root from './components/Root';
 
+const sprites = require.context('icons', false);
+sprites.keys().forEach(sprites)
+
 
 const [store, client] = configureStore();
 

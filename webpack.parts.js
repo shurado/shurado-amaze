@@ -3,6 +3,14 @@ const path    = require('path')
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+const svgConfigs = [
+  { cleanupIDs: true },
+  { removeTitle: true },
+  { removeComments: true },
+  { removeDesc: true },
+  { removeDimensions: true },
+  { removeUselessStrokeAndFill: true }
+];
 
 module.exports = {
   setVariable: (key, value) => {
@@ -44,6 +52,30 @@ module.exports = {
       host: '127.0.0.1'
     },
     plugins: [new webpack.HotModuleReplacementPlugin({ mutiStep: true })]
+  }),
+  loadSvgIcons: (options) => ({
+    module: {
+      rules: [
+        {
+          test: /\.svg$/,
+          include: path.resolve(__dirname, 'public', 'images', 'icons'),
+          use: [
+            {
+              loader: 'svg-sprite-loader',
+              options: {
+                name: 'icon-[name]'
+              }  
+            },
+            {
+              loader: 'svgo-loader',
+              options: {
+                plugins: svgConfigs
+              }
+            }
+          ]
+        }
+      ]
+    }
   }),
   loadStylesheet: (options) => ({
     module: {

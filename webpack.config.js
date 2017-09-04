@@ -22,9 +22,10 @@ const commonConfig = (env) => ({
       path.resolve(__dirname, 'client', 'styles'),
       path.resolve(__dirname, 'client', 'constants')
     ],
-    extensions: ['.js', '.scss', '.jsx'],
+    extensions: ['.js', '.scss', '.jsx', '.svg'],
     alias: {
       util: path.resolve(__dirname, 'client', 'utils'),
+      icons: path.resolve(__dirname, 'public', 'images', 'icons')
     }
   },
   entry: entry,
@@ -48,6 +49,7 @@ module.exports = ({ target }) => {
         parts.loadStylesheet(target),
         parts.devServer(target),
         parts.loadJavascript(target),
+        parts.loadSvgIcons(),
         parts.setVariable('process.env.NODE_ENV', 'development'),
         { 
           plugins: [

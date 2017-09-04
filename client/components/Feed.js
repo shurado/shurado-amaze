@@ -1,17 +1,16 @@
 import styles from 'components/Feed.scss';
-import { humanReadableTimeDiff, simpleFormat, detectURL, truncate } from 'utils';
+import { humanReadableTimeDiff, simpleFormat, detectURL } from 'utils';
 
 import React from 'react';
 import PropTypes from 'prop-types';
 import CSSModules from 'react-css-modules';
 import cx from 'classnames';
-import { graphql, gql, withApollo } from 'react-apollo';
-import { compose, pathOr } from 'ramda';
+import { compose } from 'ramda';
 
 
 import Image from './Image';
 import FeedComment from './FeedComment';
-import GoogleStaticMap from './google-map/GoogleStaticMap';
+import SpotNameDisplay from './SpotNameDisplay';
 
 const INIT_COMMENT_COUNT = 3;
 
@@ -21,11 +20,10 @@ const formatText = compose(
 );
 
 class Feed extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      fold: false
+      fold: false,
     }
 
     this.unfoldFeed = this.unfoldFeed.bind(this);
@@ -72,14 +70,15 @@ class Feed extends React.Component {
         <div styleName="feed-container">
           <div styleName="feed-info">
             <Image shape="circle" src={author.avatar_url && author.avatar_url.facebook } />
-            { this.renderSpot() }
             <span styleName="author-name">{author.nickname || author.username }</span>
             <time>{humanReadableTimeDiff(new Date(createdAt))}</time>
             { spot 
-              ? <GoogleStaticMap 
-                markers={`${spot.location.lat},${spot.location.lng}`}
-                center={`${spot.location.lat},${spot.location.lng}`} />
-              : ''
+              ? <SpotNameDisplay 
+                  name={spot.name}
+                  lat={spot.location.lat} 
+                  lng={spot.location.lng}
+                />
+              : null
             }
             
           </div>

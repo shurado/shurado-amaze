@@ -29,9 +29,9 @@ const UserProfile = ({ editProfile, profile, userId }) => {
           defaultValue={profile.nickname}
           onChange={bindEditProfile('nickname')}
         />
-        <Input type="text" id="username"  labelText="用戶名稱" onChange={bindEditProfile('username')}     />
-        <Input type="url"  id="website" labelText="個人網站" onChange={bindEditProfile('website')}      />
-        <Input type="text" id="introduction" labelText="個人簡介" onChange={bindEditProfile('introduction')} />
+        <Input type="text"  id="username"  labelText="用戶名稱" onChange={bindEditProfile('username')}     />
+        <Input type="url"   id="website" labelText="個人網站" onChange={bindEditProfile('website')}      />
+        <Input type="text"  id="introduction" labelText="個人簡介" onChange={bindEditProfile('introduction')} />
         <Input type="email" id="email" labelText="電子郵件" onChange={bindEditProfile('email')}        />
         <select>
           <option value="female">女</option>
