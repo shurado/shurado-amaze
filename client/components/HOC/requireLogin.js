@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-typs';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { branch } from 'recompose';
 
@@ -15,16 +15,12 @@ const requireLogin = (WrappedComponent) => {
     
     }
 
-    getChildContext() {
-      return { isLoggedIn: this.context.isLoggedIn }
-    }
-
     render() {
-      return (<WrappedComponent />)
+      return this.context.isLoggedIn ? <WrappedComponent {...this.props} /> : <Redirect to="/user/login"/>
     }
   }
 
-  LoginProvider.childContextType = {
+  LoginProvider.contextTypes = {
     isLoggedIn: PropTypes.bool
   }
 
@@ -34,10 +30,8 @@ const requireLogin = (WrappedComponent) => {
 
   LoginProvider.displayName = `LoginProvider(${wrappedComponentName})`;
 
-  return branch(
-    
-  )(LoginProvider)
 
+  return LoginProvider;
 }
 
 export default requireLogin;

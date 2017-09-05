@@ -4,7 +4,11 @@ import { Editor, EditorState, RichUtils, ContentState, convertFromHTML } from 'd
 import { stateToHTML } from 'draft-js-export-html';
 import styles from 'components/Editor.scss';
 import { detectURLOnce } from 'utils';
-import { getPlainText } from 'utils/draftUtils';
+import { getPlainText, applyDecorator } from 'utils/draftUtils';
+
+import decorateComponentWithProps from '../HOC/decorateComponentWithProps';
+import detectURL from './decorators';
+import Link from './Link';
 
 function convertToContent(rawValue) {
   const blocksFromHTML = convertFromHTML(rawValue);
@@ -19,18 +23,32 @@ function convertToContent(rawValue) {
 export default class CreateFeedEditor extends React.PureComponent {
   constructor(props) {
     super(props);
-
-    this.state = { 
-      editorState: props.rawValue 
-        ? EditorState.createWithContent(convertToContent(props.rawValue)) 
-        : EditorState.createEmpty() 
-    };
-
-    this.focus = () => this.refs.editor.focus();
-    this.onTab = (e) => this._onTab(e);
     this.onChange = (editorState) => {
       this.setState({ editorState });
     };
+    this.focus = () => this.refs.editor.focus();
+    this.onTab = (e) => this._onTab(e);
+
+    const decorator = applyDecorator([
+      {
+        strategy: detectURL,
+        component: decorateComponentWithProps(Link, {
+          getEditorState: this.getEditorState.bind(this),
+          setEditorState: this.onChange.bind(this),
+        })
+      }
+    ])
+    this.state = { 
+      editorState: props.rawValue 
+        ? EditorState.createWithContent(convertToContent(props.rawValue), applyDecorator(decorator)) 
+        : EditorState.createEmpty(decorator) 
+    };
+
+    
+  }
+
+  getEditorState() {
+    return this.state.editorState;
   }
 
   parseFeedURL() {

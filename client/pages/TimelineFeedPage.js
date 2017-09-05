@@ -19,20 +19,7 @@ export class TimelineFeedPage extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    const scroll$ = Observable.fromEvent(window, 'scroll');
-    const onLoadMoreFeeds = this.onLoadMoreFeeds.bind(this);
-    const innerHeight = window.innerHeight;
 
-    scroll$
-      .debounceTime(300)
-      .skip(1)
-      .map(e => ({
-        distance: this.container.scrollHeight - window.pageYOffset
-      }))
-      .filter(({ distance }) => distance < innerHeight + 1000)
-      .subscribe(onLoadMoreFeeds);
-  }
 
   onLoadMoreFeeds() {
     if (!this.props.isLast && !this.props.data.loading) {
@@ -56,10 +43,6 @@ export class TimelineFeedPage extends React.Component {
     const { loading, info, feeds } = this.props.data;
     const { profile, isLoggedIn } = this.props.user;
 
-    if (!isLoggedIn) {
-      return (<Redirect to="/user/login" />);
-    }
-
     return (
       <div className="container" ref={node => this.container = node}>
         <div className="user-info-container">
@@ -72,14 +55,7 @@ export class TimelineFeedPage extends React.Component {
             loadLastestFeed={this.props.loadLastestFeed}
             createFeedRequest={this.props.createFeedRequest}
           />
-          { loading 
-            ? feeds
-              ? this.renderFeeds()
-              : 'Load More'
-            : this.renderFeeds()
-          }
-
-          { loading && feeds ? 'Load More' : null}
+         
         </div>
       </div>
     );
@@ -213,5 +189,5 @@ export default compose(
         }
       }   
     }
-  }),
+  })
 )(TimelineFeedPage);

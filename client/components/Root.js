@@ -9,6 +9,7 @@ import 'index.scss';
 import Header from './Header';
 import SignInForm from './form/SignInForm';
 
+import requireLogin from './HOC/requireLogin';
 import UserProfilePage from '../pages/UserProfilePage';
 import TimelineFeedPage from '../pages/TimelineFeedPage';
 
@@ -27,8 +28,10 @@ class Root extends React.Component {
   componentWillMount() {
     /* [FIXME] 盡量簡化初始化邏輯，是否統一使用 action 來獲取 Cookie? */
     const userId = Cookies.get('uid');
-
-    this.props.fetchProfileRequest(userId);
+    if (userId) {
+      this.props.fetchProfileRequest(userId);  
+    }
+    
     this.props.initUserInfo({
       jwt_token: Cookies.get('jwt_token'),
       userId: Cookies.get('uid'),
@@ -49,10 +52,10 @@ class Root extends React.Component {
       <div>
         <Header signoutRequest={this.props.signoutRequest} />
         <div className="offset-top">
-          <Route exact path="/" component={TimelineFeedPage} />
-          <Route path="/timeline" component={TimelineFeedPage} />
+          <Route exact path="/" component={requireLogin(TimelineFeedPage)} />
+          <Route path="/timeline" component={requireLogin(TimelineFeedPage)} />
           <Route path="/user/login" component={SignInForm} />
-          <Route path="/user/:id/profile" component={UserProfilePage} />
+          <Route path="/user/:id/profile" component={requireLogin(UserProfilePage)} />
         </div>
       </div>
     );

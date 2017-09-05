@@ -18,7 +18,7 @@ const UserProfile = ({ editProfile, profile, userId }) => {
   return (
     <div styleName="profile">
       <div styleName="user-info">
-        <Image src={profile.avatar_url.facebook} styleName="avatar" />
+        <Image src={profile.avatar_url.facebook} styleName="avatar" size="50x50" />
         <span>{profile.nickname}</span>
       </div>
 
@@ -34,8 +34,8 @@ const UserProfile = ({ editProfile, profile, userId }) => {
         <Input type="text"  id="introduction" labelText="個人簡介" onChange={bindEditProfile('introduction')} />
         <Input type="email" id="email" labelText="電子郵件" onChange={bindEditProfile('email')}        />
         <select>
-          <option value="female">女</option>
           <option value="male">男</option>
+          <option value="female">女</option>
         </select>
       </div>
     </div>
@@ -48,9 +48,5 @@ export default compose(
     editProfile: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired,
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-  }),
-  branch(
-    ({ isLoggedIn }) => !isLoggedIn,
-    renderComponent(() => <Redirect to="/" />)
-  )
+  })
 )(CSSModules(UserProfile, styles))

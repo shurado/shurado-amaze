@@ -1,4 +1,4 @@
-import { RichUtils, EditorState, Modifier } from 'draft-js';
+import { RichUtils, EditorState, Modifier, CompositeDecorator } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 
 export const getPlainText = (editorState) => {
@@ -105,6 +105,14 @@ export const createEntity = (type, mutable, data) => (editorState) => {
     mutable,
     data
   ); 
+}
+
+export const applyDecorator = (decorators) => {
+  if (Array.isArray(decorators)) {
+    return new CompositeDecorator(decorators);
+  }
+
+  return null;
 }
 
 export const setStartOffset = (offset) => {
