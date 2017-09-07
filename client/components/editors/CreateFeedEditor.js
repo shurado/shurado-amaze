@@ -35,16 +35,30 @@ export default class CreateFeedEditor extends React.PureComponent {
         component: decorateComponentWithProps(Link, {
           getEditorState: this.getEditorState.bind(this),
           setEditorState: this.onChange.bind(this),
+          onCreateLink: console.log
         })
       }
     ])
     this.state = { 
       editorState: props.rawValue 
-        ? EditorState.createWithContent(convertToContent(props.rawValue), applyDecorator(decorator)) 
-        : EditorState.createEmpty(decorator) 
+        ? EditorState.createWithContent(convertToContent(props.rawValue))
+        : EditorState.createEmpty() 
     };
+  }
 
-    
+  componentWillMount() {
+    const decorator = applyDecorator([
+      {
+        strategy: detectURL,
+        component: decorateComponentWithProps(Link, {
+          getEditorState: this.getEditorState.bind(this),
+          setEditorState: this.onChange.bind(this),
+          onCreateLink: this.props.onCreateLink || function() {}
+        })
+      }
+    ])
+
+    this.onChange(EditorState.createEmpty(decorator))
   }
 
   getEditorState() {

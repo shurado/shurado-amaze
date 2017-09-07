@@ -55,7 +55,6 @@ export class TimelineFeedPage extends React.Component {
             loadLastestFeed={this.props.loadLastestFeed}
             createFeedRequest={this.props.createFeedRequest}
           />
-         
         </div>
       </div>
     );

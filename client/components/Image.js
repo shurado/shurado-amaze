@@ -8,20 +8,22 @@ const styles = {
   }
 }
 
-const Image = ({ src, size, style, className, alt, shape }) => {
+const Image = ({ src, size, style, className, alt, shape, backgroundImage = false }) => {
   const [width, height] = size.split('x');
   if (!src) {
     return null;
   }
   return (
-    <img
-      style={shape && shape === 'circle' ? styles.circle : {}}
-      src={src}
-      width={width}
-      height={height}
-      className={className}
-      alt={alt}
-    />
+    backgroundImage 
+      ? <div className={className} style={{backgroundImage: `url(${src})`}}></div>
+      : <img
+        style={shape && shape === 'circle' ? styles.circle : {}}
+        src={src}
+        width={width}
+        height={height}
+        className={className}
+        alt={alt}
+      />
   )
 };
 

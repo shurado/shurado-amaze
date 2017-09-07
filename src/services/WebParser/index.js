@@ -11,12 +11,14 @@ const ERROR_CODE_RESPONSE = [400, 404, 500, 403, 401, 402, 302];
 const TARGET_META_PROPERTYS = ['og:type', 'og:description', 'og:title', 'og:url', 'og:image'];
 
 function NotValidURLError(message) {
+  this.name = 'NotValidURLError';
   this.message = message;
 
   return this;
 }
 
 function ResponseError(message) {
+  this.name = 'ResponseError';
   this.message = message;
 
   return this;
@@ -30,11 +32,11 @@ function WebParser() {
 }
 
 WebParser.parseWeb = (url) => {
-  if (!URL_REG.test(url)) {
-    throw NotValidURLError(`input is not Valid URL, got \`${url}\``);
-  }
-
+  
   return new Promise((resolve, reject) => {
+    if (!URL_REG.test(url)) {
+      reject(new NotValidURLError(`input is not Valid URL, got \`${url}\``));
+    }  
     request({ url, timeout: MAX_RESPONSE_TIMEOUT }, (error, response, body) => {
       if (error) {
         return reject(new ResponseError(`Response with error ${error}`));

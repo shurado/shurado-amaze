@@ -3,20 +3,13 @@ import { ajax } from 'rxjs/observable/dom/ajax';
 import { createAction } from 'redux-actions';
 import { checkAjaxResponse } from '../api';
 
-window.ajax = ajax;
-
 export const FETCH_URL_REQUEST = 'services/FETCH_URL_REQUEST';
 export const FETCH_URL_SUCCESS = 'services/FETCH_URL_SUCCESS';
 export const FETCH_URL_FAIL    = 'services/FETCH_URL_FAIL';
 
 const initialState = {
   isLoading: false,
-  url: {
-    image: '',
-    description: '',
-    title: '',
-    isYoutube: false
-  }
+  url: null
 }
 
 export default function service(state = initialState, action) {
@@ -29,7 +22,15 @@ export default function service(state = initialState, action) {
     case FETCH_URL_SUCCESS:
       return {
         ...state,
-        url: action.payload.meta
+        error: '', // clear all error.
+        isLoading: false,
+        url: action.meta,
+      }
+    case FETCH_URL_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload
       }
   }
 
@@ -40,8 +41,9 @@ export const fetchURLRequest = createAction(FETCH_URL_REQUEST);
 
 export const fetchURLEpic = action$ => {
   return action$.ofType(FETCH_URL_REQUEST)
-    .mergeMap(action => {
-      return ajax('/api/parse', { method: 'POST', withCredentials: true, body: { url: action.payload.url } })
+    .debounceTime(1500)  
+    .switchMap(action => {
+      return ajax({ url: '/api/parse', method: 'POST', withCredentials: true, body: { url: action.payload } })
         .map(checkAjaxResponse)
         .map((res) => ({
           type: FETCH_URL_SUCCESS,

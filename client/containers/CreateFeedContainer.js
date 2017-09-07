@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchLastestFeed } from '../stores/Feed/modules';
+import { fetchURLRequest } from '../stores/Services/modules';
+
 import CreateFeedEditor from '../components/editors/CreateFeedEditor';
 import GooglePlaceAutoComplete from '../components/GooglePlaceAutoComplete';
+import URLPreview from '../components/URLPreview';
 
 class CreateFeedContainer extends React.Component {
   constructor(props) {
@@ -76,11 +79,16 @@ class CreateFeedContainer extends React.Component {
   }
 
   render() {
+    const { service } = this.props;
+
     return (
-      <div style={{marginBottom: '20px'}}>
+      <div style={{padding: '20px',marginBottom: '20px', backgroundColor: '#ffffff'}}>
         <CreateFeedEditor
+          onCreateLink={this.props.fetchURLRequest}
           ref={(component) => this.editor = component}
         />
+        { (!service.isLoading && service.url) ? <URLPreview {...this.props.service.url} /> : null }
+        
         <div className="disabled">
           <GooglePlaceAutoComplete
             onPlaceChanged={this.addSpotToFeed}
@@ -104,15 +112,18 @@ class CreateFeedContainer extends React.Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   fetchNewFeed: bindActionCreators(fetchLastestFeed, dispatch),
+  fetchURLRequest: bindActionCreators(fetchURLRequest, dispatch),
 })
 
 const mapStateToProps = (state) => ({
   feed: state.feed,
+  service: state.service,
 });
 
 CreateFeedContainer.propTypes = {
   createFeedRequest: PropTypes.func.isRequired,
   fetchNewFeed: PropTypes.func.isRequired,
+  fetchURLRequest: PropTypes.func.isRequired,
   loadLastestFeed: PropTypes.func.isRequired
 }
 

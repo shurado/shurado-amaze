@@ -25,6 +25,7 @@ const commonConfig = (env) => ({
     extensions: ['.js', '.scss', '.jsx', '.svg'],
     alias: {
       util: path.resolve(__dirname, 'client', 'utils'),
+      icons: path.resolve(__dirname, 'public', 'images', 'icons'),
     }
   },
   entry: entry,

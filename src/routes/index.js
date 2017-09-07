@@ -54,14 +54,13 @@ route.get('/profile', jwtAuthenticate,
 
 // route.get('/user/login', jwtAuthenticate, (req, res) => res.redirect(301, '/'));
 
-route.post('/api/parse', jwtAuthenticate, (req, res) => {
-  
+route.post('/api/parse', jwtAuthenticate, (req, res) => {  
   if (req.body.url) {
     WebParser.parseWeb(req.body.url)
-      .then(({ response }) => res.json(response))
+      .then(result => res.json(result))
       .catch(error => {
         res.status(400);
-        res.json(error.message);
+        res.json({ message: error.message });
       })  
   } else {
     res.status(400).json({ message: 'missing fields `url`' })  

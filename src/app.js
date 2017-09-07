@@ -79,6 +79,7 @@ app.use((err, req, res, next) => {
         .render('error', {
           error: err,
           name: err.name,
+          stack: err.stack,
           message: err.message
         });
   } 

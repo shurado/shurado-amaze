@@ -1,14 +1,20 @@
 import React from 'react';
+import { pure, lifecycle, compose } from 'recompose';
 import { createEntity, applyEntity } from 'utils/draftUtils';
 
 
 const Link = (props) => {
   const editorState = props.getEditorState();
-  console.log(editorState.getSelection());
 
   return (
     <a>{props.children}</a>
   )
 }
 
-export default Link;
+export default compose(pure, lifecycle({
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps !== this.props) {
+      this.props.onCreateLink && this.props.onCreateLink.call(this, nextProps.decoratedText)
+    }
+  }
+}))(Link);
