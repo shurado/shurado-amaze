@@ -13,7 +13,7 @@
     "build:server": "npm run clean && mkdir -p dist && babel --no-babelrc src -s -D -d dist --presets=react,es2015",
     "lint:js": "git diff --name-only --diff-filter=ACMRTUB `git merge-base HEAD master` | grep '\\.js$' | xargs eslint",
     "lint:style": "stylelint ./client/styles/**/*.scss",
-    "test": "jest --watch ./src",
+    "test": "jest --watch ./client",
     "test:client": "jest --watch ./client",
     "testfile": "jest",
     "prod:server": "node dist/index.js"

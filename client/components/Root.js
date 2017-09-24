@@ -12,6 +12,7 @@ import SignInForm from './form/SignInForm';
 import requireLogin from './HOC/requireLogin';
 import UserProfilePage from '../pages/UserProfilePage';
 import TimelineFeedPage from '../pages/TimelineFeedPage';
+import CreateFeedEditor from '../components/editors/CreateFeedEditor.js';
 
 import * as userActions from '../stores/User/modules';
 import { gql } from 'react-apollo';
@@ -53,6 +54,7 @@ class Root extends React.Component {
         <Header signoutRequest={this.props.signoutRequest} />
         <div className="offset-top">
           <Route exact path="/" component={requireLogin(TimelineFeedPage)} />
+          <Route exact path="/editor" component={CreateFeedEditor} />
           <Route path="/timeline" component={requireLogin(TimelineFeedPage)} />
           <Route path="/user/login" component={SignInForm} />
           <Route path="/user/:id/profile" component={requireLogin(UserProfilePage)} />

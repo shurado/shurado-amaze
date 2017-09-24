@@ -13,4 +13,8 @@
   :global(.public-DraftEditor-content) {
     height: 100%;
   }
+
+  :global(.public-DraftEditorPlaceholder-root) {
+    position: absolute;
+  }
 }

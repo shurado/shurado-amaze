@@ -14,6 +14,10 @@ function detectURL(contentBlock, callback, contentState) {
   }
 }
 
+function detectFurigana(contentBlock, callback, contentState) {
+  
+}
+
 const decorators = [
   {
     strategy: detectURL,
