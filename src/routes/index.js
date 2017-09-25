@@ -17,7 +17,7 @@ import userController from '../controllers/user_controller';
 const route = new Router();
 
 route.get('/', (req, res) => {
-  res.render('index', { html: 123 })
+  res.render('index');
 });
 
 const jwtAuthenticate = passport.authenticate('jwt', { session: false });

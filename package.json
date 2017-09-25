@@ -16,7 +16,9 @@
     "test": "jest --watch ./src",
     "test:client": "jest --watch ./client",
     "testfile": "jest",
-    "prod:server": "node dist/index.js"
+    "prod:server": "node dist/index.js",
+    "migrate": "sequelize db:migrate",
+    "rollback": "sequelize db:migrate:undo:all"
   },
   "dependencies": {
     "aws-sdk": "^2.90.0",

@@ -3,7 +3,7 @@
     "username": "kalan",
     "password": null,
     "database": "yaoya",
-    "host": "192.168.99.100",
+    "host": "localhost",
     "port": "3306",
     "dialect": "postgres"
   },

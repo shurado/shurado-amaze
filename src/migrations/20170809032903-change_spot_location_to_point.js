@@ -9,13 +9,17 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-    queryInterface.removeColumn('spots', 'location').then(() => {
-      queryInterface.addColumn('spots', 'location', {
-        type: Sequelize.GEOMETRY('POINT'),
-        allowNull: false
-      })
-    });
-    
+    queryInterface
+      .sequelize
+      .query('CREATE EXTENSTION IF NOT EXISTS postgis;')
+      .then(() => {
+        queryInterface.removeColumn('spots', 'location').then(() => {
+          queryInterface.addColumn('spots', 'location', {
+            type: Sequelize.GEOMETRY('POINT'),
+            allowNull: false
+          })
+        });
+      });
   },
 
   down: function (queryInterface, Sequelize) {

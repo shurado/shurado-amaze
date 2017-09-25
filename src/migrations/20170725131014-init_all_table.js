@@ -15,6 +15,9 @@ const timestamp = (Sequelize) => ({
 module.exports = {
   up: function (queryInterface, Sequelize) {
     /* create user */
+     // queryInterface.sequelize.query('CREATE EXTENSION postgis;')
+     queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS hstore;')
+     // queryInterface.sequelize.query('CREATE EXTENSION postgis;')
     queryInterface.createTable(
       'users',
       {
@@ -50,6 +53,8 @@ module.exports = {
         }
       }
     ).then(() => queryInterface.addIndex('users', ['nickname', 'username']));
+
+
 
     queryInterface.createTable('spots', {
       id: primaryID(Sequelize),

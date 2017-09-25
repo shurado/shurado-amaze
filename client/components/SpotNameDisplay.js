@@ -12,6 +12,10 @@ export default class SpotNameDisplay extends React.Component {
     }
   }
 
+  closeMap() {
+    this.setState({ showMap: false });
+  }
+
   showMap() {
     this.setState({ showMap: true });
   }

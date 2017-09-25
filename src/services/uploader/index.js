@@ -15,6 +15,8 @@ AWS.config.update({
  * 3. handle progress
  * feed_timestamp
  * avatar_timestamp
+
+ * TODO: make it testable.
 */
 
 const s3 = new AWS.S3({ params: { Bucket: 'yaoya' }});

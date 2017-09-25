@@ -27,12 +27,12 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-    queryInterface.changeColumn(
-      'spots',
-      'name',
-      {
-        unique: false
-      }
-    )
+    // queryInterface.changeColumn(
+    //   'spots',
+    //   'name',
+    //   {
+    //     unique: false
+    //   }
+    // )
   }
 };
