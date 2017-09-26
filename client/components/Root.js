@@ -26,7 +26,10 @@ class Root extends React.Component {
   }
 
   componentWillMount() {
-    /* [FIXME] 盡量簡化初始化邏輯，是否統一使用 action 來獲取 Cookie? */
+    /* [FIXME] 
+     * 盡量簡化初始化邏輯，是否統一使用 action 來獲取 Cookie? 
+     * 用 Middleware 來拿 Cookie.
+     */
     const userId = Cookies.get('uid');
     if (userId) {
       this.props.fetchProfileRequest(userId);  
