@@ -4,11 +4,11 @@ import { checkResponse } from '../api';
 
 /* [TODO] return Observable using rx-dom */
 
-export const fetchProfileById = userId => fetch(`/api/user/${userId}/profile`, {
+export const fetchProfileById = userId => ajax({
+  url: `/api/user/${userId}/profile`,
   method: 'GET',
-  credentials: 'include'
-})
-  .then(checkResponse)
+  credentials: 'include',
+});
 
 /* [TODO] replace with ajax version! */
 export const editProfile = (userId, inputFields) => ajax({

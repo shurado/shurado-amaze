@@ -14,8 +14,8 @@ const jwtAuthenticate = passport.authenticate('jwt', { session: false });
 const route = new Router();
 
 route.post('/sign_out', (req, res, next) => {
+  res.clearCookie('jwt_token');
   passport.authenticate('jwt', { session: false }, (err, user) => {
-    
     if (user) {
       res.clearCookie('jwt_token');
 
@@ -26,8 +26,6 @@ route.post('/sign_out', (req, res, next) => {
 
     return return401(res, 'you\'ve sign out already.');
   })(req, res, next);
-  
-  
 });
 
 /* [TODO] user upload avatar logic */

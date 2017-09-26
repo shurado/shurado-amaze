@@ -11,7 +11,7 @@ module.exports = {
     */
     queryInterface
       .sequelize
-      .query('CREATE EXTENSTION IF NOT EXISTS postgis;')
+      .query('CREATE EXTENSION IF NOT EXISTS postgis;')
       .then(() => {
         queryInterface.removeColumn('spots', 'location').then(() => {
           queryInterface.addColumn('spots', 'location', {

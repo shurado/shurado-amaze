@@ -2,7 +2,12 @@ import { pathOr } from 'ramda';
 import { ResponseError } from '../errors';
 import { Observable } from 'rxjs';
 
-const CODE_SHOULD_THROW = [400, 401, 500]; // eslint-disable-line no-unused-vars
+const CODE_SHOULD_THROW = [
+  400,
+  401,
+  404,
+  500
+]; // eslint-disable-line no-unused-vars
 
 /**
  * 

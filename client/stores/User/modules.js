@@ -1,8 +1,8 @@
 import { createAction } from 'redux-actions';
 import { Observable } from 'rxjs'; /* [TODO] remove rxjs to use rx-dom */
-
+import { tap, pathOr } from 'ramda';
 import { checkAjaxResponse } from '../api';
-import * as api from './endpoints';
+import * as API from './endpoints';
 
 export const FETCH_PROFILE_PENDING   = 'user/FETCH_PROFILE_PENDING';
 export const FETCH_PROFILE_REQUEST   = 'user/FETCH_PROFILE_REQUEST';
@@ -77,27 +77,32 @@ export const signoutRequest      = createAction(SIGNOUT_REQUEST);
 
 export const signoutEpic = action$ => action$
   .ofType(SIGNOUT_REQUEST)
-  .mergeMap(() => 
-    Observable.fromPromise(api.signout())
+  .switchMap(() => 
+    Observable.fromPromise(API.signout())
       .map(res => ({
         type: SIGNOUT_SUCCESS,
         res,
       }))
-      .takeUntil(action$.ofType())
+      .takeUntil(action$.ofType(SIGNOUT_CANCELLED))
   )
 
 export const getProfileEpic = action$ => action$
   .ofType(FETCH_PROFILE_REQUEST)
-  .mergeMap(action => Observable.fromPromise(api.fetchProfileById(action.payload)))
-  .map(profile => ({
+  .mergeMap(action => API.fetchProfileById(action.payload)
+      .catch((error) => Observable.of({
+        type: FETCH_PROFILE_FAIL,
+        error: pathOr('', ['xhr', 'response', 'message'])(error)
+      }))
+  )
+  .map(res => ({
     type: FETCH_PROFILE_SUCCESS,
-    ...profile
+    profile: {...res.response.profile}
   }))
 
 export const editProfileEpic = action$ => action$
   .ofType(EDIT_PROFILE)
   .flatMap(action => {
-    return api.editProfile(action.payload.id, action.payload)
+    return API.editProfile(action.payload.id, action.payload)
       .map(checkAjaxResponse)
       .map(({ profile }) => ({
         type: EDIT_PROFILE_SUCCESS,

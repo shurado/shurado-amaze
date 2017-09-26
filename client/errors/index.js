@@ -9,7 +9,7 @@ export class ResponseError extends Error {
     super();
     this.name = 'ResponseError';
     this.message = message || '';
-    this.status  = 500;
+    this.status  = status;
   }
 }
 
