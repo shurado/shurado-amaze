@@ -1,10 +1,13 @@
 {
-  "plugins": ["smells", "react"],
+  "plugins": ["smells", "react", "jest"],
   "globals": {
     "$": true,
     "window": true,
     "document": true,
     "NODE": true
+  },
+  "env": {
+    "jest/globals": true
   },
   "parser": "babel-eslint",
   "parserOptions": {
@@ -64,7 +67,7 @@
     "default-case": 0,
     "semi": 0,
     "no-useless-constructor": 0,
-    "indent": [2, 2, {SwitchCase: 1}],
+    "indent": [2, 2, {"SwitchCase": 1}],
     "camelcase": 0,
     "no-multi-spaces": 0,
     "func-name": 0,
@@ -73,7 +76,6 @@
     "arrow-body-style": 0,
     "no-shadow": 0,
     "no-unsed-expression": 0,
-    "consistent-return": 0,
-    "indent": 0
+    "consistent-return": 0
   }
 }

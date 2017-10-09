@@ -1,8 +1,4 @@
-import { CompositeDecorator } from 'draft-js';
 import { URL_REG_ONCE } from 'utils';
-
-import Link from './Link';
-
 
 function detectURL(contentBlock, callback, contentState) {
   const contentText = contentBlock.getText();
@@ -13,16 +9,5 @@ function detectURL(contentBlock, callback, contentState) {
     callback(matchArr.index, matchArr.index + matchArr[0].length);
   }
 }
-
-function detectFurigana(contentBlock, callback, contentState) {
-  
-}
-
-const decorators = [
-  {
-    strategy: detectURL,
-    component: Link
-  },
-];
 
 export default detectURL;

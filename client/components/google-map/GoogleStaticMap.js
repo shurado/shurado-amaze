@@ -1,5 +1,5 @@
 import React from 'react';
-import qs from 'util/queryString.js';
+import qs from 'util/queryString';
 import Image from '../Image';
 
 const GoogleStaticMap = (API_KEY) => ({
@@ -23,8 +23,7 @@ const GoogleStaticMap = (API_KEY) => ({
     key: API_KEY
   })
 
-  return <Image src={new URL('?'+queryString, googleMapURL)} />
+  return <Image src={new URL('?' + queryString, googleMapURL)} />
 }
-
 
 export default GoogleStaticMap('AIzaSyDRv7ZAGVSRJjCHICYOKCGR-NFZW4HBBYA');

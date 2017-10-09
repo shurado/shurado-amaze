@@ -1,9 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import { compose, bindActionCreators } from 'redux';
-import { Observable } from 'rxjs';
 import { graphql, gql } from 'react-apollo';
 
 import UserSidebarInfo from '../components/UserSidebarInfo';
@@ -18,8 +15,6 @@ export class TimelineFeedPage extends React.Component {
   constructor(props) {
     super(props);
   }
-
-
 
   onLoadMoreFeeds() {
     if (!this.props.isLast && !this.props.data.loading) {

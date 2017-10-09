@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom'; 
 import Cookies from 'js-cookie';
+import { gql } from 'react-apollo';
 
 import 'index.scss';
 import Header from './Header';
@@ -15,7 +16,6 @@ import TimelineFeedPage from '../pages/TimelineFeedPage';
 import CreateFeedEditor from '../components/editors/CreateFeedEditor.js';
 
 import * as userActions from '../stores/User/modules';
-import { gql } from 'react-apollo';
 
 if (process.env.NODE_ENV !== 'production') {
   window.gql = gql;

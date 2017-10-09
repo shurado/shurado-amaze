@@ -74,10 +74,10 @@ class Feed extends React.Component {
             <time>{humanReadableTimeDiff(new Date(createdAt))}</time>
             { spot 
               ? <SpotNameDisplay 
-                  name={spot.name}
-                  lat={spot.location.lat} 
-                  lng={spot.location.lng}
-                />
+                name={spot.name}
+                lat={spot.location.lat} 
+                lng={spot.location.lng}
+              />
               : null
             }
             

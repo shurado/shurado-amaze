@@ -21,7 +21,9 @@ class GooglePlaceAutoComplete extends React.PureComponent {
     script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places&callback=initMap`;
     script.defer = true;
 
-    document.body.appendChild(script);
+    if (typeof google === 'undefined') {
+      document.body.appendChild(script);
+    }
   }
 
   componentDidMount() {
@@ -40,9 +42,8 @@ class GooglePlaceAutoComplete extends React.PureComponent {
 
   handleAddPlace(autocomplete) {
     const { onPlaceChanged } = this.props;
-    return function() {
-      onPlaceChanged && onPlaceChanged.call(null, autocomplete.getPlace());
-    }
+    return onPlaceChanged 
+      && onPlaceChanged.call(null, autocomplete.getPlace());
   }
 
   render() {

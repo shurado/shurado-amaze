@@ -90,9 +90,7 @@ class CreateFeedContainer extends React.Component {
         { (!service.isLoading && service.url) ? <URLPreview {...this.props.service.url} /> : null }
         
         <div className="disabled">
-          <GooglePlaceAutoComplete
-            onPlaceChanged={this.addSpotToFeed}
-          />
+          
           <span onClick={this.uploadFile}>
             上傳
             <input ref={node => this.input = node} 

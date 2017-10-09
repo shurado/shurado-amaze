@@ -2,12 +2,13 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { ApolloClient } from 'react-apollo';
 import { createLogger } from 'redux-logger';
 import { createEpicMiddleware } from 'redux-observable';
+import initUserInfoMiddleware from './middlewares/initUserInfo';
 import rootReducers from './reducers';
 import rootEpics    from './epics';
 
 const client = new ApolloClient('/graphql');
 const epicMiddleware = createEpicMiddleware(rootEpics);
-const middleware = [epicMiddleware, client.middleware()];
+const middleware = [epicMiddleware, client.middleware(), initUserInfoMiddleware()];
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -21,7 +22,7 @@ const configureStore = (initialState = {}) => {
   const store = createStoreWithMiddleware(
     combineReducers({...rootReducers, apollo: client.reducer()}),
     initialState,
-    (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : function(){}
+    (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : function() {}
   );
   
   

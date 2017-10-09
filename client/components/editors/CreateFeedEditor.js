@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Editor, EditorState, RichUtils, ContentState, convertFromHTML } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import styles from 'components/Editor.scss';
-import { detectURLOnce } from 'utils';
 import { getPlainText, applyDecorator } from 'utils/draftUtils';
 
 import decorateComponentWithProps from '../HOC/decorateComponentWithProps';
@@ -29,18 +28,8 @@ export default class CreateFeedEditor extends React.PureComponent {
     this.focus = () => this.refs.editor.focus();
     this.onTab = (e) => this._onTab(e);
 
-    const decorator = applyDecorator([
-      {
-        strategy: detectURL,
-        component: decorateComponentWithProps(Link, {
-          getEditorState: this.getEditorState.bind(this),
-          setEditorState: this.onChange.bind(this),
-          onCreateLink: console.log
-        })
-      }
-    ])
     this.state = { 
-      editorState: props.rawValue 
+      editorState: props.rawValue
         ? EditorState.createWithContent(convertToContent(props.rawValue))
         : EditorState.createEmpty() 
     };
@@ -53,7 +42,7 @@ export default class CreateFeedEditor extends React.PureComponent {
         component: decorateComponentWithProps(Link, {
           getEditorState: this.getEditorState.bind(this),
           setEditorState: this.onChange.bind(this),
-          onCreateLink: this.props.onCreateLink || function() {}
+          onCreateLink: this.props.onCreateLink || function(){}
         })
       }
     ])

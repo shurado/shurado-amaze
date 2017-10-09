@@ -6,7 +6,6 @@ const WebpackChunkHash            = require('webpack-chunk-hash');
 const ChunkManifestPlugin         = require('chunk-manifest-webpack-plugin');
 const parts                       = require('./webpack.parts');
 
-
 /* you can seperate entry to another file. */
 const entry = {
   app: './client/index.js',
@@ -29,6 +28,7 @@ const commonConfig = (env) => ({
     }
   },
   entry: entry,
+  target: 'web',
   output: {
     path: path.join(__dirname, 'public'),
     filename: env === 'development' ? '[name].bundle.js' : '[name].[chunkhash].js',
