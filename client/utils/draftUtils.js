@@ -15,7 +15,12 @@ export const getContentBlockText = (editorState) => {
     .getText();
 }
 
-export const toHTML = (editorState, value) => {
+/**
+ * 
+ * @param {EditorState} editorState 
+ * @return {String} html string
+ */
+export const toHTML = (editorState) => {
   return stateToHTML(editorState.getCurrentContent());
 }
 
@@ -48,9 +53,10 @@ export const toggleBlockType = (editorState, blockType) => {
 
 export const setEditorStateWith = (content, type) => (editorState) => {
   if (type === 'ContentState') {
-    return EditorState.set(
+    return EditorState.push(
       editorState,
-      { currentContent: content }
+      { currentContent: content },
+      'set-editor-state'
     );
   }
 }
@@ -65,14 +71,18 @@ export const setBlockType = (contentState, selectionState, blockType) => {
   return setEditorStateWith(newContentState, 'ContentState');
 }
 
-export const applyEntity = (contentState, selectionState, entityKey = null) => {
+export const applyEntity = (contentState, selectionState, entityKey = null) => (editorState) => {
   const newContentState = Modifier.applyEntity(
     contentState,
     selectionState,
     entityKey
   );
 
-  return setEditorStateWith(newContentState, 'ContentState');
+  return EditorState.push(
+    editorState,
+    newContentState,
+    'apply-entity'
+  );
 }
 
 /**

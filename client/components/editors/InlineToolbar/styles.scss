@@ -1,0 +1,31 @@
+.Toolbar {
+  min-width: 250px;
+  padding: 10px;
+  background-color: rgba(50, 50, 50, 0.9);
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+
+  span {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  :global(.toolbar-active) {
+    color: #27cc95;
+    font-weight: bold;
+
+    svg { stroke: #27cc95!important;}
+  }
+
+  input {
+    width: 100%;
+    border: 0;
+    color: #fff;
+    font-weight: lighter;
+    background-color: transparent;
+    outline: none;
+
+    @include responsive-font-size(small);
+  }
+}

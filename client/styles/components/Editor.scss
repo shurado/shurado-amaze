@@ -1,10 +1,12 @@
 :global(.DraftEditor-root) {
   background-color: #fff;
-  min-height: 350px;
+  // min-height: 350px;
 
   padding: space(3);
 
   margin-bottom: space(6);
+
+  font-family: "PingFang TC","Segoe UI", Roboto,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
 
   :global(.DraftEditor-editorContainer) {
     min-height: 350px;
@@ -16,5 +18,16 @@
 
   :global(.public-DraftEditorPlaceholder-root) {
     position: absolute;
+  }
+
+  blockquote {
+    margin: 20px 0;
+    padding: 10px;
+    padding-left: 20px;
+    border-left: 4px solid #aaa;
+    color: lighten(#333, 30%);
+    font-style: italic;
+    font-family: SongTi TC;
+    @include responsive-font-size(medium);
   }
 }

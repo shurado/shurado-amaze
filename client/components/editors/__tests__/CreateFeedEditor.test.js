@@ -15,11 +15,8 @@ function convertToContent(rawValue) {
 
 
 describe('CreateFeedEditor', () => {
-  it('should render correctly', () => {
-    const mockFn = jest.fn();
-    const wrapper = mount(<CreateFeedEditor
-      onCreateLink={mockFn}
-    />);
+  it('should render content correctly', () => {
+    const wrapper = mount(<CreateFeedEditor />);
     const instance = wrapper.instance();
     const selection = instance.state.editorState.getSelection();
     const currentBlock = instance.state.editorState.getCurrentContent();
@@ -33,14 +30,13 @@ describe('CreateFeedEditor', () => {
       nextContentState,
       'insert-characters'
     );
-    instance.onChange(nextEditorState);
-    console.log(nextEditorState.getCurrentContent().getPlainText())
+    wrapper.setState({ editorState: nextEditorState });
 
-    expect(mockFn).toHaveBeenCalled();
+    expect(instance.state.editorState.getCurrentContent().getPlainText()).toBe('https://www.sudo.com.tw');
   });
 
   it('should call onCreateLink if detect URL', () => {
     
-  })
-
+  });
 });
+

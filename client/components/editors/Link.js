@@ -11,6 +11,14 @@ const Link = (props) => {
   )
 }
 
+export function TextLink(props) {
+  const {url} = props.contentState.getEntity(props.entityKey).getData();
+
+  return <a 
+    href={url}
+  >{props.children}</a>
+}
+
 export default compose(pure, lifecycle({
   componentWillReceiveProps: function(nextProps) {
     if (nextProps !== this.props) {

@@ -111,6 +111,7 @@
     "file-loader": "^0.11.2",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "husky": "^0.14.3",
+    "immutable": "^3.8.2",
     "jest": "^20.0.4",
     "jest-serializer-html-string": "^1.0.1",
     "nock": "^9.0.14",
