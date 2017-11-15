@@ -1,10 +1,7 @@
-import { 
-  GraphQLID,
+const { 
   GraphQLObjectType,
   GraphQLInt,
-  GraphQLNonNull,
-} from 'graphql';
-
+} = require('graphql');
 
 const InfoType = new GraphQLObjectType({
   name: 'InfoType',
@@ -21,4 +18,4 @@ const InfoType = new GraphQLObjectType({
   }
 })
 
-export default InfoType;
+module.exports = InfoType;

@@ -1,6 +1,6 @@
-import request from 'request';
-import cheerio from 'cheerio';
-import { pickAll } from 'ramda';
+const request = require('request');
+const cheerio = require('cheerio');
+const { pickAll } = require('ramda');
 
 const MAX_RESPONSE_TIMEOUT = 10 * 1000;
 const URL_REG = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig; // eslint-disable-line no-useless-escape
@@ -75,4 +75,5 @@ WebParser.parseMeta = ($) => {
   }, {})
 }
 
-export default WebParser;
+module.exports = WebParser;
+

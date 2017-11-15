@@ -1,9 +1,9 @@
-'use strict';
+
 const jwt = require('jwt-simple');
 const moment = require('moment');
 
 module.exports = function(sequelize, DataTypes) {
-  var user = sequelize.define('user', {
+  const user = sequelize.define('user', {
     username: {
       type: DataTypes.STRING,
       validate: {
@@ -74,7 +74,6 @@ module.exports = function(sequelize, DataTypes) {
     user.hasMany(models.feed, { foreignKey: 'user_id' });
     user.hasMany(models.comment, { foreignKey: 'user_id' });
     user.belongsToMany(models.user, { as: 'UserFollowers', through: 'followers', foreignKey: 'user_id' })
-
   }
   
   user.prototype.tokenForUser = function(secret) {

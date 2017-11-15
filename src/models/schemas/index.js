@@ -1,22 +1,25 @@
-import { 
-  graphql,
+
+const { 
   GraphQLSchema,
   GraphQLID,
   GraphQLObjectType,
-  GraphQLString,
   GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
-  GraphQLBoolean
-} from 'graphql';
+} = require('graphql');
 
-import { feedType } from './types/feedType';
-import userType from './types/userType';
-import InfoType from './types/InfoType';
+const { feedType } = require('./types/feedType');
+const userType = require('./types/userType');
+const InfoType = require('./types/InfoType');
+const createFeed = require('./mutations/createFeed');
 
-import createFeed from './mutations/createFeed';
+const {
+  feed,
+  comment,
+} = require('../../models/');
 
-import { feed as Feed, user as User, comment as Comment } from '../../models/';
+const Feed = feed;
+const Comment = comment;
 
 const queryType = new GraphQLObjectType({
   name: 'QueryType',
@@ -96,4 +99,4 @@ const schema = new GraphQLSchema({
 });
 
 
-export default schema;
+module.exports = schema;

@@ -1,8 +1,9 @@
-import passport from 'passport';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import dotenv from 'dotenv';
-import { user as User } from '../models';
-import { pathOr } from 'ramda'
+const passport = require('passport');
+const { Strategy, ExtractJwt } = require('passport-jwt');
+const dotenv = require('dotenv');
+const User = require('../models').user;
+const { pathOr } = require('ramda');
+
 dotenv.config();
 
 passport.serializeUser((user, done) => {
@@ -25,12 +26,13 @@ const jwtOptions = {
 };
 
 /* payload from JWT */
-const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
-  return User.findById(payload.sub)
+const jwtLogin = new Strategy(jwtOptions, (payload, done) =>
+  User.findById(payload.sub)
     .then(user => done(null, user))
-    .catch(err => done(err, false));
-})
+    .catch(err => done(err, false))
+)
 
 passport.use(jwtLogin);
 
-export default jwtLogin;
+module.exports = jwtLogin
+

@@ -6,7 +6,7 @@
   "scripts": {
     "prestart": "npm run -s build:server",
     "start": "npm run dev:server",
-    "dev:server": "BABEL_ENV=production NODE_ENV=development nodemon --watch ./src --exec \"node -r babel-register ./src/index.js\"",
+    "dev:server": "nodemon --watch ./src --exec \"node -r ./src/index.js\"",
     "dev:client": "nodemon --watch webpack.config.js --watch webpack.parts.js --exec \"webpack-dev-server --env.target development\"",
     "clean": "rm -rf ./dist",
     "build:webpack": "NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.js  --env.target production",
@@ -114,6 +114,7 @@
     "immutable": "^3.8.2",
     "jest": "^20.0.4",
     "jest-serializer-html-string": "^1.0.1",
+    "lint-staged": "^5.0.0",
     "nock": "^9.0.14",
     "node-sass": "^4.5.3",
     "nodemon": "^1.11.0",

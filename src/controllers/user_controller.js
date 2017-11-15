@@ -1,13 +1,13 @@
-import { Router } from 'express';
-import { user as User } from '../models';
-import passport from 'passport';
+const Router = require('express').Router;
+const User = require('../models').user;
+const passport = require('passport');
+const {
+  serialize,
+  toHumanReadable,
+} = require('../utils');
 
-import { serialize, pickDataValues, nullResponse, toHumanReadable } from '../utils';
-import { return404, return400, return401 } from '../utils/responseHelper';
-
-import { pick } from 'ramda';
-
-import jwtLogin from '../lib/jwt';
+const { return404, return401 } = require('../utils/responseHelper');
+const { pick } = require('ramda');
 
 const jwtAuthenticate = passport.authenticate('jwt', { session: false });
 
@@ -15,7 +15,6 @@ const route = new Router();
 
 route.post('/sign_out', (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
-    
     if (user) {
       res.clearCookie('jwt_token');
 
@@ -26,8 +25,6 @@ route.post('/sign_out', (req, res, next) => {
 
     return return401(res, 'you\'ve sign out already.');
   })(req, res, next);
-  
-  
 });
 
 /* [TODO] user upload avatar logic */
@@ -75,4 +72,5 @@ route
       })
   });
 
-export default route;
+module.exports = route;
+

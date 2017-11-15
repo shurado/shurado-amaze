@@ -1,16 +1,12 @@
-import passport from 'passport';
-import v1 from 'uuid/v1';
-import multer from 'multer';
-import { pick } from 'ramda';
-import { Router } from 'express';
-
-import { serialize, pickDataValues, nullResponse, toHumanReadable } from '../utils';
-import { return404, return400, return401 } from '../utils/responseHelper';
-import { feed as Feed } from '../models';
-import { feedUploader } from '../services/uploader';
-import jwtLogin from '../lib/jwt';
-import upload from '../middlewares/upload';
-
+const passport = require('passport');
+const v1 = require('uuid/v1');
+const multer = require('multer');
+const { pick } = require('ramda');
+const Router = require('express').Router;
+const { serialize, pickDataValues } = require('../utils');
+const { return401 } = require('../utils/responseHelper');
+const Feed = require('../models').feed;
+const upload = require('../middlewares/upload');
 
 const uploader = multer();
 const jwtAuthenticate = passport.authenticate('jwt', { session: false });
@@ -63,14 +59,9 @@ route
 
       progress.on('complete', (data) => {
         req.user
-          .createFeed(pick(allowedParams)({
-            ...req.body,
-            image_url: {
-              normal: data.Location
-            }
-          }))
+          .createFeed()
           .then(feed => {
-            return feed.addFeedSpot({...req.body});
+            return feed.addFeedSpot(req.body);
           })
           .then(pickDataValues)
           .then(values => {
@@ -88,7 +79,7 @@ route
       req.user
         .createFeed(pick(allowedParams)(req.body))
         .then(feed => {
-          return feed.addFeedSpot({...req.body})
+          return feed.addFeedSpot(req.body)
         })
         .then(pickDataValues)
         .then(values => {
@@ -151,7 +142,7 @@ route
           return next('Feed not Found!');
         }
       })
-});
+  });
 
+module.exports = route;
 
-export default route;

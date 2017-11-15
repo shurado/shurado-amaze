@@ -1,6 +1,6 @@
-'use strict';
+
 module.exports = function(sequelize, DataTypes) {
-  var spot = sequelize.define('spot', {
+  const spot = sequelize.define('spot', {
     location: DataTypes.GEOMETRY('POINT'),
     name: DataTypes.STRING
   }, {

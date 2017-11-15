@@ -1,18 +1,12 @@
-import { Router } from 'express';
-import passport from 'passport';
-import multer from 'multer';
-import v1 from 'uuid/v1';
 
-import jwtLogin from '../lib/jwt';
+const { Router } = require('express');
+const passport = require('passport');
 
-import { serialize } from '../utils';
-import WebParser from '../services/WebParser';
-import S3Uploader from '../services/S3Uploader';
-import BufferStream from '../services/S3Uploader/BufferStream';
-
-import feedController from '../controllers/feed_controller';
-import userController from '../controllers/user_controller';
-
+const WebParser = require('../services/WebParser');
+const feedController = require('../controllers/feed_controller');
+const userController = require('../controllers/user_controller');
+const uploadController = require('../controllers/upload_controller');
+const profileController = require('../controllers/profile_controller');
 
 const route = new Router();
 
@@ -21,36 +15,6 @@ route.get('/', (req, res) => {
 });
 
 const jwtAuthenticate = passport.authenticate('jwt', { session: false });
-
-const uploader = multer();
-
-route.post('/upload', uploader.single('avatar'), (req, res, next) => {
-  const bufferStream = new BufferStream(req.file.buffer);
-  const uploader     = new S3Uploader({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    bucket: process.env.S3_BUCKET,
-    region: 'us-west-2'
-  });
-
-  uploader.upload([{
-    key: v1() + '.jpg',
-    body: bufferStream
-  }]);
-
-  res.json({});
-})
-
-route.get('/profile', jwtAuthenticate,
-  (req, res, next) => {
-    if (req.user === null) {
-      next('user doesn\'t exist or you have no ability to read it.');
-    }
-
-    return res.json({
-      user: serialize(req.user.serializeFields)(req.user)
-    })
-  });
 
 // route.get('/user/login', jwtAuthenticate, (req, res) => res.redirect(301, '/'));
 
@@ -67,12 +31,12 @@ route.post('/api/parse', jwtAuthenticate, (req, res) => {
   }
 });
 
-route.get('/test', (req, res) => {
-  res.render('test');
-})
+route
+  .use('/upload', uploadController)
+  .use('/profile', profileController)
+  .use('/api/feeds', feedController)
+  .use('/api/user', userController)
 
-route.use('/api/feeds', feedController)
-route.use('/api/user', userController)
 
+module.exports = route;
 
-export default route;
