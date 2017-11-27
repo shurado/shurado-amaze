@@ -15,7 +15,7 @@ export default function isPlainObject(param) {
 
   let key = null;
 
-  for (key in param) {}
+  for (key in param) {} // eslint-disable-line
 
   return !key || hasOwnProp.call(param, key);
 }

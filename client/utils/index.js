@@ -50,8 +50,8 @@ export const truncate = (length, omitter = '...') => (str) => {
   while (length > 0) {
     truncated += str.slice(0, 1);
     
-    length--;
-    str = str.slice(1, str.length);
+    length = length - 1; // eslint-disable-line
+    str = str.slice(1, str.length); // eslint-disable-line
   }
 
   return truncated + omitter;

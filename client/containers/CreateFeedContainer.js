@@ -6,7 +6,6 @@ import { fetchLastestFeed } from '../stores/Feed/modules';
 import { fetchURLRequest } from '../stores/Services/modules';
 
 import CreateFeedEditor from '../components/editors/CreateFeedEditor';
-import GooglePlaceAutoComplete from '../components/GooglePlaceAutoComplete';
 import URLPreview from '../components/URLPreview';
 
 class CreateFeedContainer extends React.Component {
