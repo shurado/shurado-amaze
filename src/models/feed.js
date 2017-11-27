@@ -1,8 +1,8 @@
-'use strict';
-const { pickDataValues, serialize } = require('../utils');
+
+const { serialize } = require('../utils');
 
 module.exports = function(sequelize, DataTypes) {
-  var feed = sequelize.define('feed', {
+  const feed = sequelize.define('feed', {
     caption: {
       type: DataTypes.TEXT,
       validate: {
@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
         validValue: function(value) {
           const URL_REG = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
-          if(!Object.keys(value).every(key => URL_REG.test(value[key]))) {
+          if (!Object.keys(value).every(key => URL_REG.test(value[key]))) {
             throw Error('必須為正確的 URL 格式');
           }
         }
@@ -67,7 +67,6 @@ module.exports = function(sequelize, DataTypes) {
   }
 
   feed.prototype.addFeedSpot = function({ name, x, y }) {
-    const id = this.id;
     const self = this;
     return new Promise(resolve => {
       sequelize.models.spot.findOne({ where: { name } })
@@ -85,10 +84,6 @@ module.exports = function(sequelize, DataTypes) {
           }
         })
     })
-    
-    
-    // [TODO] 如果 spot 已經存在資料庫中，直接 return 
-    
   }
 
   feed.prototype.querySpot = function({x, y}) {
@@ -116,7 +111,6 @@ module.exports = function(sequelize, DataTypes) {
         order: [['createdAt', 'DESC']] 
       })
       .then(comments => comments.map(comment => serialize(comment.serializeFields, comment)))
-
   }
 
   feed.prototype.serializeFields = ['caption', 'image_url', 'user'];

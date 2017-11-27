@@ -1,7 +1,7 @@
-import { 
+const { 
   GraphQLObjectType,
   GraphQLString,
-} from 'graphql';
+} = require('graphql');
 
 const SpotType = new GraphQLObjectType({
   name: 'SpotType',
@@ -29,4 +29,5 @@ const SpotType = new GraphQLObjectType({
   }
 })
 
-export default SpotType;
+module.exports = SpotType;
+

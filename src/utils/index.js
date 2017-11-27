@@ -1,12 +1,9 @@
-import { pick, pickAll, pathOr, isNil } from 'ramda';
+const { pick, pickAll, pathOr, isNil } = require('ramda');
 
+const toHumanReadable = (message, reg) =>
+  message.replace(/(Validation error:)+/g, '').replace(/\n/g, '').split(',')
 
-export const toHumanReadable = (message, reg) => {
-  
-  return message.replace(/(Validation error:)+/g, '').replace(/\n/g, '').split(',');
-}
-
-export const serialize = (fields, model) => {
+const serialize = (fields, model) => {
   if (!model) {
     return null;
   }
@@ -19,7 +16,7 @@ export const serialize = (fields, model) => {
   
 }
 
-export const convertByteSize = (byte) => {
+const convertByteSize = (byte) => {
   const KB = 1024;
   const MB = 1024 * 1024;
   const GB = 1024 * 1024 * 1024;
@@ -43,7 +40,7 @@ export const convertByteSize = (byte) => {
  * @param  [Sequelize Model] model
  * @return {object || null}
  */
-export const pickDataValues = (model) => {
+const pickDataValues = (model) => {
   if (model) {
     const data = pickAll(['dataValues'])(model);
     return pathOr(null, ['dataValues'])(data);
@@ -52,7 +49,7 @@ export const pickDataValues = (model) => {
   return null;
 }
 
-export const nullResponse = (res) => (nullable) => {
+const nullResponse = (res) => (nullable) => {
   if(process.env.NODE_ENV === 'development') {
     console.log('passing null value, return 404 by default.');
   }
@@ -62,11 +59,11 @@ export const nullResponse = (res) => (nullable) => {
   }
 }
 
-export const getReqAccept = (req) => {
+const getReqAccept = (req) => {
   return req.accepts(['application/json', 'html']);
 }
 
-export const render404 = (req, res) => {
+const render404 = (req, res) => {
   switch(getReqAccept(req)) {
     case 'application/json':
       return res.status(err.status || 500).json({
@@ -88,14 +85,9 @@ export const render404 = (req, res) => {
             error: err,
             message: err.message
           });
-  
 }
 
-export const render500 = (res) => {
-
-}
-
-export const uniq = (array) => {
+const uniq = (array) => {
   return array.reduce((acc, curr) => {
     if (acc.indexOf(curr) === -1) {
       acc.push(curr);
@@ -104,3 +96,13 @@ export const uniq = (array) => {
     return acc;
   }, [])
 }
+
+module.exports = {
+  toHumanReadable,
+  serialize,
+  convertByteSize,
+  pickDataValues,
+  nullResponse,
+  getReqAccept,
+  render404,
+};

@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import CSSModules from 'react-css-modules';
-import { branch, renderComponent, setPropTypes, compose } from 'recompose';
-import { Redirect } from 'react-router-dom';
+import { setPropTypes, compose } from 'recompose';
 
 import styles from 'components/Profile.scss';
-import Image from './Image';
-import Input from './Input';
+import Image from '../Image';
+import Input from '../Input';
 
 const UserProfile = ({ editProfile, profile, userId }) => {
   const bindEditProfile = (field) => (e) => {

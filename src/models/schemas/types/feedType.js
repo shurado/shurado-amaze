@@ -1,15 +1,17 @@
-import { 
+const { 
   GraphQLID,
   GraphQLObjectType,
   GraphQLString,
   GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
-} from 'graphql';
+} = require('graphql');
 
-import SpotType from './SpotType';
-import userType from './userType';
-import { comment as Comment } from '../../../models';
+const SpotType = require('./SpotType');
+const userType = require('./userType');
+const comment = require('../../../models');
+
+const Comment = comment;
 
 const uniq = (array) => {
   return array.reduce((acc, curr) => {
@@ -58,7 +60,7 @@ const commentType = new GraphQLObjectType({
   }
 })
 
-export const feedType = new GraphQLObjectType({
+const feedType = new GraphQLObjectType({
   name: 'feedType',
   description: '使用者動態',
   fields: {
@@ -120,7 +122,7 @@ export const feedType = new GraphQLObjectType({
   }
 });
 
-export const feedById = new GraphQLObjectType({
+const feedById = new GraphQLObjectType({
   name: 'FeedById', 
   description: 'feed by id',
   fields: {
@@ -135,3 +137,7 @@ export const feedById = new GraphQLObjectType({
   }
 });
 
+module.exports = {
+  feedType,
+  feedById,
+};

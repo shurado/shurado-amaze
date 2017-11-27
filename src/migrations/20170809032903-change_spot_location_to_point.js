@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   up: function (queryInterface, Sequelize) {
     /*
@@ -14,8 +12,7 @@ module.exports = {
         type: Sequelize.GEOMETRY('POINT'),
         allowNull: false
       })
-    });
-    
+    });    
   },
 
   down: function (queryInterface, Sequelize) {
@@ -33,6 +30,5 @@ module.exports = {
           type: 'Point',
         })  
       })
-      
   }
 };

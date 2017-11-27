@@ -1,9 +1,9 @@
-import { 
+const  { 
   GraphQLID,
   GraphQLObjectType,
   GraphQLString,
   GraphQLNonNull,
-} from 'graphql';
+} = require('graphql');
 
 const avatarType = new GraphQLObjectType({
   name: 'avatarType',
@@ -34,4 +34,4 @@ const userType = new GraphQLObjectType({
   }
 })
 
-export default userType;
+module.exports = userType;

@@ -1,23 +1,21 @@
-import {
-  GraphQLSchema,
-  GraphQLObjectType,
+const {
   GraphQLInputObjectType,
-  GraphQLList,
   GraphQLNonNull,
   GraphQLID,
-  GraphQLString, GraphQLInt,
-  GraphQLBoolean,
-} from 'graphql';
+  GraphQLString,
+} = require('graphql');
 
-import {
+const {
   mutationWithClientMutationId,
-} from 'graphql-relay';
+} = require('graphql-relay');
 
-import { feedType } from '../types/feedType';
-import userType from '../types/userType';
+const { feedType } = require('../types/feedType');
+const userType = require('../types/userType');
 
-import { feed as Feed, user as User } from '../../index';
+const { feed, user } = require('../../index');
 
+const Feed = feed;
+const User = user;
 
 const imageInputType = new GraphQLInputObjectType({
   name: 'ImageInputType',
@@ -59,9 +57,9 @@ const feedMutation = mutationWithClientMutationId({
       feed_id: feed.id,
       user_id
     }))
-    .then(resolve)
-    .catch(reject)
+      .then(resolve)
+      .catch(reject)
   })
 })
 
-export default feedMutation;
+module.exports = feedMutation;

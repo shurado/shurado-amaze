@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Profile from '../components/UserProfile';
-import { fetchProfileRequest, editProfile } from '../stores/User/modules';
+import UserProfile from '../../components/UserProfile';
+import { fetchProfileRequest, editProfile } from '../../stores/User/modules';
 
 class UserProfilePage extends React.Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class UserProfilePage extends React.Component {
     const { user, match } = this.props;
 
     return (user && !user.isFetching)
-      ? <Profile
+      ? <UserProfile
         userId={match.params.id}
         profile={user.profile}
         isLoggedIn={user.isLoggedIn}

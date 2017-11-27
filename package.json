@@ -6,7 +6,7 @@
   "scripts": {
     "prestart": "npm run -s build:server",
     "start": "npm run dev:server",
-    "dev:server": "BABEL_ENV=production NODE_ENV=development nodemon --watch ./src --exec \"node -r babel-register ./src/index.js\"",
+    "dev:server": "nodemon --watch ./src --exec \"node -r ./src/index.js\"",
     "dev:client": "nodemon --watch webpack.config.js --watch webpack.parts.js --exec \"webpack-dev-server --env.target development\"",
     "clean": "rm -rf ./dist",
     "build:webpack": "NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.js  --env.target production",
@@ -58,6 +58,7 @@
     "react-code-splitting": "^1.1.1",
     "react-css-modules": "^4.6.0",
     "react-dom": "^15.6.1",
+    "react-intl": "^2.4.0",
     "react-loadable": "^5.1.0",
     "react-redux": "^5.0.5",
     "react-router": "^4.1.2",
@@ -74,6 +75,7 @@
     "sequelize": "^4.4.2",
     "sequelize-cli": "^2.7.0",
     "session": "^0.1.0",
+    "styled-components": "^2.2.3",
     "uuid": "^3.1.0"
   },
   "devDependencies": {
@@ -114,6 +116,7 @@
     "immutable": "^3.8.2",
     "jest": "^20.0.4",
     "jest-serializer-html-string": "^1.0.1",
+    "lint-staged": "^5.0.0",
     "nock": "^9.0.14",
     "node-sass": "^4.5.3",
     "nodemon": "^1.11.0",

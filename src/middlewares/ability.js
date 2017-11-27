@@ -1,5 +1,3 @@
-import { pathOr } from 'ramda';
-import * as models from '../models';
 
 const basicPolicy = (model) => (req, res, next) => {
   const modelType = model.constructor.name;
@@ -13,7 +11,7 @@ const basicPolicy = (model) => (req, res, next) => {
     return next();
   }
 
-  switch(modelType) {
+  switch (modelType) {
     case 'feed':
       return next();
     case 'user':
@@ -32,7 +30,7 @@ const ownerOnly = (model) => (req, res, next) => {
   const modelType = model.constructor.name;
 
   if (req !== 'get') {
-    switch(modelType) {
+    switch (modelType) {
       case 'feed':
       case 'comment':
         return model.user_id === user.id ? next() : res.status(401).json(null);

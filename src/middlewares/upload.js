@@ -1,15 +1,13 @@
-import S3Uploader from '../services/S3Uploader';
-import BufferStream from '../services/S3Uploader/BufferStream';
-import v1 from 'uuid/v1';
-
+const S3Uploader = require('../services/S3Uploader');
+const BufferStream = require('../services/S3Uploader/BufferStream');
 
 const upload = (key, body, mimetype) => {
   switch (mimetype) {
     case 'image/jpeg':
-      mimetype = '.jpg'
+      mimetype = '.jpg'; // eslint-disable-line
       break;
     default:
-      mimetype = '.jpg'
+      mimetype = '.jpg'; // eslint-disable-line
       break;
   }
 
@@ -29,4 +27,4 @@ const upload = (key, body, mimetype) => {
   return uploader;
 };
 
-export default upload;
+module.exports = upload;
