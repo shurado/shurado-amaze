@@ -34,8 +34,16 @@ const toolbarItems = [
     renderer: <span>code</span>
   },
   {
+    type: 'unordered-list-item',
+    renderer: <span>UL</span>
+  },
+  {
     type: 'link',
     renderer: <span><Icon name="link" color="#fff" /></span>
+  },
+  {
+    type: 'furigana',
+    renderer: <span>あ</span>
   }
 ];
 

@@ -97,6 +97,7 @@ export default class CreateFeedEditor extends React.PureComponent {
       case 'header-two':
       case 'header-three':
       case 'blockquote':
+      case 'unordered-list-item':
         return this.onChange(
           RichUtils.toggleBlockType(
             editorState,
@@ -160,11 +161,15 @@ export default class CreateFeedEditor extends React.PureComponent {
         'split-block'
       );
       
-      this.onChange(RichUtils.toggleBlockType(
-        newEditorState,
-        'unstyled'
-      ));
+      if (newEditorState.getCurrentContent().getFirstBlock().getType() !== 'unordered-list-item') {
+        this.onChange(RichUtils.toggleBlockType(
+          newEditorState,
+          'unstyled'
+        ));
+      }
 
+      this.onChange(newEditorState)
+      
       return true;
     }
 
