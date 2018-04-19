@@ -3,11 +3,13 @@ import { pure, lifecycle, compose } from 'recompose';
 import { createEntity, applyEntity } from 'utils/draftUtils';
 
 
+const getVideoID = (url) => /.+(?:youtube\.com\/v\/|youtube\.com\/watch\?v=|youtube\.com\/embed\/|youtu\.be\/)([^\&\?\/]+)/.exec(url)[1];
+
 const Link = (props) => {
   const editorState = props.getEditorState();
 
   return (
-    <a>{props.children}</a>
+    <a href={props.decoratedText}>{props.children}</a>
   )
 }
 

@@ -42,6 +42,8 @@ export default class CreateFeedEditor extends React.PureComponent {
     this.onTab = (e) => this._onTab(e);
     this.handleToolBarClick = this.handleToolBarClick.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
+    this.handlePastedText = this.handlePastedText.bind(this);
+    this.handlePastedFiles = this.handlePastedFiles.bind(this);
 
     this.state = { 
       editorState: props.rawValue
@@ -54,6 +56,7 @@ export default class CreateFeedEditor extends React.PureComponent {
   componentWillMount() {
     const decorator = applyDecorator([
       {
+        editable: false,
         strategy: detectURL,
         component: decorateComponentWithProps(Link, {
           getEditorState: this.getEditorState.bind(this),
@@ -193,6 +196,19 @@ export default class CreateFeedEditor extends React.PureComponent {
     return getDefaultKeyBinding(e);
   }
 
+  handlePastedText(plainText, html, editorState) {
+    console.log(plainText);
+    const fragment = document.createDocumentFragment();
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = html;
+    fragment.appendChild(wrapper);
+    console.dir(fragment);
+  }
+
+  handlePastedFiles() {
+
+  }
+
   render() {
     const { editorState } = this.state;
     
@@ -213,9 +229,11 @@ export default class CreateFeedEditor extends React.PureComponent {
           editorState={editorState}
           onChange={this.onChange}
           customStyleMap={styleMap}
-          placeholder="用日文發表你的動態、想法、學習心得......"
+          placeholder="MY EDITOR"
           spellCheck={true}
           keyBindingFn={this.editorKeyBindingFn}
+          handlePastedText={this.handlePastedText}
+          handlePastedFiles={console.log}
           handleKeyCommand={this.handleKeyCommand}
         />
       </div>
